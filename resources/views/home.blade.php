@@ -1,6 +1,6 @@
 @extends('layout.main')
 
-@section('title', 'General Dashboard')
+@section('title', 'Dashboard')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -27,7 +27,7 @@
                                 <h4>Total Admin</h4>
                             </div>
                             <div class="card-body">
-                                10
+                                6
                             </div>
                         </div>
                     </div>
@@ -81,13 +81,13 @@
            
             <div class="row">
                 
-                <div class="col-lg-7 col-md-12 col-12 col-sm-12">
+                <div class="col-lg-12 col-md-12 col-12 col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Latest Posts</h4>
+                            <h4>Daftar Badan Usaha</h4>
                             <div class="card-header-action">
                                 <a href="#"
-                                    class="btn btn-primary">View All</a>
+                                    class="btn btn-primary">Tambah</a>
                             </div>
                         </div>
                         <div class="card-body p-0">

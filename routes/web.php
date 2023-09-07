@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('home' , ['type_menu' => 'dashboard']);
 });
+Route::get('/create-data-pemeriksaan', function () {
+    return view('create-data-pemeriksaan' , ['type_menu' => 'create-data-pemeriksaan']);
+});

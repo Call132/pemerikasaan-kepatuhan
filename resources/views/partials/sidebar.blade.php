@@ -16,9 +16,9 @@
                         <a class="nav-link"
                             href="{{ url('/') }}">Perencanaan Pemeriksaan</a>
                     </li>
-                    <li class='{{ Request::is('create-data-pemeriksaan') ? 'active' : '' }}'>
+                    <li class='{{ Request::is('data-pemeriksaan') ? 'active' : '' }}'>
                         <a class="nav-link"
-                            href="{{ url('create-data-pemeriksaan') }}">Tambah Data BU</a>
+                            href="{{ url('data-pemeriksaan') }}">Tambah Data BU</a>
                     </li>
                 </ul>
             </li>

@@ -56,6 +56,13 @@
   position: relative;
   margin-bottom: 30px;
 }
+.totall {
+  color: #000;
+  font-weight: bold;
+  font-size: larger;
+  background-color: rgba(0, 0, 0, 0.);
+  border-right: solid 3px;
+}
 .article .article-header {
   height: 170px;
   position: relative;

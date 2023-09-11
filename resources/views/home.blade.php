@@ -92,6 +92,7 @@
                         </div>
                         <div class="card-body p-0">
                             <div class="table-responsive">
+                                @if($badanUsaha->count() > 0)
                                 <table class="table-striped mb-0 table">
                                     <thead>
                                         <tr>
@@ -108,28 +109,33 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        
+                                        @foreach($badanUsaha as $data)
+                                        
                                         <tr>
-                                            <td>1</td>
-                                            <td>yaa</td>
-                                            <td>Kode Badan Usaha</td>
-                                            <td>Alamat</td>
-                                            <td>Kota/Kab</td>
-                                            <td>Jenis Ketidakpatuhan</td>
-                                            <td>Tanggal Terakhir Bayar</td>
-                                            <td>Jumlah Tunggakan</td>
-                                            <td>Jenis Pemeriksaan</td>
-                                            <td>Jadwal Pemeriksaan</td>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $data->nama_badan_usaha }}</td>
+                                            <td>{{ $data->kode_badan_usaha }}</td>
+                                            <td>{{ $data->alamat }}</td>
+                                            <td>{{ $data->kota_kab }}</td>
+                                            <td>{{ $data->jenis_ketidakpatuhan }}</td>
+                                            <td>{{ $data->tanggal_terakhir_bayar }}</td>
+                                            <td>Rp.{{ $data->jumlah_tunggakan }}</td>
+                                            <td>{{ $data->jenis_pemeriksaan }}</td>
+                                            <td>{{ $data->jadwal_pemeriksaan }}</td>
                                         </tr>
-                                        <tr>
-                                            <td>2</td>
-                                        </tr>
+                                        @endforeach
                                     </tbody>
-                                    <thead>
+                                    <tfoot>
                                         <tr>
-                                            <th>TOTAL</th>
+                                            <td colspan="7" class="totall text-center">Total</td>
+                                            <td colspan="3" class="text-center">Rp</td>
                                         </tr>
-                                    </thead>
+                                    </tfoot>
                                 </table>
+                                @else
+                                <p>error</p>
+                                @endif
                             </div>
                         </div>
                     </div>

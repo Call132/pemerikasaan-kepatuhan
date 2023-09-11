@@ -95,181 +95,40 @@
                                 <table class="table-striped mb-0 table">
                                     <thead>
                                         <tr>
-                                            <th>Title</th>
-                                            <th>Author</th>
-                                            <th>Action</th>
+                                            <th>No</th>
+                                            <th>Nama Badan Usaha</th>
+                                            <th>Kode Badan Usaha</th>
+                                            <th>Alamat</th>
+                                            <th>Kota/Kab</th>
+                                            <th>Jenis Ketidakpatuhan</th>
+                                            <th>Tanggal Terakhir Bayar</th>
+                                            <th>Jumlah Tunggakan</th>
+                                            <th>Jenis Pemeriksaan</th>
+                                            <th>Jadwal Pemeriksaan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>
-                                                Introduction Laravel 5
-                                                <div class="table-links">
-                                                    in <a href="#">Web Development</a>
-                                                    <div class="bullet"></div>
-                                                    <a href="#">View</a>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <a href="#"
-                                                    class="font-weight-600"><img
-                                                        src="{{ asset('img/avatar/avatar-1.png') }}"
-                                                        alt="avatar"
-                                                        width="30"
-                                                        class="rounded-circle mr-1"> Bagus Dwi Cahya</a>
-                                            </td>
-                                            <td>
-                                                <a class="btn btn-primary btn-action mr-1"
-                                                    data-toggle="tooltip"
-                                                    title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                                <a class="btn btn-danger btn-action"
-                                                    data-toggle="tooltip"
-                                                    title="Delete"
-                                                    data-confirm="Are You Sure?|This action can not be undone. Do you want to continue?"
-                                                    data-confirm-yes="alert('Deleted')"><i class="fas fa-trash"></i></a>
-                                            </td>
+                                            <td>1</td>
+                                            <td>yaa</td>
+                                            <td>Kode Badan Usaha</td>
+                                            <td>Alamat</td>
+                                            <td>Kota/Kab</td>
+                                            <td>Jenis Ketidakpatuhan</td>
+                                            <td>Tanggal Terakhir Bayar</td>
+                                            <td>Jumlah Tunggakan</td>
+                                            <td>Jenis Pemeriksaan</td>
+                                            <td>Jadwal Pemeriksaan</td>
                                         </tr>
                                         <tr>
-                                            <td>
-                                                Laravel 5 Tutorial - Installation
-                                                <div class="table-links">
-                                                    in <a href="#">Web Development</a>
-                                                    <div class="bullet"></div>
-                                                    <a href="#">View</a>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <a href="#"
-                                                    class="font-weight-600"><img
-                                                        src="{{ asset('img/avatar/avatar-1.png') }}"
-                                                        alt="avatar"
-                                                        width="30"
-                                                        class="rounded-circle mr-1"> Bagus Dwi Cahya</a>
-                                            </td>
-                                            <td>
-                                                <a class="btn btn-primary btn-action mr-1"
-                                                    data-toggle="tooltip"
-                                                    title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                                <a class="btn btn-danger btn-action"
-                                                    data-toggle="tooltip"
-                                                    title="Delete"
-                                                    data-confirm="Are You Sure?|This action can not be undone. Do you want to continue?"
-                                                    data-confirm-yes="alert('Deleted')"><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                Laravel 5 Tutorial - MVC
-                                                <div class="table-links">
-                                                    in <a href="#">Web Development</a>
-                                                    <div class="bullet"></div>
-                                                    <a href="#">View</a>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <a href="#"
-                                                    class="font-weight-600"><img
-                                                        src="{{ asset('img/avatar/avatar-1.png') }}"
-                                                        alt="avatar"
-                                                        width="30"
-                                                        class="rounded-circle mr-1"> Bagus Dwi Cahya</a>
-                                            </td>
-                                            <td>
-                                                <a class="btn btn-primary btn-action mr-1"
-                                                    data-toggle="tooltip"
-                                                    title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                                <a class="btn btn-danger btn-action"
-                                                    data-toggle="tooltip"
-                                                    title="Delete"
-                                                    data-confirm="Are You Sure?|This action can not be undone. Do you want to continue?"
-                                                    data-confirm-yes="alert('Deleted')"><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                Laravel 5 Tutorial - Migration
-                                                <div class="table-links">
-                                                    in <a href="#">Web Development</a>
-                                                    <div class="bullet"></div>
-                                                    <a href="#">View</a>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <a href="#"
-                                                    class="font-weight-600"><img
-                                                        src="{{ asset('img/avatar/avatar-1.png') }}"
-                                                        alt="avatar"
-                                                        width="30"
-                                                        class="rounded-circle mr-1"> Bagus Dwi Cahya</a>
-                                            </td>
-                                            <td>
-                                                <a class="btn btn-primary btn-action mr-1"
-                                                    data-toggle="tooltip"
-                                                    title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                                <a class="btn btn-danger btn-action"
-                                                    data-toggle="tooltip"
-                                                    title="Delete"
-                                                    data-confirm="Are You Sure?|This action can not be undone. Do you want to continue?"
-                                                    data-confirm-yes="alert('Deleted')"><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                Laravel 5 Tutorial - Deploy
-                                                <div class="table-links">
-                                                    in <a href="#">Web Development</a>
-                                                    <div class="bullet"></div>
-                                                    <a href="#">View</a>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <a href="#"
-                                                    class="font-weight-600"><img
-                                                        src="{{ asset('img/avatar/avatar-1.png') }}"
-                                                        alt="avatar"
-                                                        width="30"
-                                                        class="rounded-circle mr-1"> Bagus Dwi Cahya</a>
-                                            </td>
-                                            <td>
-                                                <a class="btn btn-primary btn-action mr-1"
-                                                    data-toggle="tooltip"
-                                                    title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                                <a class="btn btn-danger btn-action"
-                                                    data-toggle="tooltip"
-                                                    title="Delete"
-                                                    data-confirm="Are You Sure?|This action can not be undone. Do you want to continue?"
-                                                    data-confirm-yes="alert('Deleted')"><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                Laravel 5 Tutorial - Closing
-                                                <div class="table-links">
-                                                    in <a href="#">Web Development</a>
-                                                    <div class="bullet"></div>
-                                                    <a href="#">View</a>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <a href="#"
-                                                    class="font-weight-600"><img
-                                                        src="{{ asset('img/avatar/avatar-1.png') }}"
-                                                        alt="avatar"
-                                                        width="30"
-                                                        class="rounded-circle mr-1"> Bagus Dwi Cahya</a>
-                                            </td>
-                                            <td>
-                                                <a class="btn btn-primary btn-action mr-1"
-                                                    data-toggle="tooltip"
-                                                    title="Edit"><i class="fas fa-pencil-alt"></i></a>
-                                                <a class="btn btn-danger btn-action"
-                                                    data-toggle="tooltip"
-                                                    title="Delete"
-                                                    data-confirm="Are You Sure?|This action can not be undone. Do you want to continue?"
-                                                    data-confirm-yes="alert('Deleted')"><i class="fas fa-trash"></i></a>
-                                            </td>
+                                            <td>2</td>
                                         </tr>
                                     </tbody>
+                                    <thead>
+                                        <tr>
+                                            <th>TOTAL</th>
+                                        </tr>
+                                    </thead>
                                 </table>
                             </div>
                         </div>

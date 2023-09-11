@@ -19,3 +19,6 @@ Route::get('/', function () {
 Route::get('/create-data-pemeriksaan', function () {
     return view('create-data-pemeriksaan' , ['type_menu' => 'create-data-pemeriksaan']);
 });
+Route::get('/login', function () {
+    return view('login', ['type_menu' => 'auth']);
+});

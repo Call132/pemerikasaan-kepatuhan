@@ -22,6 +22,7 @@ return new class extends Migration
             $table->decimal('jumlah_tunggakan', 10, 2);
             $table->string('jenis_pemeriksaan');
             $table->date('jadwal_pemeriksaan');
+            $table->decimal('total', 10, 2)->nullable();
             $table->timestamps();
         });
     }

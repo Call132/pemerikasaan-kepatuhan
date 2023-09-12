@@ -18,6 +18,8 @@ class BadanUsahaFactory extends Factory
      */
     public function definition(): array
     {
+        $jumlahTunggakan = $this->faker->randomFloat(2, 100, 10000);
+
 
         return [
             'nama_badan_usaha' => $this ->faker->company,
@@ -26,7 +28,7 @@ class BadanUsahaFactory extends Factory
             'kota_kab' => $this ->faker->city,
             'jenis_ketidakpatuhan' => $this ->faker->word,
             'tanggal_terakhir_bayar' => $this ->faker->date,
-            'jumlah_tunggakan' => $this ->faker->randomFloat(2, 100, 10000),
+            'jumlah_tunggakan' => $jumlahTunggakan,
             'jenis_pemeriksaan' => $this ->faker->word,
             'jadwal_pemeriksaan' => $this ->faker->date,
         ];

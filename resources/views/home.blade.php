@@ -86,15 +86,24 @@
                         <div class="card-header">
                             <h4>Daftar Badan Usaha</h4>
                             <div class="card-header-action">
-                                <a href="#"
-                                    class="btn btn-primary">Tambah</a>
+                                <a href="{{ url('/export-badan-usaha') }}" class="btn btn-primary">Export to Excel</a>
                             </div>
                         </div>
                         <div class="card-body p-0">
                             <div class="table-responsive">
+                                @php
+                                    $totalTunggakan = 0;
+                                @endphp
+
                                 @if($badanUsaha->count() > 0)
                                 <table class="table-striped mb-0 table">
                                     <thead>
+                                        <tr>
+                                            <th colspan="10" style="font-weight: bold; font-size: 16px; text-align: center;">PERENCANAAN PEMERIKSAAN</th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="10" style="font-weight: bold; font-size: 14px; text-align: center; ">Hari, Tanggal Bulan Tahun - Hari, Tanggal Bulan Tahun</th>
+                                        </tr>
                                         <tr>
                                             <th>No</th>
                                             <th>Nama Badan Usaha</th>
@@ -120,16 +129,20 @@
                                             <td>{{ $data->kota_kab }}</td>
                                             <td>{{ $data->jenis_ketidakpatuhan }}</td>
                                             <td>{{ $data->tanggal_terakhir_bayar }}</td>
-                                            <td>Rp.{{ $data->jumlah_tunggakan }}</td>
+                                            <td>Rp{{ number_format(floatval(str_replace(['Rp ', '.', ','], '', $data->jumlah_tunggakan)), 2, ',', '.') }}</td>
                                             <td>{{ $data->jenis_pemeriksaan }}</td>
                                             <td>{{ $data->jadwal_pemeriksaan }}</td>
                                         </tr>
+                                        @php
+                                        // Menambahkan jumlah tunggakan ke total
+                                            $totalTunggakan += floatval(str_replace(['Rp ', '.', ','], '', $data->jumlah_tunggakan));
+                                        @endphp
                                         @endforeach
                                     </tbody>
                                     <tfoot>
                                         <tr>
                                             <td colspan="7" class="totall text-center">Total</td>
-                                            <td colspan="3" class="text-center">Rp</td>
+                                            <td colspan="3" class="text-center">Rp {{ number_format($totalTunggakan, 2, ',', '.') }}</td>
                                         </tr>
                                     </tfoot>
                                 </table>

@@ -86,7 +86,7 @@
                         <div class="card-header">
                             <h4>Daftar Badan Usaha</h4>
                             <div class="card-header-action">
-                                <a href="#"
+                                <a href="{{ url('data-pemeriksaan') }}"
                                     class="btn btn-primary">Tambah</a>
                             </div>
                         </div>

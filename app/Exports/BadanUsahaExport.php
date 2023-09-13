@@ -26,6 +26,22 @@ class BadanUsahaExport implements FromCollection, WithHeadings, ShouldAutoSize, 
             return $item;
         });
     }
+    
+    public function headings(): array{
+        return
+        [
+            'No',
+            'Nama Badan Usaha',
+            'Kode Badan Usaha',
+            'Alamat',
+            'Kota/Kab',
+            'Jenis Ketidakpatuhan',
+            'Tanggal Terakhir Bayar',
+            'Jumlah Tunggakan',
+            'Jenis Pemeriksaan',
+            'Jadwal Pemeriksaan',   
+        ];
+    }
     public function styles(Worksheet $sheet)
 {
     return [
@@ -71,6 +87,8 @@ public function view(): View
             $event->sheet->getStyle('A1')->getFont()->setBold(true);
             $event->sheet->getStyle('A1')->getFont()->setSize(11);                
             $event->sheet->getStyle('A1')->getAlignment()->setHorizontal('center');
+            $event->sheet->getStyle('A1:J1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+            
 
                 // Mengatur periode waktu "Hari, Tanggal Bulan Tahun - Hari, Tanggal Bulan Tahun"
             $event->sheet->setCellValue('A2', 'Hari, Tanggal Bulan Tahun - Hari, Tanggal Bulan Tahun');
@@ -78,6 +96,8 @@ public function view(): View
             $event->sheet->getStyle('A2')->getFont()->setBold(true);
             $event->sheet->getStyle('A2')->getFont()->setSize(10);                
             $event->sheet->getStyle('A2')->getAlignment()->setHorizontal('center');
+            $event->sheet->getStyle('A1:J1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+            
                 
                 
             // Mengatur nama kolom
@@ -87,7 +107,7 @@ public function view(): View
             $event->sheet->setCellValue('D3', 'Alamat');
             $event->sheet->setCellValue('E3', 'Kota/Kab');
             $event->sheet->setCellValue('F3', 'Jenis Ketidakpatuhan');
-            $event->sheet->setCellValue('G3', 'Tanggal Terakhir Bayar');
+            $event->sheet->setCellValue('G3', 'TGL Terakhir Bayar');
             $event->sheet->setCellValue('H3', 'Jumlah Tunggakan');
             $event->sheet->setCellValue('I3', 'Jenis Pemeriksaan');
             $event->sheet->setCellValue('J3', 'Jadwal Pemeriksaan');
@@ -95,24 +115,42 @@ public function view(): View
             // Mengatur format dan style pada baris nama kolom
             $event->sheet->getStyle('A3:J3')->getFont()->setBold(true);
             $event->sheet->getStyle('A3:J3')->getAlignment()->setHorizontal('center');
-            $event->sheet->getStyle('A3:J3')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+            $event->sheet->getStyle('A3:J3')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+            $event->sheet->getStyle('A3:J3')->getAlignment()->setVertical('center'); // Rata tengah horizontal
             
             // Mengatur lebar kolom
-            $event->sheet->getColumnDimension('A')->setWidth(5); // No
+            $event->sheet->getColumnDimension('A')->setWidth(3); // No
             $event->sheet->getColumnDimension('B')->setWidth(20); // Nama Badan Usaha
-            $event->sheet->getColumnDimension('C')->setWidth(15); // Kode Badan Usaha
-            $event->sheet->getColumnDimension('D')->setWidth(30); // Alamat
-            $event->sheet->getColumnDimension('E')->setWidth(15); // Kota/Kab
-            $event->sheet->getColumnDimension('F')->setWidth(20); // Jenis Ketidakpatuhan
-            $event->sheet->getColumnDimension('G')->setWidth(20); // Tanggal Terakhir Bayar
-            $event->sheet->getColumnDimension('H')->setWidth(20); // Jumlah Tunggakan
-            $event->sheet->getColumnDimension('I')->setWidth(20); // Jenis Pemeriksaan
-            $event->sheet->getColumnDimension('J')->setWidth(20); // Jadwal Pemeriksaan
+            $event->sheet->getColumnDimension('C')->setWidth(6); // Kode Badan Usaha
+            $event->sheet->getRowDimension(3)->setRowHeight(35); // Kode Badan Usaha
+            $event->sheet->getColumnDimension('D')->setWidth(5); // Alamat
+            $event->sheet->getColumnDimension('E')->setWidth(5); // Kota/Kab
+            $event->sheet->getColumnDimension('F')->setWidth(5); // Jenis Ketidakpatuhan
+            $event->sheet->getColumnDimension('G')->setWidth(5); // Tanggal Terakhir Bayar
+            $event->sheet->getColumnDimension('H')->setWidth(5); // Jumlah Tunggakan
+            $event->sheet->getColumnDimension('I')->setWidth(5); // Jenis Pemeriksaan
+            $event->sheet->getColumnDimension('J')->setWidth(12); // Jadwal Pemeriksaan
+
+            $event->sheet->getStyle('A3:J3')->applyFromArray([
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'startColor' => [
+                        'argb' => '00B0F0',
+                    ],
+                ],
+                'font' => [
+                    'bold' => true, // Mengatur teks menjadi tebal
+                    'color' => [
+                        'rgb' => 'FFFFFF', // Mengatur warna teks menjadi putih
+                    ],
+                ],
+            ]);
             
             // Data dimulai dari baris ke-4
             $row = 4;
             $badanUsaha = BadanUsaha::all();
             $totalTunggakan = 0; // Inisialisasi total tunggakan
+            $no = 1; // Inisialisasi nomor urutan
 
             foreach ($badanUsaha as $data) {
                 // ...
@@ -120,11 +158,8 @@ public function view(): View
                 // Menghitung total tunggakan
                 $totalTunggakan += floatval(str_replace(['Rp ', '.', ','], '', $data->jumlah_tunggakan));
                 
+            
                 // ...
-            }
-            $no = 1; // Inisialisasi nomor urutan
-
-            foreach ($badanUsaha as $data) {
                 $event->sheet->setCellValue('A' . $row, $no); 
                 $event->sheet->setCellValue('B' . $row, $data->nama_badan_usaha);
                 $event->sheet->setCellValue('C' . $row, $data->kode_badan_usaha);
@@ -135,40 +170,45 @@ public function view(): View
                 $event->sheet->setCellValue('H' . $row, 'Rp ' . number_format(floatval(str_replace(['Rp ', '.', ','], '', $data->jumlah_tunggakan)), 2, ',', '.')); // Format rupiah
                 $event->sheet->setCellValue('I' . $row, $data->jenis_pemeriksaan);
                 $event->sheet->setCellValue('J' . $row, $data->jadwal_pemeriksaan);
+                $event->sheet->getStyle('A' . $row . ':J' . $row)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+                        $event->sheet->getStyle('A3:J3')->getAlignment()->setVertical('center'); // Posisi tengah vertical
+                $event->sheet->getStyle('A' . $row . ':J' . $row)->getFont()->setSize(9);
                 $lastRow = $row; // Simpan nomor baris terakhir dari data Badan Usaha
-                $event->sheet->setCellValue('B' . ($lastRow + 1), 'Total');
-                $event->sheet->setCellValue('H' . ($lastRow + 1), 'Rp ' . number_format($totalTunggakan, 2, ',', '.')); // Ganti $totalTunggakan dengan nilai total yang sesuai
-                $event->sheet->getStyle('B' . $lastRow + 1 . ':J' . $lastRow + 1)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-
-
-                $event->sheet->getStyle('A' . $row . ':J' . $row)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
                 $row++;
+                
+                
                 $no++;
 
-                // ...
-               
-                }
 
-            },
-        ];
-    }
+            }
+                $event->sheet->setCellValue('B' . ($lastRow + 1), 'Total');
+                $event->sheet->setCellValue('H' . ($lastRow + 1), 'Rp ' . number_format($totalTunggakan, 2, ',', '.')); // Ganti $totalTunggakan dengan nilai total yang sesuai
+                $event->sheet->getStyle('A' . ($lastRow + 1) . ':J' . ($lastRow + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);                            
+                $event->sheet->getStyle('B'. ($lastRow + 1) . ':G' . ($lastRow + 1))->getFont()->setBold(true);
+                $event->sheet->mergeCells('B' . ($lastRow + 1) . ':G' . ($lastRow + 1)); // Gabung kolom B sampai G
+                $event->sheet->getStyle('B' . ($lastRow + 1) . ':G' . ($lastRow + 1))->getAlignment()->setHorizontal('center'); // Untuk mengatur teks ke kanan
+                $event->sheet->getStyle('H'. ($lastRow + 1) . ':J' . ($lastRow + 1))->getFont()->setBold(true);
+                $event->sheet->mergeCells('H' . ($lastRow + 1) . ':J' . ($lastRow + 1)); // Gabung kolom H sampai J
+            
 
+                $event->sheet->getStyle('A' . ($lastRow + 1) . ':J' . ($lastRow + 1))->applyFromArray([
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'startColor' => [
+                        'argb' => '92D050',
+                    ],
+                ],
+                'font' => [
+                    'bold' => true, // Mengatur teks menjadi tebal
+                    'color' => [
+                        'rgb' => 'FFFFFF', // Mengatur warna teks menjadi putih
+                    ],
+                ],
+            ]);
 
+        },
+    ];
+}
 
-    public function headings(): array{
-        return
-        [
-            'No',
-            'Nama Badan Usaha',
-            'Kode Badan Usaha',
-            'Alamat',
-            'Kota/Kab',
-            'Jenis Ketidakpatuhan',
-            'Tanggal Terakhir Bayar',
-            'Jumlah Tunggakan',
-            'Jenis Pemeriksaan',
-            'Jadwal Pemeriksaan',   
-        ];
-    }
 }
    

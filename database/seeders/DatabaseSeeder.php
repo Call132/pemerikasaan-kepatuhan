@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        BadanUsaha::factory(5)->create();
+        BadanUsaha::factory(7)->create();
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

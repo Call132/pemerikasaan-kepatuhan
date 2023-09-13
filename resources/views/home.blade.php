@@ -86,7 +86,7 @@
                         <div class="card-header">
                             <h4>Daftar Badan Usaha</h4>
                             <div class="card-header-action">
-                                <a href="{{ url('/export-badan-usaha') }}" class="btn btn-primary">Export to Excel</a>
+                                <a href="{{ url('/export-perencanaan-pemeriksaan') }}" class="btn btn-primary">Export to Excel</a>
                             </div>
                         </div>
                         <div class="card-body p-0">
@@ -105,6 +105,16 @@
                                             <th colspan="10" style="font-weight: bold; font-size: 14px; text-align: center; ">Hari, Tanggal Bulan Tahun - Hari, Tanggal Bulan Tahun</th>
                                         </tr>
                                         <tr>
+                                            <tr>
+                                                <th colspan="5">
+                                                    <label for="start_date">Tanggal Awal:</label>
+                                                    <input type="date" id="start_date" name="start_date">
+                                                </th>
+                                                <th colspan="5">
+                                                    <label for="end_date">Tanggal Akhir (14 hari ke depan):</label>
+                                                    <input type="date" id="end_date" name="end_date" readonly>
+                                                </th>
+                                            </tr>
                                             <th>No</th>
                                             <th>Nama Badan Usaha</th>
                                             <th>Kode Badan Usaha</th>

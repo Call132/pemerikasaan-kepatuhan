@@ -12,7 +12,7 @@ class HomeController extends Controller
         $badanUsaha = BadanUsaha::all();
        
         $badanUsaha->transform(function ($item) {
-        $item->jumlah_tunggakan = 'Rp ' . number_format($item->jumlah_tunggakan, 2, ',', '.');
+        $item->jumlah_tunggakan = 'Rp ' . number_format(floatval($item->jumlah_tunggakan), 2, ',', '.');
         return $item;
     });
         // dd($badanUsaha);

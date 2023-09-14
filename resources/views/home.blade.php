@@ -84,10 +84,30 @@
                 <div class="col-lg-12 col-md-12 col-12 col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Daftar Badan Usaha</h4>
-                            <div class="card-header-action">
-                                <a href="{{ url('/export-perencanaan-pemeriksaan') }}" class="btn btn-primary">Export to Excel</a>
-                            </div>
+                            <h4>PERENCANAAN PEMERIKSAAN</h4>
+                            
+                        </div>
+                        
+                        <div class="card-header">
+                            <form method="POST" action="{{ url('/export-perencanaan-pemeriksaan') }}">
+                                @csrf
+                                <div class="form-group row">
+                                    <label for="start_date" class="col-sm-2 col-form-label">Tanggal Awal:</label>
+                                    <div class="col-sm-4">
+                                        <input type="date" class="form-control" id="start_date" name="start_date">
+                                    </div>
+                                    <label for="end_date" class="col-sm-2 col-form-label">Tanggal Akhir:</label>
+                                    <div class="col-sm-4">
+                                        <input type="date" class="form-control" id="end_date" name="end_date">
+                                    </div>
+                                </div>
+                                <div >
+                                    <div>
+                                        <!-- Menggunakan ml-auto untuk meletakkan tombol di ujung kanan -->
+                                        <button type="submit" class="btn btn-primary ml-auto">Export to Excel</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                         <div class="card-body p-0">
                             <div class="table-responsive">
@@ -98,23 +118,12 @@
                                 @if($badanUsaha->count() > 0)
                                 <table class="table-striped mb-0 table">
                                     <thead>
-                                        <tr>
-                                            <th colspan="10" style="font-weight: bold; font-size: 16px; text-align: center;">PERENCANAAN PEMERIKSAAN</th>
-                                        </tr>
-                                        <tr>
+                                        
+                                        {{-- <tr>
                                             <th colspan="10" style="font-weight: bold; font-size: 14px; text-align: center; ">Hari, Tanggal Bulan Tahun - Hari, Tanggal Bulan Tahun</th>
-                                        </tr>
+                                        </tr> --}}
                                         <tr>
-                                            <tr>
-                                                <th colspan="5">
-                                                    <label for="start_date">Tanggal Awal:</label>
-                                                    <input type="date" id="start_date" name="start_date">
-                                                </th>
-                                                <th colspan="5">
-                                                    <label for="end_date">Tanggal Akhir (14 hari ke depan):</label>
-                                                    <input type="date" id="end_date" name="end_date" readonly>
-                                                </th>
-                                            </tr>
+                                            
                                             <th>No</th>
                                             <th>Nama Badan Usaha</th>
                                             <th>Kode Badan Usaha</th>
@@ -139,20 +148,20 @@
                                             <td>{{ $data->kota_kab }}</td>
                                             <td>{{ $data->jenis_ketidakpatuhan }}</td>
                                             <td>{{ $data->tanggal_terakhir_bayar }}</td>
-                                            <td>Rp{{ number_format(floatval(str_replace(['Rp ', '.', ','], '', $data->jumlah_tunggakan)), 2, ',', '.') }}</td>
+                                            <td>Rp{{ number_format(floatval(str_replace(['Rp ', '.', ], '', $data->jumlah_tunggakan)), 2, ',', '.') }}</td>
                                             <td>{{ $data->jenis_pemeriksaan }}</td>
                                             <td>{{ $data->jadwal_pemeriksaan }}</td>
                                         </tr>
                                         @php
                                         // Menambahkan jumlah tunggakan ke total
-                                            $totalTunggakan += floatval(str_replace(['Rp ', '.', ','], '', $data->jumlah_tunggakan));
+                                            $totalTunggakan += floatval(str_replace(['Rp ', '.', ], '', $data->jumlah_tunggakan));
                                         @endphp
                                         @endforeach
                                     </tbody>
                                     <tfoot>
-                                        <tr>
+                                        <tr class="totall">
                                             <td colspan="7" class="totall text-center">Total</td>
-                                            <td colspan="3" class="text-center">Rp {{ number_format($totalTunggakan, 2, ',', '.') }}</td>
+                                            <td colspan="3" class="">Rp {{ number_format($totalTunggakan, 2, ',', '.') }}</td>
                                         </tr>
                                     </tfoot>
                                 </table>

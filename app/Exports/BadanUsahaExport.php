@@ -122,7 +122,7 @@ public function view(): View
             $event->sheet->getColumnDimension('A')->setWidth(3); // No
             $event->sheet->getColumnDimension('B')->setWidth(20); // Nama Badan Usaha
             $event->sheet->getColumnDimension('C')->setWidth(6); // Kode Badan Usaha
-            $event->sheet->getRowDimension(3)->setRowHeight(35); // Kode Badan Usaha
+            $event->sheet->getRowDimension(3)->setRowHeight(55); // Kode Badan Usaha
             $event->sheet->getColumnDimension('D')->setWidth(5); // Alamat
             $event->sheet->getColumnDimension('E')->setWidth(5); // Kota/Kab
             $event->sheet->getColumnDimension('F')->setWidth(5); // Jenis Ketidakpatuhan

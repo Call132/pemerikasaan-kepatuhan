@@ -19,6 +19,7 @@
     @stack('style')
 
     <!-- Template CSS -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet"
         href="{{ asset('css/style.css') }}">
     <link rel="stylesheet"
@@ -58,6 +59,7 @@
     <!-- Template JS File -->
     <script src="{{ asset('js/scripts.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
 </body>
 
 </html>

@@ -57,10 +57,10 @@
   margin-bottom: 30px;
 }
 .totall {
-  color: #000;
+  color: #eaeaea;
   font-weight: bold;
   font-size: larger;
-  background-color: rgba(0, 0, 0, 0.);
+  background-color: #92D050;
   border-right: solid 3px;
 }
 .article .article-header {

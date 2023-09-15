@@ -89,25 +89,27 @@
                         </div>
                         
                         <div class="card-header">
-                            <form method="POST" action="{{ url('/export-perencanaan-pemeriksaan') }}">
-                                @csrf
-                                <div class="form-group row">
-                                    <label for="start_date" class="col-sm-2 col-form-label">Tanggal Awal:</label>
-                                    <div class="col-sm-4">
-                                        <input type="date" class="form-control" id="start_date" name="start_date">
-                                    </div>
-                                    <label for="end_date" class="col-sm-2 col-form-label">Tanggal Akhir:</label>
-                                    <div class="col-sm-4">
-                                        <input type="date" class="form-control" id="end_date" name="end_date">
-                                    </div>
-                                </div>
-                                <div >
-                                    <div>
-                                        <!-- Menggunakan ml-auto untuk meletakkan tombol di ujung kanan -->
-                                        <button type="submit" class="btn btn-primary ml-auto">Export to Excel</button>
-                                    </div>
-                                </div>
-                            </form>
+                        <form method="POST" action="{{ url('/export-perencanaan-pemeriksaan') }}">
+    @csrf
+    <div class="form-group row">
+    <label for="start_date" class="col-sm-2 col-form-label">Tanggal Awal:</label>
+    <div class="col-sm-4">
+        <input type="date" class="form-control" id="start_date" name="start_date">
+    </div>
+    <label for="end_date" class="col-sm-2 col-form-label">Tanggal Akhir:</label>
+    <div class="col-sm-4">
+        <input type="date" class="form-control" id="end_date" name="end_date">
+    </div>
+</div>
+
+    <div>
+        <div>
+            <!-- Menggunakan ml-auto untuk meletakkan tombol di ujung kanan -->
+            <button type="submit" class="btn btn-primary ml-auto">Export to Excel</button>
+        </div>
+    </div>
+</form>
+
                         </div>
                         <div class="card-body p-0">
                             <div class="table-responsive">
@@ -185,6 +187,29 @@
     <script src="{{ asset('library/jqvmap/dist/maps/jquery.vmap.world.js') }}"></script>
     <script src="{{ asset('library/summernote/dist/summernote-bs4.min.js') }}"></script>
     <script src="{{ asset('library/chocolat/dist/js/jquery.chocolat.min.js') }}"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var startDateInput = document.getElementById("start_date");
+        var endDateInput = document.getElementById("end_date");
+
+        // Fungsi untuk menghitung tanggal akhir berdasarkan tanggal awal
+        function updateEndDate() {
+            var startDate = new Date(startDateInput.value);
+            var endDate = new Date(startDate);
+            endDate.setDate(startDate.getDate() + 14);
+
+            // Format tanggal ke dalam "YYYY-MM-DD" untuk input
+            var formattedEndDate = endDate.toISOString().split('T')[0];
+            endDateInput.value = formattedEndDate;
+        }
+
+        // Panggil fungsi saat tanggal awal berubah
+        startDateInput.addEventListener("change", updateEndDate);
+
+        // Inisialisasi tanggal awal dan tanggal akhir saat halaman dimuat
+        updateEndDate();
+    });
+</script>
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/index-0.js') }}"></script>

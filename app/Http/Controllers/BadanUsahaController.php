@@ -9,11 +9,17 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class BadanUsahaController extends Controller
 {
-    public function exportToExcel()
-    {
-    return Excel::download(new BadanUsahaExport, 'PERENCANAAN_PEMERIKSAAN.xlsx');
+    public function exportToExcel(Request $request)
+{
+    $startDate = $request->input('start_date'); // Mengambil Tanggal Awal dari permintaan
+    $endDate = $request->input('end_date');     // Mengambil Tanggal Akhir dari permintaan
 
-    }
+    // Sekarang Anda memiliki tanggal awal dan tanggal akhir yang dapat digunakan untuk menghasilkan laporan Excel.
+    // Anda juga dapat menyimpan nilai-nilai ini dalam variabel tersembunyi jika perlu digunakan di dalam view Excel.
+
+    return Excel::download(new BadanUsahaExport($startDate, $endDate), 'PERENCANAAN_PEMERIKSAAN.xlsx');
+}
+
     public function saveData(Request $request)
 {
     // Validate the form data

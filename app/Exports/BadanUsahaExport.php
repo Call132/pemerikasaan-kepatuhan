@@ -11,12 +11,21 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Carbon\Carbon;
 
 class BadanUsahaExport implements FromCollection, WithHeadings, ShouldAutoSize, WithStyles, WithEvents
 {
+    private $startDate;
+    private $endDate;
+
     /**
     * @return \Illuminate\Support\Collection
     */
+    public function __construct($startDate, $endDate)
+    {
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+    }
     public function collection()
     {
         return BadanUsaha::all()->map(function ($item){
@@ -65,22 +74,25 @@ class BadanUsahaExport implements FromCollection, WithHeadings, ShouldAutoSize, 
 }
 public function view(): View
     {
-        $data = BadanUsaha::all()->map(function ($item){
-            unset($item['created_at']);
-            unset($item['updated_at']);
-            
-            return $item;
-        });
+        $data = BadanUsaha::whereBetween('tanggal_terakhir_bayar', [$this->startDate, $this->endDate])
+            ->get()
+            ->map(function ($item) {
+                unset($item['created_at']);
+                unset($item['updated_at']);
+
+                return $item;
+            });
 
         return view('export.badan_usaha', [
             'data' => $data,
         ]);
     }
     public function registerEvents(): array
-    
     {
+        $startDate = $this->startDate;
+    $endDate = $this->endDate;
         return [
-            AfterSheet::class => function (AfterSheet $event) {
+            AfterSheet::class => function (AfterSheet $event) use ($startDate, $endDate) {
                 // Mengatur judul "PERENCANAAN PEMERIKSAAN"
             $event->sheet->setCellValue('A1', 'PERENCANAAN PEMERIKSAAN');
             $event->sheet->mergeCells('A1:J1');
@@ -89,15 +101,20 @@ public function view(): View
             $event->sheet->getStyle('A1')->getAlignment()->setHorizontal('center');
             $event->sheet->getStyle('A1:J1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
             
+            // Mengubah format tanggal awal dan tanggal akhir
+$carbonStartDate = Carbon::createFromFormat('Y-m-d', $startDate);
+$carbonEndDate = Carbon::createFromFormat('Y-m-d', $endDate);
 
-                // Mengatur periode waktu "Hari, Tanggal Bulan Tahun - Hari, Tanggal Bulan Tahun"
-            $event->sheet->setCellValue('A2', 'Hari, Tanggal Bulan Tahun - Hari, Tanggal Bulan Tahun');
-            $event->sheet->mergeCells('A2:J2');
-            $event->sheet->getStyle('A2')->getFont()->setBold(true);
-            $event->sheet->getStyle('A2')->getFont()->setSize(10);                
-            $event->sheet->getStyle('A2')->getAlignment()->setHorizontal('center');
-            $event->sheet->getStyle('A1:J1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
-            
+$formattedStartDate = $carbonStartDate->locale('id')->isoFormat('dddd, DD-MM-YYYY');
+$formattedEndDate = $carbonEndDate->locale('id')->isoFormat('dddd, DD-MM-YYYY');
+
+// Mengatur periode waktu "Hari, Tanggal Bulan Tahun - Hari, Tanggal Bulan Tahun" dalam bahasa Indonesia
+$event->sheet->setCellValue('A2', "$formattedStartDate - $formattedEndDate");
+$event->sheet->mergeCells('A2:J2');
+$event->sheet->getStyle('A2')->getFont()->setBold(true);
+$event->sheet->getStyle('A2')->getFont()->setSize(10);
+$event->sheet->getStyle('A2')->getAlignment()->setHorizontal('center');
+$event->sheet->getStyle('A1:J1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
                 
                 
             // Mengatur nama kolom

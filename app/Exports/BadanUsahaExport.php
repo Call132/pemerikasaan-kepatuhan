@@ -87,7 +87,7 @@ public function view(): View
             $event->sheet->getStyle('A1')->getFont()->setBold(true);
             $event->sheet->getStyle('A1')->getFont()->setSize(11);                
             $event->sheet->getStyle('A1')->getAlignment()->setHorizontal('center');
-            $event->sheet->getStyle('A1:J1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+            $event->sheet->getStyle('A1:J1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
             
 
                 // Mengatur periode waktu "Hari, Tanggal Bulan Tahun - Hari, Tanggal Bulan Tahun"
@@ -96,7 +96,7 @@ public function view(): View
             $event->sheet->getStyle('A2')->getFont()->setBold(true);
             $event->sheet->getStyle('A2')->getFont()->setSize(10);                
             $event->sheet->getStyle('A2')->getAlignment()->setHorizontal('center');
-            $event->sheet->getStyle('A1:J1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+            $event->sheet->getStyle('A1:J1')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
             
                 
                 
@@ -114,22 +114,36 @@ public function view(): View
 
             // Mengatur format dan style pada baris nama kolom
             $event->sheet->getStyle('A3:J3')->getFont()->setBold(true);
+            $event->sheet->getStyle('A3:J3')->getFont()->setSize(9);
             $event->sheet->getStyle('A3:J3')->getAlignment()->setHorizontal('center');
-            $event->sheet->getStyle('A3:J3')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+            $event->sheet->getStyle('A3:J3')->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
             $event->sheet->getStyle('A3:J3')->getAlignment()->setVertical('center'); // Rata tengah horizontal
+
+            
             
             // Mengatur lebar kolom
             $event->sheet->getColumnDimension('A')->setWidth(3); // No
             $event->sheet->getColumnDimension('B')->setWidth(20); // Nama Badan Usaha
-            $event->sheet->getColumnDimension('C')->setWidth(6); // Kode Badan Usaha
-            $event->sheet->getRowDimension(3)->setRowHeight(55); // Kode Badan Usaha
+            $event->sheet->getColumnDimension('C')->setWidth(3); // Kode Badan Usaha
+            $event->sheet->getRowDimension(3)->setRowHeight(40); // Kode Badan Usaha
             $event->sheet->getColumnDimension('D')->setWidth(5); // Alamat
             $event->sheet->getColumnDimension('E')->setWidth(5); // Kota/Kab
             $event->sheet->getColumnDimension('F')->setWidth(5); // Jenis Ketidakpatuhan
             $event->sheet->getColumnDimension('G')->setWidth(5); // Tanggal Terakhir Bayar
             $event->sheet->getColumnDimension('H')->setWidth(5); // Jumlah Tunggakan
             $event->sheet->getColumnDimension('I')->setWidth(5); // Jenis Pemeriksaan
-            $event->sheet->getColumnDimension('J')->setWidth(12); // Jadwal Pemeriksaan
+            $event->sheet->getColumnDimension('J')->setWidth(12); // Jadwal Pemeriksaan 
+            // Mengatur lebar kolom
+            /*$event->sheet->getColumnDimension('A')->setAutoSize(true); // No
+            $event->sheet->getColumnDimension('B')->setAutoSize(true); // Nama Badan Usaha
+            $event->sheet->getColumnDimension('C')->setAutoSize(true); // Kode Badan Usaha
+            $event->sheet->getColumnDimension('D')->setAutoSize(true); // Alamat
+            $event->sheet->getColumnDimension('E')->setAutoSize(true); // Kota/Kab
+            $event->sheet->getColumnDimension('F')->setAutoSize(true); // Jenis Ketidakpatuhan
+            $event->sheet->getColumnDimension('G')->setAutoSize(true); // Tanggal Terakhir Bayar
+            $event->sheet->getColumnDimension('H')->setAutoSize(true); // Jumlah Tunggakan
+            $event->sheet->getColumnDimension('I')->setAutoSize(true); // Jenis Pemeriksaan
+            $event->sheet->getColumnDimension('J')->setAutoSize(true); // Jadwal Pemeriksaan*/
 
             $event->sheet->getStyle('A3:J3')->applyFromArray([
                 'fill' => [
@@ -170,8 +184,8 @@ public function view(): View
                 $event->sheet->setCellValue('H' . $row, 'Rp ' . number_format(floatval(str_replace(['Rp ', '.', ','], '', $data->jumlah_tunggakan)), 2, ',', '.')); // Format rupiah
                 $event->sheet->setCellValue('I' . $row, $data->jenis_pemeriksaan);
                 $event->sheet->setCellValue('J' . $row, $data->jadwal_pemeriksaan);
-                $event->sheet->getStyle('A' . $row . ':J' . $row)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
-                        $event->sheet->getStyle('A3:J3')->getAlignment()->setVertical('center'); // Posisi tengah vertical
+                $event->sheet->getStyle('A' . $row . ':J' . $row)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+                $event->sheet->getStyle('A3:J3')->getAlignment()->setVertical('center'); // Posisi tengah vertical
                 $event->sheet->getStyle('A' . $row . ':J' . $row)->getFont()->setSize(9);
                 $lastRow = $row; // Simpan nomor baris terakhir dari data Badan Usaha
                 $row++;
@@ -181,9 +195,11 @@ public function view(): View
 
 
             }
+                $event->sheet->getStyle('A3:J' . $lastRow)->getAlignment()->setWrapText(true);
+
                 $event->sheet->setCellValue('B' . ($lastRow + 1), 'Total');
                 $event->sheet->setCellValue('H' . ($lastRow + 1), 'Rp ' . number_format($totalTunggakan, 2, ',', '.')); // Ganti $totalTunggakan dengan nilai total yang sesuai
-                $event->sheet->getStyle('A' . ($lastRow + 1) . ':J' . ($lastRow + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);                            
+                $event->sheet->getStyle('A' . ($lastRow + 1) . ':J' . ($lastRow + 1))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);                            
                 $event->sheet->getStyle('B'. ($lastRow + 1) . ':G' . ($lastRow + 1))->getFont()->setBold(true);
                 $event->sheet->mergeCells('B' . ($lastRow + 1) . ':G' . ($lastRow + 1)); // Gabung kolom B sampai G
                 $event->sheet->getStyle('B' . ($lastRow + 1) . ':G' . ($lastRow + 1))->getAlignment()->setHorizontal('center'); // Untuk mengatur teks ke kanan
@@ -205,7 +221,76 @@ public function view(): View
                     ],
                 ],
             ]);
+                $event->sheet->setCellValue('A' . ($lastRow + 3), 'Catatan Kepala Bagian:'); // Isi dengan teks catatan pemeriksa
+                $event->sheet->mergeCells('A' . ($lastRow + 3) . ':J' . ($lastRow + 3)); // Gabung sel untuk catatan pemeriksa
+                $event->sheet->getStyle('A' . ($lastRow + 3) . ':J' . ($lastRow + 3))->getAlignment()->setHorizontal('center'); // Rata tengah horizontal untuk catatan pemeriksa
+                $event->sheet->getStyle('A' . ($lastRow + 3) . ':J' . ($lastRow + 3))->getAlignment()->setVertical('center'); // Posisi tengah vertical untuk catatan pemeriksa
+                $event->sheet->getStyle('A' . ($lastRow + 3) . ':J'. ($lastRow + 3))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
+                // Tambahkan dua kolom di bawah catatan pemeriksa dan gabungkan dari kolom A sampai J
+                $event->sheet->mergeCells('A' . ($lastRow + 4) . ':J' . ($lastRow + 5)); // Gabung dua kolom di bawah catatan pemeriksa dari kolom A sampai J
+                $event->sheet->getStyle('A' . ($lastRow + 4) . ':J' . ($lastRow + 5))->getAlignment()->setHorizontal('center'); // Rata tengah horizontal untuk kolom 1 dan kolom 2
+                $event->sheet->getStyle('A' . ($lastRow + 4) . ':J' . ($lastRow + 5))->getAlignment()->setVertical('center'); // Posisi tengah vertical untuk kolom 1 dan kolom 2
+                $event->sheet->getStyle('A' . ($lastRow + 4) . ':J'. ($lastRow + 5))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+                //style untuk catatan kepala bagian
+                $event->sheet->getStyle('A' . ($lastRow + 3) . ':J' . ($lastRow + 3))->applyFromArray([
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'startColor' => [
+                        'argb' => 'A6A6A6',
+                    ],
+                ],
+                'font' => [
+                    'bold' => true, // Mengatur teks menjadi tebal
+                    'color' => [
+                        'rgb' => '000000', // Mengatur warna teks menjadi putih
+                    ],
+                ],
+            ]);
+
+                $event->sheet->setCellValue('A' . ($lastRow + 6), 'Catatan Kepala Cabang:'); // Isi dengan teks catatan pemeriksa
+                $event->sheet->mergeCells('A' . ($lastRow + 6) . ':J' . ($lastRow + 6)); // Gabung sel untuk catatan pemeriksa
+                $event->sheet->getStyle('A' . ($lastRow + 6) . ':J' . ($lastRow + 6))->getAlignment()->setHorizontal('center'); // Rata tengah horizontal untuk catatan pemeriksa
+                $event->sheet->getStyle('A' . ($lastRow + 6) . ':J' . ($lastRow + 6))->getAlignment()->setVertical('center'); // Posisi tengah vertical untuk catatan pemeriksa
+                $event->sheet->getStyle('A' . ($lastRow + 6) . ':J'. ($lastRow + 6))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+                // Tambahkan dua kolom di bawah catatan pemeriksa dan gabungkan dari kolom A sampai J
+                $event->sheet->mergeCells('A' . ($lastRow + 7) . ':J' . ($lastRow + 8)); // Gabung dua kolom di bawah catatan pemeriksa dari kolom A sampai J
+                $event->sheet->getStyle('A' . ($lastRow + 7) . ':J' . ($lastRow + 8))->getAlignment()->setHorizontal('center'); // Rata tengah horizontal untuk kolom 1 dan kolom 2
+                $event->sheet->getStyle('A' . ($lastRow + 7) . ':J' . ($lastRow + 8))->getAlignment()->setVertical('center'); // Posisi tengah vertical untuk kolom 1 dan kolom 2
+                $event->sheet->getStyle('A' . ($lastRow + 7) . ':J'. ($lastRow + 8))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+                //style untuk catatan kepala bagian
+                $event->sheet->getStyle('A' . ($lastRow + 6) . ':J' . ($lastRow + 6))->applyFromArray([
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'startColor' => [
+                        'argb' => 'A6A6A6',
+                    ],
+                ],
+                'font' => [
+                    'bold' => true, // Mengatur teks menjadi tebal
+                    'color' => [
+                        'rgb' => '000000', // Mengatur warna teks menjadi putih
+                    ],
+                ],
+            ]);
+
+                $event->sheet->setCellValue('H' . ($lastRow + 10), 'Nama'); // Isi dengan teks catatan pemeriksa
+                $event->sheet->setCellValue('I' . ($lastRow + 10), 'Tanda Tangan'); // Isi dengan teks catatan pemeriksa
+                $event->sheet->setCellValue('J' . ($lastRow + 10), 'Tanggal'); // Isi dengan teks catatan pemeriksa
+                $event->sheet->setCellValue('G' . ($lastRow + 11), 'Disusun Oleh : '. chr(10) .'Petugas Pemeriksa'); // Isi dengan teks catatan pemeriksa
+                $event->sheet->setCellValue('H' . ($lastRow + 11), 'Tinsiawati R Atilu'); // Isi dengan teks catatan pemeriksa
+                $event->sheet->setCellValue('G' . ($lastRow + 12), 'Direviu Oleh : '. chr(10) .' Kepala Bagian PKP'); // Isi dengan teks catatan pemeriksa
+                $event->sheet->setCellValue('H' . ($lastRow + 12), 'Richard Friki Lasut'); // Isi dengan teks catatan pemeriksa
+                $event->sheet->setCellValue('G' . ($lastRow + 13), 'Disetujui Oleh : '. chr(10) .' Kepala Cabang'); // Isi dengan teks catatan pemeriksa
+                $event->sheet->setCellValue('H' . ($lastRow + 13), 'Djamal Adriansyah'); // Isi dengan teks catatan pemeriksa
+                $event->sheet->getStyle('G' . ($lastRow + 10) . ':J' . ($lastRow + 13))->getAlignment()->setHorizontal('center'); // Rata tengah horizontal untuk catatan pemeriksa
+                $event->sheet->getStyle('G' . ($lastRow + 10) . ':J' . ($lastRow + 13))->getAlignment()->setVertical('center'); // Posisi tengah vertical untuk catatan pemeriksa
+                $event->sheet->getStyle('G' . ($lastRow + 10) . ':J' . ($lastRow + 13))->getAlignment()->setWrapText(true); // Posisi tengah vertical untuk catatan pemeriksa
+                $event->sheet->getStyle('G' . ($lastRow + 10) . ':J'. ($lastRow + 13))->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+                $event->sheet->getStyle('G' . ($lastRow + 10) . ':J'. ($lastRow + 10))->getFont()->setBold(true);
+                $event->sheet->getStyle('G' . ($lastRow + 10) . ':J'. ($lastRow + 10))->getFont()->setSize(10);
+                
         },
     ];
 }

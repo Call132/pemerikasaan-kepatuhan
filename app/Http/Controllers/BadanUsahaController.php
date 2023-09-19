@@ -6,6 +6,7 @@ use App\Exports\BadanUsahaExport;
 use App\Models\BadanUsaha;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\HomeController;
 
 class BadanUsahaController extends Controller
 {
@@ -57,6 +58,76 @@ class BadanUsahaController extends Controller
     $bu->save();
     // Redirect the user or perform any other actions you need
     session()->flash('success', 'Data berhasil ditambahkan.');
-    return redirect('/data-pemeriksaan')->with('succes', 'Form successfully ditambah');;
+    return redirect('/')->with('succes', 'Form successfully ditambah');;
 }
+public function delete($id)
+{
+    // Temukan data badan usaha berdasarkan ID
+    $badanUsaha = BadanUsaha::find($id);
+
+    // Jika data tidak ditemukan, kembalikan respons atau tindakan yang sesuai, misalnya 404 Not Found.
+    if (!$badanUsaha) {
+        return abort(404);
+    }
+
+    // Hapus data badan usaha
+    $badanUsaha->delete();
+
+    // Redirect ke halaman yang sesuai, misalnya halaman data-pemeriksaan
+    return redirect('/')->with('success', 'Data berhasil dihapus.');
+}
+public function edit($id)
+{
+    // Lakukan query untuk mendapatkan data badan usaha berdasarkan $id
+    $data = BadanUsaha::find($id);
+
+    // Jika data tidak ditemukan, tampilkan pesan error atau redirect ke halaman lain
+    if (!$data) {
+        // Misalnya, redirect ke halaman lain dengan pesan error
+        return redirect()->route('data-pemeriksaan')->with('error', 'Data tidak ditemukan.');
+    }
+
+    return view('edit-data-pemeriksaan', ['type_menu' => 'dashboard', 'data' => $data]);
+    
+}
+public function index()
+{
+    // ...
+
+    return view('home')->with('type_menu', 'dashboard');
+
+    // ...
+}
+public function update(Request $request, $id)
+{
+    // Validasi input data
+    $this->validate($request, [
+        'nama_badan_usaha' => 'required',
+        'kode_badan_usaha' => 'required',
+        'alamat' => 'required',
+        'kota_kab' => 'required',
+        'jenis_ketidakpatuhan' => 'required',
+        'tanggal_terakhir_bayar' => 'required|date',
+        'jumlah_tunggakan' => 'required|numeric',
+        'jenis_pemeriksaan' => 'required',
+        'jadwal_pemeriksaan' => 'required|date',
+        // tambahkan validasi lainnya sesuai kebutuhan
+    ]);
+
+    // Temukan data badan usaha berdasarkan ID
+    $badanUsaha = BadanUsaha::find($id);
+
+    // Periksa apakah data badan usaha ditemukan
+    if (!$badanUsaha) {
+        return redirect()->route('halaman_lain')->with('error', 'Data tidak ditemukan');
+    }
+
+    // Update data badan usaha dengan data yang dikirimkan dari form
+    $badanUsaha->update($request->all());
+
+    // Setelah berhasil mengupdate data, alihkan pengguna ke halaman "home.blade.php"
+    return redirect('/')->with('success', 'Data berhasil diperbarui');
+}
+
+
 }

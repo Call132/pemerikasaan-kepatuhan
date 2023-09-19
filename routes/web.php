@@ -34,3 +34,15 @@ Route::post('/export-perencanaan-pemeriksaan', [BadanUsahaController::class, 'ex
 Route::get('/login', function () {
     return view('login', ['type_menu' => 'auth']);
 });
+Route::delete('/delete-badan-usaha/{id}', [BadanUsahaController::class, 'delete'])->name('delete.badanusaha');
+// Tampilan halaman edit-data-pemeriksaan
+Route::get('edit-pemeriksaan', function () {
+    return view('edit-data-pemeriksaan' , ['type_menu' => 'edit-data-pemeriksaan']);
+});
+
+Route::get('/edit-data-pemeriksaan/{id}', [BadanUsahaController::class, 'edit'])->name('edit-data-pemeriksaan');
+Route::put('/update-data-pemeriksaan/{id}', [BadanUsahaController::class, 'update'])->name('update-data-pemeriksaan');
+
+
+
+

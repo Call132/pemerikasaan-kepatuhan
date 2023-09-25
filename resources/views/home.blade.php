@@ -136,10 +136,13 @@
                                             <th>Jumlah Tunggakan</th>
                                             <th>Jenis Pemeriksaan</th>
                                             <th>Jadwal Pemeriksaan</th>
+                                            <th></th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        
+ 
+
                                         @foreach($badanUsaha as $data)
                                         
                                         <tr>
@@ -153,6 +156,18 @@
                                             <td>Rp{{ number_format(floatval(str_replace(['Rp ', '.', ], '', $data->jumlah_tunggakan)), 2, ',', '.') }}</td>
                                             <td>{{ $data->jenis_pemeriksaan }}</td>
                                             <td>{{ $data->jadwal_pemeriksaan }}</td>
+                                            <td>
+    <di<div class="btn-group" role="group">
+            <a href="{{ route('edit-data-pemeriksaan', ['id' => $data->id]) }}" class="btn btn-primary">Edit</a>
+            <form action="{{ route('delete.badanusaha', ['id' => $data->id]) }}" method="post">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger">Hapus</button>
+            </form>
+        </div>
+</td>
+
+
                                         </tr>
                                         @php
                                         // Menambahkan jumlah tunggakan ke total

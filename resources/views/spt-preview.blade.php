@@ -48,8 +48,11 @@
         border-collapse: collapse;
         }
         @media print {
-        /* Properti CSS untuk tampilan saat dicetak */
-        }
+    .page-break {
+        page-break-before: always;
+    }
+}
+
 
         .table th,
         .table td {
@@ -100,7 +103,25 @@
                 <p><span class="label">Tanggal Pemeriksaan </span>: Tanggal Bulan Tahun - Tanggal Bulan Tahun</p>
                 <p><span class="label"> Penugasan </span>: Melakukan pemeriksaan kepatuhan terhadap Badan Usaha sebagai berikut :</p>
             </div>
-
+            <p class="header" style="text-align: justify;">Demikian untuk diketahui dan dilaksanakan sebagaimana mestinya.</p>
+            
+            <p style="text-align: right; margin-bottom:-8px;">Gorontalo, Tanggal - Bulan - Tahun</p>
+            <div class="signature-container" style="text-align: right;">
+                <div class="signature">
+                    <p  style="margin-right: 65px;">Kepala Cabang</p>
+                    <br><br><br>
+                    <p style="margin-right: 55px;">Djamal Adriansyah</p>
+                    
+                </div>
+            </div>            
+            <div class="footer">
+                <p>RL/ta/PP.01.02</p>
+                </div>
+            </div>
+        </div>
+    </div>
+            <div class="page-break"></div>
+            <div class="card-body p-0">
             <div class="card-body p-0">
                 <div class="table-responsive">
                     @php
@@ -162,25 +183,10 @@
                     @endif
                 </div>
             </div>
+            </div>
 
 
     
-            <p class="header" style="text-align: justify;">Demikian untuk diketahui dan dilaksanakan sebagaimana mestinya.</p>
             
-            <p style="text-align: right; margin-bottom:-8px;">Gorontalo, Tanggal - Bulan - Tahun</p>
-            <div class="signature-container" style="text-align: right;">
-                <div class="signature">
-                    <p  style="margin-right: 65px;">Kepala Cabang</p>
-                    <br><br><br>
-                    <p style="margin-right: 55px;">Djamal Adriansyah</p>
-                    
-                </div>
-            </div>            
-            <div class="footer">
-                <p>RL/ta/PP.01.02</p>
-                </div>
-            </div>
-        </div>
-    </div>
 </body>
 </html>

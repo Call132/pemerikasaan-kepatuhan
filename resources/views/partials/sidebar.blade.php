@@ -9,18 +9,33 @@
         <ul class="sidebar-menu">
             <li class="menu-header">Dashboard</li>
             <li class="nav-item dropdown {{ $type_menu === 'dashboard' ? 'active' : '' }}">
-                <a href="/"
-                    class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Dashboard</span></a>
+                <a href="{{ url('/') }}"
+                class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Perencanaan Pemeriksaan</span></a>
                 <ul class="dropdown-menu">
-                    <li class='{{ Request::is('dashboard') ? 'active' : '' }}'>
+                    <li class='{{ Request::is('data-pemeriksaan') ? 'active' : '' }}'>
                         <a class="nav-link"
-                            href="{{ url('/') }}">Perencanaan Pemeriksaan</a>
+                            href="{{ url('/') }}">Daftar Badan Usaha</a>
                     </li>
                     <li class='{{ Request::is('data-pemeriksaan') ? 'active' : '' }}'>
                         <a class="nav-link"
                             href="{{ url('data-pemeriksaan') }}">Tambah Data BU</a>
                     </li>
                 </ul>
+            
+            </li>
+            <li class="nav-item {{ $type_menu === 'spt' ? 'active' : '' }}">
+                <a href="{{ url('/spt') }}"
+                    class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Surat Perintah Tugas</span></a>
+                    <ul class="dropdown-menu">
+                        <li class='{{ Request::is('spt') ? 'active' : '' }}'>
+                            <a class="nav-link"
+                                href="{{ url('/spt') }}">Buat SPT</a>
+                        </li>
+                        <li class='{{ Request::is('spt-preview') ? 'active' : '' }}'>
+                            <a class="nav-link"
+                                href="{{ url('/spt/preview') }}">preview</a>
+                        </li>
+                    </ul>
             </li>
 
     </aside>

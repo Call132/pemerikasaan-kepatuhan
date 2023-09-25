@@ -3,6 +3,8 @@
 use App\Exports\BadanUsahaExport;
 use App\Http\Controllers\BadanUsahaController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SptController;
+use App\Models\BadanUsaha;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -34,3 +36,17 @@ Route::post('/export-perencanaan-pemeriksaan', [BadanUsahaController::class, 'ex
 Route::get('/login', function () {
     return view('login', ['type_menu' => 'auth']);
 });
+Route::get('/spt', function () {
+    return view('buat-spt', ['type_menu' => 'spt']);
+});
+Route::get('/debug', function () {
+    $badanUsahaDiajukan = BadanUsaha::where('status', 'Diajukan')->get();
+    dd($badanUsahaDiajukan);
+});
+
+Route::get('/spt/preview', [SptController::class, 'index']);
+//Route::post('/spt/export-Pdf', [SptController::class, 'exportPdf'])->name('spt.exportPdf');
+Route::post('/spt/save', [SptController::class, 'store'])->name('spt.store');
+
+
+

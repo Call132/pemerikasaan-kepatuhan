@@ -31,6 +31,7 @@ class BadanUsahaExport implements FromCollection, WithHeadings, ShouldAutoSize, 
         return BadanUsaha::all()->map(function ($item){
             unset($item['created_at']);
             unset($item['updated_at']);
+            unset($item['status']);
             
             return $item;
         });
@@ -79,6 +80,7 @@ public function view(): View
             ->map(function ($item) {
                 unset($item['created_at']);
                 unset($item['updated_at']);
+                unset($item['status']);
 
                 return $item;
             });

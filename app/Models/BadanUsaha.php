@@ -21,5 +21,8 @@ class BadanUsaha extends Model
         'jenis_pemeriksaan',
         'jadwal_pemeriksaan',
     ];
+    protected $attributes = [
+        'status' => 'Diajukan', // Nilai default untuk kolom status
+    ];
     use HasFactory;
 }

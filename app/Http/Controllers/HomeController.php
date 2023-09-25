@@ -15,7 +15,7 @@ class HomeController extends Controller
         $item->jumlah_tunggakan = 'Rp ' . number_format(floatval($item->jumlah_tunggakan), 2, ',', '.');
         return $item;
     });
-        // dd($badanUsaha);
+        //dd($badanUsaha);
         return view('home', ['type_menu' => 'dashboard', 'badanUsaha' => $badanUsaha]); 
     }
  

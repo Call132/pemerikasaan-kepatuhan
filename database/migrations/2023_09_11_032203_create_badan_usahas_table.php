@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('jenis_pemeriksaan');
             $table->date('jadwal_pemeriksaan');
             $table->decimal('total', 10, 2)->nullable();
+            $table->string('status')->default('Diajukan');
             $table->timestamps();
         });
     }
@@ -32,6 +33,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('badan_usahas');
+        Schema::table('badan_usaha', function (Blueprint $table) {
+        $table->dropColumn('status');
+    });
+        // Schema::dropIfExists('badan_usahas');
     }
 };

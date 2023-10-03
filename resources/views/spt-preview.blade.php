@@ -123,6 +123,7 @@
             <div class="page-break"></div>
             <div class="card-body p-0">
             <div class="card-body p-0">
+            <p>Lampiran :</p>
                 <div class="table-responsive">
                     @php
                         $totalTunggakan = 0;

@@ -37,6 +37,23 @@
                         </li>
                     </ul>
             </li>
-
+            <li class="nav-item {{ $type_menu === 'spt' ? 'active' : '' }}">
+                <a href="{{ url('/spt') }}"
+                    class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Pengiriman Surat</span></a>
+                    <ul class="dropdown-menu">
+                        <li class='{{ Request::is('sppk') ? 'active' : '' }}'>
+                            <a class="nav-link"
+                                href="{{ url('/sppk') }}">Buat SPPK</a>
+                        </li>
+                        <li class='{{ Request::is('sppfpk') ? 'active' : '' }}'>
+                            <a class="nav-link"
+                                href="{{ url('/sppfpk') }}">Buat SPPFPK</a>
+                        </li>
+                        <li class='{{ Request::is('sppl') ? 'active' : '' }}'>
+                            <a class="nav-link"
+                                href="{{ url('/sppl') }}">Buat SPPL</a>
+                        </li>
+                    </ul>
+            </li>
     </aside>
 </div>

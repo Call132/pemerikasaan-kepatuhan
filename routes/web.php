@@ -5,6 +5,9 @@ use App\Http\Controllers\BadanUsahaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\perencanaanController;
 use App\Http\Controllers\SptController;
+use App\Http\Controllers\SPPKController;
+use App\Http\Controllers\SPPFPKController;
+use App\Http\Controllers\SPPLController;
 use App\Models\BadanUsaha;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
@@ -43,8 +46,33 @@ Route::put('/settings/update', 'SettingController@update')->name('settings.updat
 Route::get('/login', function () {
     return view('login', ['type_menu' => 'auth']);
 });
+Route::get('/spt', function () {
+    return view('buat-spt', ['type_menu' => 'spt']);
+});
+Route::get('/sppk', function () {
+    return view('buat-sppk', ['type_menu' => 'sppk']);
+});
+Route::get('/sppfpk', function () {
+    return view('buat-sppfpk', ['type_menu' => 'sppfpk']);
+});
+Route::get('/sppl', function () {
+    return view('buat-sppl', ['type_menu' => 'sppl']);
+});
+Route::get('/debug', function () {
+    $badanUsahaDiajukan = BadanUsaha::where('status', 'Diajukan')->get();
+    dd($badanUsahaDiajukan);
+});
+Route::get('/sppk/preview', [SPPKController::class, 'preview'])->name('sppk-preview');
+Route::get('/sppfpk/preview', [SPPFPKController::class, 'preview'])->name('sppfpk-preview');
+Route::get('/sppl/preview', [SPPLController::class, 'preview'])->name('sppl-preview');
 
-//perencanaan pemeriksaan
+
+
+Route::get('/spt/preview', [SptController::class, 'index']);
+//Route::post('/spt/export-Pdf', [SptController::class, 'exportPdf'])->name('spt.exportPdf');
+Route::post('/spt/save', [SptController::class, 'store'])->name('spt.store');
+
+
 Route::get('data-pemeriksaan', function () {
     return view('data-pemeriksaan', ['type_menu' => 'data-pemeriksaan']);
 });

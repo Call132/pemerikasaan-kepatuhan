@@ -11,6 +11,7 @@ class BadanUsaha extends Model
     protected $table = 'badan_usaha'; // Nama tabel di database
 
     protected $fillable = [
+        'tanggal_perencanaan',
         'nama_badan_usaha',
         'kode_badan_usaha',
         'alamat',
@@ -20,9 +21,11 @@ class BadanUsaha extends Model
         'jumlah_tunggakan',
         'jenis_pemeriksaan',
         'jadwal_pemeriksaan',
+        'tanggal_perencanaan',
     ];
-    protected $attributes = [
-        'status' => 'Diajukan', // Nilai default untuk kolom status
-    ];
+    public function perencanaan()
+    {
+        return $this->belongsTo(Perencanaan::class);
+    }
     use HasFactory;
 }

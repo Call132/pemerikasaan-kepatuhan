@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tim_pemeriksa', function (Blueprint $table) {
+        Schema::create('perencanaan', function (Blueprint $table) {
             $table->id();
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->string('status')->default('Diajukan'); // Tambahkan kolom status
             $table->timestamps();
         });
     }
@@ -22,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tim_pemeriksa');
+        Schema::dropIfExists('perencanaan');
     }
 };

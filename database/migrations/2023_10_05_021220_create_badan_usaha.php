@@ -19,11 +19,15 @@ return new class extends Migration
             $table->string('kota_kab');
             $table->string('jenis_ketidakpatuhan');
             $table->date('tanggal_terakhir_bayar');
-            $table->decimal('jumlah_tunggakan', 10, 2);
+            $table->decimal('jumlah_tunggakan', 14, 2);
             $table->string('jenis_pemeriksaan');
             $table->date('jadwal_pemeriksaan');
-            $table->decimal('total', 10, 2)->nullable();
-            $table->string('status')->default('Diajukan');
+            $table->decimal('total', 14, 2)->nullable();
+            $table->unsignedBigInteger('perencanaan_id');
+            $table->foreign('perencanaan_id')
+                ->references('id')
+                ->on('perencanaan')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -33,9 +37,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('badan_usaha', function (Blueprint $table) {
-        $table->dropColumn('status');
-    });
-        // Schema::dropIfExists('badan_usahas');
+
+        Schema::dropIfExists('badan_usaha');
     }
 };

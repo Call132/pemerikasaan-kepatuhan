@@ -12,18 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pendamping', function (Blueprint $table) {
-        $table->id();
-        $table->unsignedBigInteger('tim_pemeriksa_id'); // Foreign key ke tim_pemeriksa
-        $table->string('pendamping_nama');
-        $table->string('pendamping_npp');
-        // Atribut lainnya
-        $table->timestamps();
+            $table->id(); // Kolom primary key
+            $table->string('nama');
+            $table->string('npp');
+            $table->unsignedBigInteger('surat_perintah_tugas_id')->nullable();
+            $table->timestamps();
 
-        $table->foreign('tim_pemeriksa_id')
-            ->references('id')
-            ->on('tim_pemeriksa')
-            ->onDelete('cascade');
-    });
+            // Foreign key
+            $table->foreign('surat_perintah_tugas_id')->references('id')->on('surat_perintah_tugas')->onDelete('cascade');
+        });
     }
 
     /**

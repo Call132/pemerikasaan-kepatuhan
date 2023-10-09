@@ -12,7 +12,7 @@ use Faker\Factory as faker;
  */
 class BadanUsahaFactory extends Factory
 {
-    
+
     /**
      * Define the model's default state.
      *
@@ -21,12 +21,12 @@ class BadanUsahaFactory extends Factory
     public function definition(): array
     {
         $faker = Faker::create('id_ID');
-        $jumlahTunggakan = $this->faker->randomFloat(2, 100, 10000);
+        $jumlahTunggakan = $this->faker->randomFloat(2, 100, 10000, 100000);
 
 
         return [
             'nama_badan_usaha' => $faker->company,
-            'kode_badan_usaha' => $this ->faker->unique()->ean8,
+            'kode_badan_usaha' => $this->faker->unique()->ean8,
             'alamat' => $faker->address,
             'kota_kab' => $faker->city,
             'jenis_ketidakpatuhan' => $faker->word,

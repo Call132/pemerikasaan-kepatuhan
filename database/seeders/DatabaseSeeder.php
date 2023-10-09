@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\BadanUsaha;
+use App\Models\Setting;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,7 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        BadanUsaha::factory(15)->create();
+        BadanUsaha::factory(5)->create();
+
+        
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

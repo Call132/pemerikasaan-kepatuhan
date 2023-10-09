@@ -5,20 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pendamping extends Model
+class employee_roles extends Model
 {
-
-    protected $table = 'pendamping'; // Nama tabel sesuai kebutuhan
+    protected $table = 'employee_roles'; // Nama tabel sesuai kebutuhan
 
     protected $fillable = [
         'nama',
-        'npp',
+        'posisi',
         // Atribut l
     ];
 
-    public function timPemeriksa()
-{
-    return $this->belongsTo(TimPemeriksa::class, 'tim_pemeriksa_id');
-}
     use HasFactory;
 }

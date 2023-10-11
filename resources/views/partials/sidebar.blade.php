@@ -48,19 +48,23 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item dropdown {{ $type_menu === 'dashboard' ? 'active' : '' }}">
-                <a href="{{ url('/') }}" class="nav-link has-dropdown" style="line-height: 1;"><i class="fas fa-fire"></i><span>Laporan Pemeriksaan</span></a>
-                <ul class="dropdown-menu">
-                    <li class='{{ Request::is('perencanaan') ? 'active' : '' }}'>
-                        <a class="nav-link" href="{{ url('perencanaan') }}">Surat Pemberitahuan Hasil Pemeriksaan</a>
-                    </li>
-                    <li class='{{ Request::is('spt') ? 'active' : '' }}'>
-                        <a class="nav-link" href="{{ url('/spt') }}" style="line-height: 1;">Formulir Catatan Hasil Pemeriksaan</a>
-                    </li>
-                    <li class='{{ Request::is('sppk') ? 'active' : '' }}'>
-                        <a class="nav-link" style="line-height: 1;" href="{{ url('/sppk') }}">Laporan Hasil Pemeriksaan Akhir</a>
-                    </li>
-                </ul>
+            <li class="nav-item {{ $type_menu === 'spt' ? 'active' : '' }}">
+                <a href="{{ url('/spt') }}"
+                    class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Pengiriman Surat</span></a>
+                    <ul class="dropdown-menu">
+                        <li class='{{ Request::is('sppk') ? 'active' : '' }}'>
+                            <a class="nav-link"
+                                href="{{ url('/sppk') }}">Buat SPPK</a>
+                        </li>
+                        <li class='{{ Request::is('sppfpk') ? 'active' : '' }}'>
+                            <a class="nav-link"
+                                href="{{ url('/sppfpk') }}">Buat SPPFPK</a>
+                        </li>
+                        <li class='{{ Request::is('sppl') ? 'active' : '' }}'>
+                            <a class="nav-link"
+                                href="{{ url('/sppl') }}">Buat SPPL</a>
+                        </li>
+                    </ul>
             </li>
             <li class="nav-item dropdown {{ $type_menu === 'dashboard' ? 'active' : '' }}">
                 <a href="{{ url('/') }}" class="nav-link has-dropdown" style="line-height: 1;"><i class="fas fa-fire"></i><span>Laporan Monitoring</span></a>

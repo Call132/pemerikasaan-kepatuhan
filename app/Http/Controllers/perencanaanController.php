@@ -38,8 +38,6 @@ class perencanaanController extends Controller
         // Simpan data perencanaan ke dalam tabel 'perencanaan'
         $perencanaan->save();
 
-        // Update tiga nama dalam tabel 'employee_roles' jika sudah ada
-
         // Update atau buat data 'Tim Pemeriksa' jika belum ada
         employee_roles::updateOrCreate(['posisi' => 'Tim Pemeriksa'], ['nama' => $request->input('nama_tim_pemeriksa', 'Default Tim Pemeriksa')]);
 

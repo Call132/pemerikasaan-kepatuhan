@@ -34,6 +34,7 @@ class BadanUsahaFactory extends Factory
             'jumlah_tunggakan' => $jumlahTunggakan,
             'jenis_pemeriksaan' => $faker->word,
             'jadwal_pemeriksaan' => $faker->date,
+            'perencanaan_id' => '1',
         ];
     }
 }

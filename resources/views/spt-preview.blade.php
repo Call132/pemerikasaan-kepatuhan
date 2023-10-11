@@ -10,6 +10,10 @@
             margin: 20px;
         }
 
+        @page {
+            size: portrait;
+        }
+
         .container {
             width: 100%;
         }
@@ -27,7 +31,7 @@
 
         .content {
             margin-top: 20px;
-            font-size: 11px;
+            font-size: 12px;
         }
 
         .petugas-pemeriksa,
@@ -61,6 +65,13 @@
             .page-break {
                 page-break-before: always;
             }
+
+            .page2 {
+                page: landscape;
+                page-break-before: always;
+                /* Beri page break sebelum halaman kedua */
+            }
+
         }
 
 
@@ -85,6 +96,39 @@
             background-color: #92D050;
             color: white;
         }
+
+        .indent-first-line {
+            text-indent: 20px;
+            /* Sesuaikan nilai indentasi sesuai keinginan Anda */
+            margin: 0;
+            /* Untuk menghilangkan margin bawaan */
+        }
+
+        .content {
+            margin-top: 20px;
+            font-size: 12px;
+        }
+
+        .content p {
+            text-align: justify;
+        }
+
+        .page1 {
+            page-break-before: auto;
+            /* Jangan menggunakan page break di halaman pertama */
+        }
+
+        .landscape-page {
+            width: 100%;
+            height: 100%;
+            page: landscape;
+        }
+
+        .page2 {
+            page: landscape;
+            page-break-before: always;
+            /* Beri page break sebelum halaman kedua */
+        }
     </style>
 </head>
 
@@ -93,14 +137,14 @@
         <div class="header">
             <h4>SURAT PERINTAH TUGAS</h4>
         </div>
-        <div class="content">
+        <div class="content page1">
             <h4 class="header">NOMOR: {{ $spt->nomor_spt }}</h4>
-            <p style="text-align: justify;">
+            <p style="text-align: justify;" class="indent-first-line">
                 Berdasarkan Pasal 11 huruf c Undang-Undang Nomor 24 Tahun 2011 Tentang Badan Penyelenggara Jaminan
                 Sosial bahwa dalam melaksanakan tugas, BPJS Kesehatan berwenang untuk melakukan pengawasan dan
                 pemeriksaan atas kepatuhan Peserta dan Pemberi Kerja dalam memenuhi kewajibannya sesuai dengan ketentuan
                 peraturan perundang-undangan jaminan sosial nasional. Kepala Badan Penyelenggara Jaminan Sosial
-                Kesehatan Cabang Gorontalo selaku Penanggung Jawab Pemeriksaan, dengan ini menugaskan:
+                Kesehatan Cabang Gorontalo selaku Penanggung Jawab Pemeriksaan, dengan ini menugaskan :
             </p>
             <div class="petugas-pemeriksa">
                 <p>Petugas Pemeriksa</p>
@@ -117,19 +161,19 @@
             </div>
 
             <div class="">
-                <p><span class="label">Tanggal Pemeriksaan </span>: Tanggal Bulan Tahun - Tanggal Bulan Tahun</p>
+                <p><span class="label">Tanggal Pemeriksaan </span>: {{ $tanggalPemeriksaan }}</p>
                 <p><span class="label"> Penugasan </span>: Melakukan pemeriksaan kepatuhan terhadap Badan Usaha sebagai
                     berikut :</p>
             </div>
             <p class="header" style="text-align: justify;">Demikian untuk diketahui dan dilaksanakan sebagaimana
                 mestinya.</p>
 
-            <p style="text-align: right; margin-bottom:-8px;">Gorontalo, Tanggal - Bulan - Tahun</p>
+            <p style="text-align: right; margin-bottom:-8px; margin-right: 5px">Gorontalo, {{ $dateNow }}</p>
             <div class="signature-container" style="text-align: right;">
                 <div class="signature">
                     <p style="margin-right: 65px;">Kepala Cabang</p>
                     <br><br><br>
-                    <p style="margin-right: 55px;">Djamal Adriansyah</p>
+                    <p style="margin-right: 49px;">{{ $employee }}</p>
 
                 </div>
             </div>
@@ -138,69 +182,99 @@
             </div>
         </div>
     </div>
-    </div>
+
+
     <div class="page-break"></div>
-    <div class="card-body p-0">
+    <div class="content page2 ">
         <div class="card-body p-0">
-            <div class="table-responsive">
-                @php
-                    $totalTunggakan = 0;
-                @endphp
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    @php
+                        $totalTunggakan = 0;
+                    @endphp
 
-                @if ($badanUsahaDiajukan->count() > 0)
-                    <table class="table">
-                        <thead>
+                    @if ($badanUsahaDiajukan->count() > 0)
+                        <table class="table">
+                            <thead>
 
-                            {{-- <tr>
+                                {{-- <tr>
                                 <th colspan="10" style="font-weight: bold; font-size: 14px; text-align: center; ">Hari, Tanggal Bulan Tahun - Hari, Tanggal Bulan Tahun</th>
                             </tr> --}}
-                            <tr>
-
-                                <th>No</th>
-                                <th>Nama Badan Usaha</th>
-                                <th>Kode Badan Usaha</th>
-                                <th>Alamat</th>
-                                <th>Kota/Kab</th>
-                                <th>Jenis Ketidakpatuhan</th>
-                                <th>Tanggal Terakhir Bayar</th>
-                                <th>Jumlah Tunggakan</th>
-                                <th>Jenis Pemeriksaan</th>
-                                <th>Jadwal Pemeriksaan</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            @foreach ($badanUsahaDiajukan as $data)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $data->nama_badan_usaha }}</td>
-                                    <td>{{ $data->kode_badan_usaha }}</td>
-                                    <td>{{ $data->alamat }}</td>
-                                    <td>{{ $data->kota_kab }}</td>
-                                    <td>{{ $data->jenis_ketidakpatuhan }}</td>
-                                    <td>{{ $data->tanggal_terakhir_bayar }}</td>
-                                    <td>Rp{{ number_format(floatval(str_replace(['Rp ', '.'], '', $data->jumlah_tunggakan)), 2, ',', '.') }}
-                                    </td>
-                                    <td>{{ $data->jenis_pemeriksaan }}</td>
-                                    <td>{{ $data->jadwal_pemeriksaan }}</td>
+
+                                    <th>No</th>
+                                    <th>Nama Badan Usaha</th>
+                                    <th>Kode Badan Usaha</th>
+                                    <th>Alamat</th>
+                                    <th>Kota/Kab</th>
+                                    <th>Jenis Ketidakpatuhan</th>
+                                    <th>Tanggal Terakhir Bayar</th>
+                                    <th>Jumlah Tunggakan</th>
+                                    <th>Jenis Pemeriksaan</th>
+                                    <th>Jadwal Pemeriksaan</th>
                                 </tr>
-                                @php
-                                    // Menambahkan jumlah tunggakan ke total
-                                    $totalTunggakan += floatval(str_replace(['Rp ', '.'], '', $data->jumlah_tunggakan));
-                                @endphp
-                            @endforeach
-                        </tbody>
-                        <tfoot>
-                            <tr class="totall">
-                                <td colspan="7" class="totall text-center">Total</td>
-                                <td colspan="3" class="">Rp {{ number_format($totalTunggakan, 2, ',', '.') }}
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                @else
-                    <p>error</p>
-                @endif
+                            </thead>
+                            <tbody>
+
+                                @foreach ($badanUsahaDiajukan as $data)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $data->nama_badan_usaha }}</td>
+                                        <td>{{ $data->kode_badan_usaha }}</td>
+                                        <td>{{ $data->alamat }}</td>
+                                        <td>{{ $data->kota_kab }}</td>
+                                        <td>{{ $data->jenis_ketidakpatuhan }}</td>
+                                        <td>{{ $data->tanggal_terakhir_bayar }}</td>
+                                        <td>Rp{{ number_format(floatval(str_replace(['Rp ', '.'], '', $data->jumlah_tunggakan)), 2, ',', '.') }}
+                                        </td>
+                                        <td>{{ $data->jenis_pemeriksaan }}</td>
+                                        <td>{{ $data->jadwal_pemeriksaan }}</td>
+                                    </tr>
+                                    @php
+                                        // Menambahkan jumlah tunggakan ke total
+                                        $totalTunggakan += floatval(str_replace(['Rp ', '.'], '', $data->jumlah_tunggakan));
+                                    @endphp
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr class="totall">
+                                    <td colspan="7" class="totall text-center">Total</td>
+                                    <td colspan="3" class="">Rp
+                                        {{ number_format($totalTunggakan, 2, ',', '.') }}
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    @else
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+
+                                <table class="table table-striped-columns mb-0 ">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama Badan Usaha</th>
+                                            <th>Kode Badan Usaha</th>
+                                            <th>Alamat</th>
+                                            <th>Kota/Kab</th>
+                                            <th>Jenis Ketidakpatuhan</th>
+                                            <th>Tanggal Terakhir Bayar</th>
+                                            <th>Jumlah Tunggakan</th>
+                                            <th>Jenis Pemeriksaan</th>
+                                            <th>Jadwal Pemeriksaan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="11" class="text-center">Data Badan Usaha Belum
+                                                Ditambahkan</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
@@ -208,7 +282,7 @@
 
 
 
-
 </body>
+
 
 </html>

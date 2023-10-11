@@ -40,10 +40,14 @@ class perencanaanController extends Controller
 
         // Update tiga nama dalam tabel 'employee_roles' jika sudah ada
 
-        employee_roles::where('posisi', 'Tim Pemeriksa')->update(['nama' => $request->input('nama_tim_pemeriksa')]);
-        employee_roles::where('posisi', 'Kepala Bagian')->update(['nama' => $request->input('nama_kepala_bagian')]);
-        employee_roles::where('posisi', 'Kepala Cabang')->update(['nama' => $request->input('nama_kepala_cabang')]);
+        // Update atau buat data 'Tim Pemeriksa' jika belum ada
+        employee_roles::updateOrCreate(['posisi' => 'Tim Pemeriksa'], ['nama' => $request->input('nama_tim_pemeriksa', 'Default Tim Pemeriksa')]);
 
+        // Update atau buat data 'Kepala Bagian' jika belum ada
+        employee_roles::updateOrCreate(['posisi' => 'Kepala Bagian'], ['nama' => $request->input('nama_kepala_bagian', 'Default Kepala Bagian')]);
+
+        // Update atau buat data 'Kepala Cabang' jika belum ada
+        employee_roles::updateOrCreate(['posisi' => 'Kepala Cabang'], ['nama' => $request->input('nama_kepala_cabang', 'Default Kepala Cabang')]);
         return redirect()->route('data-pemeriksaan.create', ['perencanaan_id' => $perencanaan->id]);
 
 

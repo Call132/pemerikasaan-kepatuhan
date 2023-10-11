@@ -3,20 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\BadanUsaha;
+use App\Models\employee_roles;
 use App\Models\Pendamping;
+use App\Models\perencanaan;
 use App\Models\SuratPerintahTugas;
 use Illuminate\Http\Request;
 
 use Barryvdh\DomPDF\Facade as PDF;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Barryvdh\DomPDF\PDF as DomPDFPDF;
-
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class SptController extends Controller
 {
     public function create()
     {
-        $badanUsahaDiajukan = BadanUsaha::where('status', 'draft')->get();
+        $badanUsahaDiajukan = DB::table('perencanaan')->join('badan_usaha','perencanaan.id','=','badan_usaha.perencanaan_id')->where('perencanaan.status','approved')->select('badan_usaha.*')->get();
 
         $badanUsahaDiajukan->transform(function ($item) {
             $item->jumlah_tunggakan = 'Rp ' . number_format(floatval($item->jumlah_tunggakan), 2, ',', '.');
@@ -75,7 +78,19 @@ class SptController extends Controller
             }
         }
 
-        $badanUsahaDiajukan = BadanUsaha::where('status', 'draft')->get();
+        $employee=employee_roles::where('posisi','Kepala Cabang')->pluck('nama')->first();
+
+        $badanUsahaDiajukan = DB::table('perencanaan')->join('badan_usaha','perencanaan.id','=','badan_usaha.perencanaan_id')->where('perencanaan.status','approved')->select('badan_usaha.*')->get();
+
+        $perencanaan=perencanaan::where('status','approved')->latest();
+
+        $tanggalMulai=Carbon::parse($perencanaan->start_date)->translatedFormat('d F Y');
+        $tanggalAkhir=Carbon::parse($perencanaan->end_date)->translatedFormat('d F Y');
+
+        $tanggalPemeriksaan=$tanggalMulai . "-". $tanggalAkhir;
+
+        $dateNow=Carbon::now()->translatedFormat('d F Y','id');
+
 
         $badanUsahaDiajukan->transform(function ($item) {
             $item->jumlah_tunggakan = 'Rp ' . number_format(floatval($item->jumlah_tunggakan), 2, ',', '.');
@@ -84,10 +99,10 @@ class SptController extends Controller
 
         //return view('spt-preview', compact('badanUsahaDiajukan'))->with('success', 'SPT berhasil disimpan.');
         // Generate the PDF
-        $pdf = FacadePdf::loadView('spt-preview', compact('spt', 'badanUsahaDiajukan'));
+        $pdf = FacadePdf::loadView('spt-preview', compact('spt', 'badanUsahaDiajukan', 'employee', 'tanggalPemeriksaan', 'dateNow'));
 
         // Generate a unique filename for the PDF (you can customize this)
-        $pdfFileName = 'SPT_' . $spt->nomor_spt . '.pdf';
+        $pdfFileName = 'Surat Perintah Tugas' . $spt->nomor_spt . '.pdf';
 
         // Optionally, you can save the PDF to a directory on your server
         $pdfFilePath = storage_path('/public/docs' . $pdfFileName);
@@ -104,7 +119,7 @@ class SptController extends Controller
     // Menampilkan daftar BU
     public function index()
     {
-        $badanUsahaDiajukan = BadanUsaha::where('status', 'draft')->get();
+        $badanUsahaDiajukan = DB::table('perencanaan')->join('badan_usaha','perencanaan.id','=','badan_usaha.perencanaan_id')->where('perencanaan.status','approved')->select('badan_usaha.*')->get();
 
 
         $badanUsahaDiajukan->transform(function ($item) {

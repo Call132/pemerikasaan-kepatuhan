@@ -83,12 +83,20 @@
                     <div class="card">
                         <div class="card-header">
                             <h4>PERENCANAAN PEMERIKSAAN</h4>
+                            @if (optional($latestPerencanaan)->count() > 0)
+                                @if ($latestPerencanaan->status === 'diajukan')
+                                    <span class="badge badge-info">Belum Diapprove</span>
+                                @elseif ($latestPerencanaan->status === 'approved')
+                                    <span class="badge badge-success">Approved</span>
+                                @endif
+                            @endif
                         </div>
                         @php
                             $totalTunggakan = 0;
                         @endphp
 
                         @if (optional($latestPerencanaan)->count() > 0)
+
                             <div class="card-header">
                                 <form method="POST" action="{{ url('/export-perencanaan-pemeriksaan') }}">
                                     @csrf
@@ -146,7 +154,7 @@
                                                         <td>{{ $data->kota_kab }}</td>
                                                         <td>{{ $data->jenis_ketidakpatuhan }}</td>
                                                         <td>{{ $data->tanggal_terakhir_bayar }}</td>
-                                                        <td>Rp{{ number_format(floatval(str_replace(['Rp ', '.',], '', $data->jumlah_tunggakan)), 2, ',', '.') }}
+                                                        <td>Rp{{ number_format(floatval(str_replace(['Rp ', '.'], '', $data->jumlah_tunggakan)), 2, ',', '.') }}
                                                         </td>
 
                                                         <td>{{ $data->jenis_pemeriksaan }}</td>
@@ -169,7 +177,7 @@
                                                     </tr>
                                                     @php
                                                         // Menambahkan jumlah tunggakan ke total
-                                                        $totalTunggakan += floatval(str_replace(['Rp ', '.',], '', $data->jumlah_tunggakan));
+                                                        $totalTunggakan += floatval(str_replace(['Rp ', '.'], '', $data->jumlah_tunggakan));
                                                     @endphp
                                                 @endforeach
                                             </tbody>
@@ -267,6 +275,8 @@
             updateEndDate();
         });
     </script>
+
+
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/index-0.js') }}"></script>

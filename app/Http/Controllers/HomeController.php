@@ -18,9 +18,7 @@ class HomeController extends Controller
     public function index()
     {
         // Get the latest perencanaan with status "diajukan"
-        $latestPerencanaan = Perencanaan::where('status', 'diajukan')
-            ->latest()
-            ->first();
+        $latestPerencanaan = Perencanaan::where('status', 'diajukan')->orWhere('status', 'approved')->latest()->first();
 
         if ($latestPerencanaan) {
             // Retrieve the associated badan_usaha records
@@ -46,7 +44,7 @@ class HomeController extends Controller
         return view('home', [
             'type_menu' => 'dashboard',
             'badanUsaha' => $badanUsaha,
-            'latestPerencanaan' =>$latestPerencanaan,
+            'latestPerencanaan' => $latestPerencanaan,
             'latestPerencanaanId' => optional($latestPerencanaan)->id,
             'start_date' => $start_date,
             'end_date' => $end_date,

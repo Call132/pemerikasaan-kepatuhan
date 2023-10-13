@@ -3,15 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"
-        name="viewport">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>@yield('title')</title>
 
     <!-- General CSS Files -->
-    <link rel="stylesheet"
-        href="{{ asset('library/bootstrap/dist/css/bootstrap.min.css') }}">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    <link rel="stylesheet" href="{{ asset('library/bootstrap/dist/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
         integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
         crossorigin="anonymous"
         referrerpolicy="no-referrer" />
@@ -20,10 +17,8 @@
 
     <!-- Template CSS -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link rel="stylesheet"
-        href="{{ asset('css/style.css') }}">
-    <link rel="stylesheet"
-        href="{{ asset('css/components.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/components.css') }}">
 
 </head>
 </head>
@@ -44,6 +39,29 @@
             @include('partials.footer')
         </div>
     </div>
+    <script>
+        let isRefreshing = false;
+
+        // Saat halaman diperbarui
+        window.onbeforeunload = function() {
+            isRefreshing = true;
+        }
+
+        // Saat browser ditutup
+        window.addEventListener('beforeunload', function(event) {
+            if (!isRefreshing) {
+                event.preventDefault();
+                // Kirim permintaan logout ke server
+                fetch("{{ route('logout') }}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                    },
+                });
+            }
+        });
+    </script>
+    
 
     <!-- General JS Scripts -->
     <script src="{{ asset('library/jquery/dist/jquery.min.js') }}"></script>
@@ -55,6 +73,7 @@
     <script src="{{ asset('js/stisla.js') }}"></script>
 
     @stack('scripts')
+
 
     <!-- Template JS File -->
     <script src="{{ asset('js/scripts.js') }}"></script>

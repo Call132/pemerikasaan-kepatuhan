@@ -18,8 +18,13 @@ class AuthLoginController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            // Otentikasi berhasil, alihkan pengguna ke halaman yang sesuai.
-            return redirect()->intended('/');
+            // Cek apakah pengguna adalah admin
+            if (Auth::user()->hasRole('admin')) {
+                return redirect('/dashboard-admin');
+            } else {
+                // Jika bukan admin, arahkan ke dashboard biasa
+                return redirect('/');
+            }
         }
 
 

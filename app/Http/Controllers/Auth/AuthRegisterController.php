@@ -65,6 +65,7 @@ class AuthRegisterController extends Controller
             'phone' => $data['phone']
 
         ]);
+        
         return redirect()->route('/login')->with('succes', 'registrasi berhasil silahkan login');
     }
 }

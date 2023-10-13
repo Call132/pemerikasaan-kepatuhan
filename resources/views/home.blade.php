@@ -76,13 +76,19 @@
                     </div>
                 </div>
             </div>
-
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
             <div class="row">
 
                 <div class="col-lg-12 col-md-12 col-12 col-sm-12">
                     <div class="card">
+
                         <div class="card-header">
                             <h4>PERENCANAAN PEMERIKSAAN</h4>
+
                             @if (optional($latestPerencanaan)->count() > 0)
                                 @if ($latestPerencanaan->status === 'diajukan')
                                     <span class="badge badge-info">Belum Diapprove</span>

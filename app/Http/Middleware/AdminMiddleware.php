@@ -18,15 +18,11 @@ class AdminMiddleware
     {
 
         if (auth()->check() && auth()->user()->hasRoles('admin')) {
-
             return redirect()->route('admin.dashboard');
         } elseif (auth()->check() && auth()->user()->hasRoles('user')) {
 
             return redirect()->route('/');
-
-
-
-            return $next($request);
         }
+        return $next($request);
     }
 }

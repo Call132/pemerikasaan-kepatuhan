@@ -44,7 +44,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="panel panel-default">
-                        <form method="POST" action="">
+                        <form method="POST" action="#">
                             @csrf
 
                             <div class="form-group">

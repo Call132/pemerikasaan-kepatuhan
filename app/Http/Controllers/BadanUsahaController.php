@@ -14,16 +14,19 @@ class BadanUsahaController extends Controller
     public function exportToExcel(Request $request)
     {
         $tanggalPerencanaan = $request->input('start_date'); // Mengambil Tanggal Awal dari permintaan
-        $endDate = $request->input('end_date');     // Mengambil Tanggal Akhir dari permintaan
-        if (empty($startDate)) {
-            $tanggalPerencanaan = now()->toDateString(); // Mengambil tanggal hari ini sebagai default
+        $endDate = $request->input('end_date'); // Mengambil Tanggal Akhir dari permintaan
+
+        // Check if perencanaan is approved
+        $latestPerencanaan = Perencanaan::where('status', 'approved')->latest()->first();
+
+        if (!$latestPerencanaan) {
+            return redirect()->intended('/')->with('error', 'Perencanaan belum diapprove.');
         }
 
-        // Sekarang Anda memiliki tanggal awal dan tanggal akhir yang dapat digunakan untuk menghasilkan laporan Excel.
-        // Anda juga dapat menyimpan nilai-nilai ini dalam variabel tersembunyi jika perlu digunakan di dalam view Excel.
-
+        // If approved, proceed with Excel export
         return Excel::download(new BadanUsahaExport($tanggalPerencanaan, $endDate), 'PERENCANAAN PEMERIKSAAN.xlsx');
     }
+
     public function create($perencanaan_id)
     {
         $type_menu = 'data-pemeriksaan'; // Atur nilai variabel $type_menu

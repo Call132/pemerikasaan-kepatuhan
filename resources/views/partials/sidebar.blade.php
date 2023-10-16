@@ -14,8 +14,9 @@
         </div>
         <ul class="sidebar-menu">
             <li class="menu-header">Dashboard</li>
-            <li class="nav-item dropdown {{ $type_menu === 'dashboard' ? 'active' : '' }}">
-            <a href="{{ url('/') }}" class="nav-link has-dropdown" style="line-height: 1;"><i class="fas fa-fire"></i><span>Perencanaan Pemeriksaan</span></a>
+            <li class="nav-item dropdown {{ $type_menu === 'perencanaan' ? 'active' : '' }}">
+                <a href="{{ url('/') }}" class="nav-link has-dropdown" style="line-height: 1;"><i
+                        class="fas fa-fire"></i><span>Perencanaan Pemeriksaan</span></a>
                 <ul class="dropdown-menu">
                     <li class='{{ Request::is('perencanaan') ? 'active' : '' }}'>
                         <a class="nav-link" href="{{ url('perencanaan') }}">Buat Perencanaan</a>
@@ -27,24 +28,28 @@
                         <a class="nav-link" href="{{ url('/sppk') }}">Surat Panggilan Pemeriksaan Kantor</a>
                     </li>
                     <li class='{{ Request::is('sppfpk') ? 'active' : '' }}'>
-                        <a class="nav-link" href="{{ url('/sppfpk') }}">Surat Pemberitahuan Panggilan Final Pemeriksaan Kantor</a>
+                        <a class="nav-link" href="{{ url('/sppfpk') }}">Surat Pemberitahuan Panggilan Final Pemeriksaan
+                            Kantor</a>
                     </li>
                     <li class='{{ Request::is('sppl') ? 'active' : '' }}'>
                         <a class="nav-link" href="{{ url('/sppl') }}">Surat Pemberitahuan Pemeriksaan Lapangan</a>
                     </li>
                 </ul>
             </li>
-            <li class="nav-item dropdown {{ $type_menu === 'dashboard' ? 'active' : '' }}">
-                <a href="{{ url('/') }}" class="nav-link has-dropdown" style="line-height: 1;"><i class="fas fa-fire"></i><span>Pelaksanaan Pemeriksaan</span></a>
+            <li class="nav-item dropdown {{ $type_menu === 'pelaksanaan' ? 'active' : '' }}">
+                <a href="{{ url('/') }}" class="nav-link has-dropdown" style="line-height: 1;"><i
+                        class="fas fa-fire"></i><span>Pelaksanaan Pemeriksaan</span></a>
                 <ul class="dropdown-menu">
                     <li class='{{ Request::is('perencanaan') ? 'active' : '' }}'>
                         <a class="nav-link" href="{{ url('perencanaan') }}">Kertas Kerja Pemeriksaan</a>
                     </li>
                     <li class='{{ Request::is('spt') ? 'active' : '' }}'>
-                        <a class="nav-link" href="{{ url('/spt') }}" style="line-height: 1;">Formulir Catatan Hasil Pemeriksaan</a>
+                        <a class="nav-link" href="{{ url('/spt') }}" style="line-height: 1;">Formulir Catatan Hasil
+                            Pemeriksaan</a>
                     </li>
                     <li class='{{ Request::is('sppk') ? 'active' : '' }}'>
-                        <a class="nav-link" style="line-height: 1;" href="{{ url('/sppk') }}">Berita Acara Pengambilan Keterangan</a>
+                        <a class="nav-link" style="line-height: 1;" href="{{ url('/sppk') }}">Berita Acara Pengambilan
+                            Keterangan</a>
                     </li>
                 </ul>
             </li>
@@ -66,12 +71,13 @@
                         </li>
                     </ul>
             </li>
-            <li class="nav-item dropdown {{ $type_menu === 'dashboard' ? 'active' : '' }}">
-                <a href="{{ url('/') }}" class="nav-link has-dropdown" style="line-height: 1;"><i class="fas fa-fire"></i><span>Laporan Monitoring</span></a>
+            <li class="nav-item dropdown {{ $type_menu === 'laporan' ? 'active' : '' }}">
+                <a href="{{ url('/') }}" class="nav-link has-dropdown" style="line-height: 1;"><i
+                        class="fas fa-fire"></i><span>Laporan Monitoring</span></a>
                 <ul class="dropdown-menu">
                     <li class='{{ Request::is('perencanaan') ? 'active' : '' }}'>
                         <a class="nav-link" href="{{ url('perencanaan') }}">Rekapan</a>
                     </li>
-</ul>
+                </ul>
     </aside>
 </div>

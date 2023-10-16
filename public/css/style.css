@@ -765,6 +765,7 @@ select.form-control:not([size]):not([multiple]) {
   padding: 15px 25px;
   display: flex;
   align-items: center;
+  flex-direction: column;
 }
 .card .card-header .btn {
   margin-top: 1px;
@@ -921,6 +922,19 @@ select.form-control:not([size]):not([multiple]) {
   float: right;
   color: #8c98f3;
   margin: -60px;
+}
+.button-cell {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+@media (max-width: 768px) {
+  .button-cell {
+      flex-direction: column;
+  }
 }
 .card.card-hero .card-header .card-icon .ion, .card.card-hero .card-header .card-icon .fas, .card.card-hero .card-header .card-icon .far, .card.card-hero .card-header .card-icon .fab, .card.card-hero .card-header .card-icon .fal {
   font-size: 140px;
@@ -1123,6 +1137,7 @@ select.form-control:not([size]):not([multiple]) {
 }
 /* 3.6 Table */
 .table {
+  border: black;
   /* color: inherit; */
 }
 .table td, .table:not(.table-bordered) th {
@@ -1135,10 +1150,16 @@ select.form-control:not([size]):not([multiple]) {
 }
 .table:not(.table-sm) thead th {
   border-bottom: none;
-  background-color: rgba(0, 0, 0, 0.04);
-  color: #666;
+  background-color: #00B0F0;
+  color: #00000;
   padding-top: 15px;
   padding-bottom: 15px;
+}
+
+th {}
+
+th {
+    text-align: center;
 }
 .table.table-md th, .table.table-md td {
   padding: 10px 15px;
@@ -1346,7 +1367,10 @@ table tr:hover .table-links {
 }
 .badge.badge-info {
   background-color: #3abaf4;
+  text-align: center;
 }
+
+span.badge.badge-info {}
 .badge.badge-danger {
   background-color: #fc544b;
 }

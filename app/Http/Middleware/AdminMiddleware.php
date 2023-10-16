@@ -2,10 +2,10 @@
 
 namespace App\Http\Middleware;
 
+
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-
 
 class AdminMiddleware
 {
@@ -14,14 +14,15 @@ class AdminMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->check() && auth()->user()->hasRole('admin')) {
-    // Pengguna memiliki peran 'admin'
-    return $next($request);
-}
 
-// Pengguna tidak memiliki peran 'admin', lakukan sesuatu di sini
-        return redirect('home')->with('error', 'Anda tidak memiliki izin untuk mengakses halaman ini.');
+        if (auth()->check() && auth()->user()->hasRoles('admin')) {
+            return redirect()->route('admin.dashboard');
+        } elseif (auth()->check() && auth()->user()->hasRoles('user')) {
+
+            return redirect()->route('/');
+        }
+        return $next($request);
     }
 }

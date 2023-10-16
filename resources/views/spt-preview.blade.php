@@ -67,7 +67,6 @@
             }
 
             .page2 {
-                page: landscape;
                 page-break-before: always;
                 /* Beri page break sebelum halaman kedua */
             }
@@ -121,11 +120,8 @@
         .landscape-page {
             width: 100%;
             height: 100%;
-            page: landscape;
         }
-
         .page2 {
-            page: landscape;
             page-break-before: always;
             /* Beri page break sebelum halaman kedua */
         }

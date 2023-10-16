@@ -64,14 +64,20 @@
         margin-bottom: -1.0em; /* Sesuaikan dengan jarak yang diinginkan, misalnya 1.0em */
     }
     /* CSS untuk halaman pertama */
+/* CSS untuk halaman pertama (portrait) */
 .page1 {
     page-break-before: auto; /* Jangan menggunakan page break di halaman pertama */
 }
-
-/* CSS untuk halaman kedua */
+@page page2 {
+    size: landscape;
+}
+/* CSS untuk halaman kedua (landscape) */
 .page2 {
     page-break-before: always; /* Beri page break sebelum halaman kedua */
 }
+
+/* CSS untuk halaman kedua (landscape) */
+
 .label1 {
         display: inline-block;
         min-width: 70px; /* Sesuaikan dengan lebar minimum yang Anda inginkan */

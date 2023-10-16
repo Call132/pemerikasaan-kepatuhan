@@ -23,6 +23,7 @@
     <section class="section">
         <div class="section-header">
             <h1>Buat Surat Perintah Tugas</h1>
+            <a href="{{ route('spt-preview') }}" class="btn btn-success" style="margin-left: 800px;">Preview</a>
         </div>
     </section>
 <div class="container">

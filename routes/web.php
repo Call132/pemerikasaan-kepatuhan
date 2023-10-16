@@ -76,10 +76,11 @@ Route::get('/debug', function () {
 Route::get('/sppk/preview', [SPPKController::class, 'preview'])->name('sppk-preview');
 Route::get('/sppfpk/preview', [SPPFPKController::class, 'preview'])->name('sppfpk-preview');
 Route::get('/sppl/preview', [SPPLController::class, 'preview'])->name('sppl-preview');
+Route::get('/spt/preview', [SptController::class, 'preview'])->name('spt-preview');
 
 
 
-Route::get('/spt/preview', [SptController::class, 'index']);
+
 //Route::post('/spt/export-Pdf', [SptController::class, 'exportPdf'])->name('spt.exportPdf');
 Route::post('/spt/save', [SptController::class, 'store'])->name('spt.store');
 
@@ -110,7 +111,7 @@ Route::put('/update-data-pemeriksaan/{id}', [BadanUsahaController::class, 'updat
 Route::get('/spt', function () {
     return view('buat-spt', ['type_menu' => 'spt']);
 });
-Route::get('/spt/preview', [SptController::class, 'index']);
+
 //Route::get('/spt/preview', [SptController::class, 'store'])->name('spt.preview');
 //Route::post('/spt/export-Pdf', [SptController::class, 'exportPdf'])->name('spt.exportPdf');
 Route::post('/spt/save', [SptController::class, 'store'])->name('spt.create');

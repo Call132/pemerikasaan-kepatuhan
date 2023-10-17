@@ -53,6 +53,7 @@ class SptController extends Controller
             'petugas_pemeriksa_npp' => 'nullable',
             'pendamping_nama.*' => 'nullable',
             'pendamping_npp.*' => 'nullable',
+            'ext_pendamping_nama' => 'nullable',
             'jabatan' => 'nullable',
         ]);
         if (!$request->has('tanggal_spt')) {
@@ -85,6 +86,12 @@ class SptController extends Controller
                 $spt->pendamping()->save($pendamping);
             }
         }
+
+        $spt->extPendamping()->create([
+            'nama' => $request->input('ext_pendamping_nama'),
+            'jabatan' => $request->input('jabatan'),
+        ]);
+        
 
         $employee = employee_roles::where('posisi', 'Kepala Cabang')->pluck('nama')->first();
 

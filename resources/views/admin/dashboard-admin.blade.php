@@ -45,12 +45,11 @@
                         </thead>
                         <tbody class="table-light">
                             @if ($badanUsahaDiajukan->count() > 0)
-                                 
-                            {{-- @dd($latestPerencanaan, $badanUsahaDiajukan) --}}
-                            
+
+                                {{-- @dd($latestPerencanaan, $badanUsahaDiajukan) --}}
                                 @foreach ($latestPerencanaan as $data)
-                                {{-- @dd($data) --}}
-                               
+                                    {{-- @dd($data) --}}
+
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $data->start_date }}</td>

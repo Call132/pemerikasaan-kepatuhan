@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nomor_spt');
             $table->date('tanggal_spt');
-            $table->string('jabatan')->default('Default Jabatan');
+            
             $table->timestamps();
         });
     }

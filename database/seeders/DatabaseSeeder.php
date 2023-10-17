@@ -34,6 +34,12 @@ class DatabaseSeeder extends Seeder
             'phone' => '1234567890', // Ganti dengan nomor telepon yang sesuai
             'password' => bcrypt('12345678'), // Ganti dengan email admin yang sesuai
         ])->assignRole($adminRole);
+        User::factory()->create([
+            'name' => 'farizal',
+            'email' => 'frzlhmd@gmail.com',
+            'phone' => '1234567890', // Ganti dengan nomor telepon yang sesuai
+            'password' => bcrypt('12345678'), // Ganti dengan email admin yang sesuai
+        ])->assignRole($userRole);
         //BadanUsaha::factory(15)->create();
 
 

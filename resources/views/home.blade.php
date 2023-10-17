@@ -81,6 +81,14 @@
                     {{ session('error') }}
                 </div>
             @endif
+            @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @endif
             <div class="row">
 
                 <div class="col-lg-12 col-md-12 col-12 col-sm-12">
@@ -119,7 +127,7 @@
                                         </div>
                                         <!-- Menggunakan ml-auto untuk meletakkan tombol di ujung kanan -->
                                         <button type="submit" class="btn btn-primary m-auto mt-6 mr-2">Export to
-                                            Excel</button>
+                                            Excel <i class="fa-solid fa-file-export"></i></button>
                                     </div>
                                 </form>
 
@@ -144,7 +152,7 @@
                                                     <th>Jenis Pemeriksaan</th>
                                                     <th>Jadwal Pemeriksaan</th>
                                                     <th><a
-                                                            href="{{ route('data-pemeriksaan.create', ['perencanaan_id' => $latestPerencanaanId]) }}"class="btn btn-primary m-auto">Tambah</a>
+                                                            href="{{ route('data-pemeriksaan.create', ['perencanaan_id' => $latestPerencanaanId]) }}"class="btn btn-primary m-auto">Add</a>
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -168,14 +176,14 @@
                                                         <td>
                                                             <div class="btn-group " role="group">
                                                                 <a href="{{ route('edit-data-pemeriksaan', ['id' => $data->id]) }}"
-                                                                    class="btn btn-primary">Edit</a>
+                                                                    class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></a>
                                                                 <form
                                                                     action="{{ route('delete.badanusaha', ['id' => $data->id]) }}"
                                                                     method="post">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     <button type="submit"
-                                                                        class="btn btn-danger ml-2">Hapus</button>
+                                                                        class="btn btn-danger ml-2"><i class="fa-solid fa-trash"></i></button>
                                                                 </form>
                                                             </div>
                                                         </td>

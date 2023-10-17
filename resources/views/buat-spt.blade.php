@@ -66,7 +66,7 @@
                                             <input type="date" class="form-control" id="tanggal_spt" name="tanggal_spt"
                                                 required>
                                         </div>
-                                        
+
 
                                         <!-- Informasi Petugas Pemeriksa -->
                                         <h3 class="text-center text-black">Informasi Petugas Pemeriksa</h3>
@@ -121,14 +121,16 @@
                     </div>
                 </div>
             </div>
-        @endsection
+        </div>
+        
+    @endsection
 
-        @push('scripts')
-            <script>
-                $(document).ready(function() {
-                    // Fungsi untuk menambah kolom pendamping
-                    $("#tambah_pendamping").click(function() {
-                        var pendampingHtml = `
+    @push('scripts')
+        <script>
+            $(document).ready(function() {
+                // Fungsi untuk menambah kolom pendamping
+                $("#tambah_pendamping").click(function() {
+                    var pendampingHtml = `
                 <div class="pendamping">
                     <div class="form-group">
                         <label for="pendamping_nama">Nama Pendamping:</label>
@@ -142,24 +144,24 @@
                 </div>
             `;
 
-                        $(".pendamping").last().after(pendampingHtml);
-                    });
-
-                    // Fungsi untuk menghapus kolom pendamping
-                    $(document).on("click", ".hapus_pendamping", function() {
-                        $(this).closest(".pendamping").remove();
-                    });
+                    $(".pendamping").last().after(pendampingHtml);
                 });
-            </script>
 
-            <!-- JS Libraies -->
-            {{-- <script src="assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
+                // Fungsi untuk menghapus kolom pendamping
+                $(document).on("click", ".hapus_pendamping", function() {
+                    $(this).closest(".pendamping").remove();
+                });
+            });
+        </script>
+
+        <!-- JS Libraies -->
+        {{-- <script src="assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
     <script src="assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js"></script> --}}
-            <script src="{{ asset('library/datatables/media/js/jquery.dataTables.min.js') }}"></script>
-            {{-- <script src="{{ asset() }}"></script> --}}
-            {{-- <script src="{{ asset() }}"></script> --}}
-            <script src="{{ asset('library/jquery-ui-dist/jquery-ui.min.js') }}"></script>
+        <script src="{{ asset('library/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+        {{-- <script src="{{ asset() }}"></script> --}}
+        {{-- <script src="{{ asset() }}"></script> --}}
+        <script src="{{ asset('library/jquery-ui-dist/jquery-ui.min.js') }}"></script>
 
-            <!-- Page Specific JS File -->
-            <script src="{{ asset('js/page/modules-datatables.js') }}"></script>
-        @endpush
+        <!-- Page Specific JS File -->
+        <script src="{{ asset('js/page/modules-datatables.js') }}"></script>
+    @endpush

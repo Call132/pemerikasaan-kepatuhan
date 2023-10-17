@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\AuthRegisterController;
 use App\Http\Controllers\Auth\AuthLoginController;
 use App\Http\Controllers\BadanUsahaController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\pengirimanController;
+use App\Http\Controllers\pengirimanSurat;
 use App\Http\Controllers\perencanaanController;
 use App\Http\Controllers\SptController;
 use App\Http\Controllers\SPPKController;
@@ -53,7 +55,7 @@ Route::post('/register', [AuthRegisterController::class, 'register'])->name('use
 
 Route::middleware(['auth', 'role:user'])->group(function () {
     //homepage
-    Route::get('/', [HomeController::class, 'index'])->middleware('auth'); // Gunakan Controller dan metodenya
+    Route::get('/', [HomeController::class, 'index']); // Gunakan Controller dan metodenya
 
     Route::post('/tambah-data-bu', [BadanUsahaController::class, 'saveData']);
     Route::post('/export-perencanaan-pemeriksaan', [BadanUsahaController::class, 'exportToExcel']);
@@ -68,6 +70,9 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/spt', function () {
         return view('buat-spt', ['type_menu' => 'spt']);
     });
+    
+    Route::get('/pengiriman-surat', [pengirimanController::class, 'dashboard']);
+    Route::post('/pengiriman-surat', [pengirimanController::class, 'cari'])->name('pengiriman-surat.cari');
     Route::get('/sppk', function () {
         return view('buat-sppk', ['type_menu' => 'sppk']);
     });
@@ -78,6 +83,7 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         return view('buat-sppl', ['type_menu' => 'sppl']);
     });
 
+    Route::get('/sppk/preview', [SPPKController::class, 'preview'])->name('sppk-preview');
     Route::get('/sppk/preview', [SPPKController::class, 'preview'])->name('sppk-preview');
     Route::get('/sppfpk/preview', [SPPFPKController::class, 'preview'])->name('sppfpk-preview');
     Route::get('/sppl/preview', [SPPLController::class, 'preview'])->name('sppl-preview');

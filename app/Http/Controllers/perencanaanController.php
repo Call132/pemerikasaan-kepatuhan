@@ -4,7 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\employee_roles;
 use App\Models\perencanaan;
+use App\Models\User;
+use App\Notifications\perencanaanNotify;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
+use Spatie\Permission\Models\Role;
 
 class perencanaanController extends Controller
 {
@@ -38,6 +43,19 @@ class perencanaanController extends Controller
         // Simpan data perencanaan ke dalam tabel 'perencanaan'
         $perencanaan->save();
 
+        $adminRole = Role::where('name', 'admin')->first();
+
+        // Cari pengguna dengan peran "admin"
+        $admins = $adminRole->users;
+
+        // Mengirim notifikasi kepada admin
+        Notification::send($admins, new perencanaanNotify());
+
+
+
+
+
+
         // Update atau buat data 'Tim Pemeriksa' jika belum ada
         employee_roles::updateOrCreate(['posisi' => 'Tim Pemeriksa'], ['nama' => $request->input('nama_tim_pemeriksa', 'Default Tim Pemeriksa')]);
 
@@ -46,7 +64,8 @@ class perencanaanController extends Controller
 
         // Update atau buat data 'Kepala Cabang' jika belum ada
         employee_roles::updateOrCreate(['posisi' => 'Kepala Cabang'], ['nama' => $request->input('nama_kepala_cabang', 'Default Kepala Cabang')]);
-        return redirect()->route('data-pemeriksaan.create', ['perencanaan_id' => $perencanaan->id]);
+        
+        return redirect()->route('data-pemeriksaan.create', ['perencanaan_id' => $perencanaan->id])->with('succes', 'Perencanaan berhasil dibuat');
 
 
 

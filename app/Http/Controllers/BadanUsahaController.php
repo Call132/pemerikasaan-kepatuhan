@@ -11,6 +11,10 @@ use App\Models\perencanaan;
 
 class BadanUsahaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth'); // Middleware otentikasi
+    }
     public function exportToExcel(Request $request)
     {
         $tanggalPerencanaan = $request->input('start_date'); // Mengambil Tanggal Awal dari permintaan

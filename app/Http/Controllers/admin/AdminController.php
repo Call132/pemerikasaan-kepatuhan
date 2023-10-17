@@ -4,11 +4,15 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\perencanaan;
+use App\Models\User;
+use App\Notifications\perencanaanApproved;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class AdminController extends Controller
 {
+
     public function __construct()
     {
         $this->middleware(['auth', 'role:admin']); // Pastikan pengguna adalah admin
@@ -17,7 +21,7 @@ class AdminController extends Controller
     public function index()
     {
 
-        //$latestPerencanaan = Perencanaan::where('status', 'diajukan')->get();
+        $latestPerencanaan = Perencanaan::where('status', 'diajukan')->get();
 
         $badanUsahaDiajukan = DB::table('perencanaan')
             ->join('badan_usaha', 'perencanaan.id', '=', 'badan_usaha.perencanaan_id')
@@ -35,6 +39,7 @@ class AdminController extends Controller
         return view('admin.dashboard-admin', [
             'type_menu' => 'dashboard',
             'badanUsahaDiajukan' => $badanUsahaDiajukan,
+            'latestPerencanaan' => $latestPerencanaan,
 
 
         ]);
@@ -42,12 +47,28 @@ class AdminController extends Controller
     public function approve($id)
     {
         $data = perencanaan::findOrFail($id);
+        $note = request()->input('note');
+
         // Lakukan tindakan persetujuan di sini
         $data->status = 'approved';
         $data->save();
 
-        return redirect()->route('admin.dashboard')->with('success', 'Perencanaan berhasil approved.');
+        // Mengecek apakah ada catatan
+        $notification = new perencanaanApproved($note); // Notifikasi dengan atau tanpa catatan
+
+        // Mendapatkan semua pengguna
+        $users = User::whereHas('roles', function ($query) {
+            $query->where('name', 'user');
+        })->get();
+
+        // Mengirim notifikasi persetujuan kepada semua pengguna
+        Notification::send($users, $notification);
+
+        // Redirect ke halaman admin.dashboard dengan pesan sukses
+        return redirect()->route('admin.dashboard')->with('success', 'Perencanaan berhasil disetujui.');
     }
+
+
     public function reject($id)
     {
         $data = perencanaan::findOrFail($id);

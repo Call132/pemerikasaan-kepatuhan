@@ -47,21 +47,33 @@
             isRefreshing = true;
         }
 
-        // Saat browser ditutup
+        // When the browser or tab is being closed
         window.addEventListener('beforeunload', function(event) {
             if (!isRefreshing) {
                 event.preventDefault();
-                // Kirim permintaan logout ke server
-                fetch("{{ route('logout') }}", {
-                    method: 'POST',
+                // Send an AJAX request to the logout route
+                // Example using jQuery:
+                $.ajax({
+                    url: '/logout', // Replace with your actual logout route
+                    type: 'POST',
                     headers: {
-                        'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}", // Include CSRF token if using Laravel
+                    },
+                    success: function(response) {
+
+                        if (response.success) {
+                            // Successful logout
+                            console.log('Logout successful.');
+                        } else {
+                            // Logout failed
+                            console.error('Logout failed.');
+                        }
                     },
                 });
             }
         });
     </script>
-    
+
 
     <!-- General JS Scripts -->
     <script src="{{ asset('library/jquery/dist/jquery.min.js') }}"></script>

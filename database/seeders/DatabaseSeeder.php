@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
         $adminRole->givePermissionTo($createPostPermission, $approvePostPermission);
         User::factory()->create([
             'name' => 'Call',
-            'email' => 'admin@sisters.com',
+            'email' => 'farizala817@gmail.com',
             'phone' => '1234567890', // Ganti dengan nomor telepon yang sesuai
             'password' => bcrypt('12345678'), // Ganti dengan email admin yang sesuai
         ])->assignRole($adminRole);

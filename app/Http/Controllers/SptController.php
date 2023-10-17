@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\DB;
 
 class SptController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth'); // Middleware otentikasi
+    }
     public function create()
     {
         $badanUsahaDiajukan = DB::table('perencanaan')

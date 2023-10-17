@@ -8,7 +8,12 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class HomeController extends Controller
+
 {
+    public function __construct()
+    {
+        $this->middleware('auth'); // Middleware otentikasi
+    }
     public function dashboard()
     {
         $type_menu = 'dashboard'; // Tipe menu sesuai dengan halaman dashboard

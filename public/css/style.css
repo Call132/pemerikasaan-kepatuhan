@@ -1165,7 +1165,7 @@ th {
   padding: 10px 15px;
 }
 .table.table-bordered td, .table.table-bordered th {
-  border-color: #f6f6f6;
+  border-color: #000;
 }
 
 .table-links {

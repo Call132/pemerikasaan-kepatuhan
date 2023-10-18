@@ -20,7 +20,7 @@
     <section class="section">
     <div class="section-header">
     <h1>Buat Surat Pemberitahuan Pemeriksaan Lapangan </h1>
-    <a href="{{ route('sppl-preview') }}" class="btn btn-success" style="margin-left: 600px;">Preview</a>
+    <a href="{{ route('sppl.preview') }}" class="btn btn-success" style="margin-left: 600px;">Preview</a>
 </div>
 
     </section>
@@ -44,7 +44,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="panel panel-default">
-                        <form method="POST" action="{{ route('spt.store') }}">
+                        <form method="POST" action="#">
                             @csrf
 
                             <div class="form-group">

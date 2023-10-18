@@ -20,7 +20,7 @@
     <section class="section">
     <div class="section-header">
     <h1>Surat Pemberitahuan Panggilan Final Pemeriksaan Kantor</h1>
-    <a href="{{ route('sppfpk-preview') }}" class="btn btn-success" style="margin-left: 600px;">Preview</a>
+    <a href="{{ route('sppfpk.preview') }}" class="btn btn-success" style="margin-left: 600px;">Preview</a>
 </div>
 
     </section>

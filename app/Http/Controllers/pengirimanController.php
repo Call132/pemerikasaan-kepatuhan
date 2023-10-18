@@ -25,7 +25,11 @@ class pengirimanController extends Controller
     }
     public function cari(Request $request)
     {
-        
+        $request->validate([
+            'periode_pemeriksaan' => 'required',
+            'kategori' => 'required',
+        ]);
+
         $start_date = $request->input('periode_pemeriksaan');
         $kategori = $request->input('kategori');
 
@@ -34,9 +38,8 @@ class pengirimanController extends Controller
         $badanUsaha = DB::table('badan_usaha')
             ->where('jenis_pemeriksaan', 'like', "%" . $kategori . "%")->get();
 
-
-
-
         return view('pengiriman-surat', compact('badanUsaha', 'perencanaan'));
+
+        //return redirect()->route('pengiriman-surat')->withInput($request->all())->with(['badanUsaha' => $badanUsaha, 'perencanaan' => $perencanaan, 'periode_pemeriksaan' => $start_date]);
     }
 }

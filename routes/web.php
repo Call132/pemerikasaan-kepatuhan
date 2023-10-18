@@ -61,32 +61,41 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::post('/export-perencanaan-pemeriksaan', [BadanUsahaController::class, 'exportToExcel']);
 
     //setting
-    Route::get('setting', function () {
+    /*Route::get('setting', function () {
         return view('setting', ['type_menu' => 'setting']);
-    });
-    Route::get('/settings/edit', 'SettingController@edit')->name('setting');
-    Route::put('/settings/update', 'SettingController@update')->name('settings.update');
+    });*/
+    //Route::get('/settings/edit', 'SettingController@edit')->name('setting');
+    //Route::put('/settings/update', 'SettingController@update')->name('settings.update');
 
     Route::get('/spt', function () {
         return view('buat-spt', ['type_menu' => 'spt']);
     });
-    
-    Route::get('/pengiriman-surat', [pengirimanController::class, 'dashboard']);
+
+    Route::get('/pengiriman-surat', [pengirimanController::class, 'dashboard'])->name('pengiriman-surat');
     Route::post('/pengiriman-surat', [pengirimanController::class, 'cari'])->name('pengiriman-surat.cari');
+    
     Route::get('/sppk', function () {
         return view('buat-sppk', ['type_menu' => 'sppk']);
-    });
-    Route::get('/sppfpk', function () {
+    })->name('sppk');
+    Route::get('/sppfpk/{id}', function () {
         return view('buat-sppfpk', ['type_menu' => 'sppfpk']);
-    });
-    Route::get('/sppl', function () {
+    })->name('sppfpk');
+    Route::get('/sppl/{id}', function () {
         return view('buat-sppl', ['type_menu' => 'sppl']);
-    });
+    })->name('sppl');
 
-    Route::get('/sppk/preview', [SPPKController::class, 'preview'])->name('sppk-preview');
-    Route::get('/sppk/preview', [SPPKController::class, 'preview'])->name('sppk-preview');
-    Route::get('/sppfpk/preview', [SPPFPKController::class, 'preview'])->name('sppfpk-preview');
-    Route::get('/sppl/preview', [SPPLController::class, 'preview'])->name('sppl-preview');
+    //Route::get('/sppk/preview', [SPPKController::class, 'preview'])->name('sppk-preview');
+    Route::get('/sppk/preview', [SPPKController::class, 'preview'], function () {
+        return view('sppk-preview');
+    })->name('sppk.preview');
+
+    Route::get('/sppfpk/preview', [SPPFPKController::class, 'preview'], function () {
+        return view('sppfpk-preview');
+    })->name('sppfpk.preview');
+
+    Route::get('/sppl/preview/{id}', [SPPLController::class, 'preview'], function () {
+        return view('sppl-preview');
+    })->name('sppl.preview');
 
 
 
@@ -129,7 +138,6 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 
     // debugging
     Route::get('/debug', function () {
-        $badanUsahaDiajukan = BadanUsaha::where('status', 'Diajukan')->get();
-        dd($badanUsahaDiajukan);
+        return view('sppl-preview');
     });
 });

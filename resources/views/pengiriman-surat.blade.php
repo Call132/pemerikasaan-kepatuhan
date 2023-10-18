@@ -68,8 +68,8 @@
                                 <select name="periode_pemeriksaan" id="periode_pemeriksaan">
                                     <option value="">Pilih Periode Pemeriksaan</option>
                                     @foreach ($perencanaan as $data)
-                                        <option value="{{ $data->start_date }}"
-                                            @if ($data->start_date == old('periode_pemeriksaan')) selected @endif>
+                                        <option value="{{ $data->start_date }}" {{-- @if ($data->start_date == old('periode_pemeriksaan')) selected @endi> --}}
+                                            {{ old('periode_pemeriksaan') === $data->start_date ? 'selected' : '' }}>
                                             {{ $data->start_date }}
                                         </option>
                                     @endforeach
@@ -77,7 +77,6 @@
                             </div>
 
                             <div class="form-group">
-
                                 <select name="kategori" id="kategori">
                                     <option value="">Pilih Kategori</option>
                                     <option value="kantor" {{ old('kategori') == 'kantor' ? 'selected' : '' }}>Kantor
@@ -89,39 +88,50 @@
                                     <!-- Tambahkan opsi kategori lain sesuai kebutuhan -->
                                 </select>
                                 <button type="submit">Cari <i class="fa-solid fa-magnifying-glass"></i></button>
+
                             </div>
 
                         </form>
-
-
-                        @if (request()->has('periode_pemeriksaan') && request()->has('kategori'))
-                            @if ($badanUsaha->isNotEmpty())
-                                <table class="table table-striped">
-                                    <thead>
+                        @if (request()->has('periode_pemeriksaan') && request()->has('kategori') && $badanUsaha->isNotEmpty())
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama Badan Usaha</th>
+                                        <th>Jenis Pemeriksaan</th>
+                                        <th>Buat Surat</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="text-align: center;">
+                                    @foreach ($badanUsaha as $index => $bu)
                                         <tr>
-                                            <th>No</th>
-                                            <th>Nama Badan Usaha</th>
-                                            <th>Kode Badan Usaha</th>
-                                            <th>Buat Surat</th>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $bu->nama_badan_usaha }}</td>
+                                            <td>{{ $bu->jenis_pemeriksaan }}</td>
+                                            <td>
+                                                @if ($bu->jenis_pemeriksaan == 'Kantor')
+                                                    <a href="{{ route('sppk', ['id' => $bu->id]) }}">
+                                                        <i class="fa-solid fa-file-export"></i>
+                                                    </a>
+                                                @elseif ($bu->jenis_pemeriksaan == 'Lapangan')
+                                                    <a href="{{ route('sppl', ['id' => $bu->id]) }}">
+                                                        <i class="fa-solid fa-file-export"></i>
+                                                    </a>
+                                                @elseif ($bu->jenis_pemeriksaan == 'kantor final')
+                                                    <a href="{{ route('sppfpk', ['id' => $bu->id]) }}">
+                                                        <i class="fa-solid fa-file-export"></i>
+                                                    </a>
+                                                @endif
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody style="text-align: center;">
-                                        @foreach ($badanUsaha as $index => $bu)
-                                            <tr>
-                                                <td>{{ $index + 1 }}</td>
-                                                <td>{{ $bu->nama_badan_usaha }}</td>
-                                                <td>{{ $bu->kode_badan_usaha }}</td>
-                                                <td><a href=""><i
-                                                            class="fa-solid fa-file-export"></i></a></td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            @else
-                                <p>Tidak ada hasil yang sesuai dengan kategori.</p>
-                            @endif
-                        @endif
+                                    @endforeach
+                                </tbody>
 
+
+                            </table>
+                        @elseif (!request()->has('periode_pemeriksaan'))
+                            <p>Tidak ada hasil yang sesuai dengan kategori.</p>
+                        @endif
 
 
 

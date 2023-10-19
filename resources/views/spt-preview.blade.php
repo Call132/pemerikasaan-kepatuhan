@@ -139,7 +139,8 @@
         </div>
         <div class="content page1">
             <h4 class="header">NOMOR: {{ $spt->nomor_spt }}</h4>
-            <p style="text-align: justify;" class="indent-first-line">
+            {{-- <p style="text-align: justify;" class="indent-first-line"> --}}
+            <p style="text-align: justify;" class="indent-text">
                 Berdasarkan Pasal 11 huruf c Undang-Undang Nomor 24 Tahun 2011 Tentang Badan Penyelenggara Jaminan
                 Sosial bahwa dalam melaksanakan tugas, BPJS Kesehatan berwenang untuk melakukan pengawasan dan
                 pemeriksaan atas kepatuhan Peserta dan Pemberi Kerja dalam memenuhi kewajibannya sesuai dengan ketentuan

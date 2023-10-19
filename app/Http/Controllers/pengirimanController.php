@@ -12,9 +12,6 @@ class pengirimanController extends Controller
 
     public function dashboard()
     {
-
-
-
         // Ambil data perencanaan dan relasikan dengan BadanUsaha
         $perencanaan = perencanaan::all();
         $badanUsaha = BadanUsaha::all();

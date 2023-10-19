@@ -99,7 +99,7 @@
 
                             @if (optional($latestPerencanaan)->count() > 0)
                                 @if ($latestPerencanaan->status === 'diajukan')
-                                    <span class="badge badge-info">Belum Diapprove</span>
+                                    <span class="badge badge-danger">Belum Diapprove</span>
                                 @elseif ($latestPerencanaan->status === 'approved')
                                     <span class="badge badge-success">Approved</span>
                                 @endif

@@ -73,10 +73,8 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 
     Route::get('/pengiriman-surat', [pengirimanController::class, 'dashboard'])->name('pengiriman-surat');
     Route::post('/pengiriman-surat', [pengirimanController::class, 'cari'])->name('pengiriman-surat.cari');
-    
-    Route::get('/sppk', function () {
-        return view('buat-sppk', ['type_menu' => 'sppk']);
-    })->name('sppk');
+
+    Route::get('/sppk/{id}', [SPPKController::class, 'create'])->name('sppk');
     Route::get('/sppfpk/{id}', function () {
         return view('buat-sppfpk', ['type_menu' => 'sppfpk']);
     })->name('sppfpk');
@@ -84,10 +82,8 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         return view('buat-sppl', ['type_menu' => 'sppl']);
     })->name('sppl');
 
-    //Route::get('/sppk/preview', [SPPKController::class, 'preview'])->name('sppk-preview');
-    Route::get('/sppk/preview', [SPPKController::class, 'preview'], function () {
-        return view('sppk-preview');
-    })->name('sppk.preview');
+    Route::post('/sppk/save', [SPPKController::class, 'store'])->name('sppk.store');
+    
 
     Route::get('/sppfpk/preview', [SPPFPKController::class, 'preview'], function () {
         return view('sppfpk-preview');
@@ -97,11 +93,6 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         return view('sppl-preview');
     })->name('sppl.preview');
 
-
-
-    Route::get('/spt/preview', [SptController::class, 'index']);
-    //Route::post('/spt/export-Pdf', [SptController::class, 'exportPdf'])->name('spt.exportPdf');
-    Route::post('/spt/save', [SptController::class, 'store'])->name('spt.store');
 
 
     Route::get('data-pemeriksaan', function () {

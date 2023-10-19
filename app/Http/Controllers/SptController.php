@@ -149,7 +149,7 @@ class SptController extends Controller
         // Pass the $spt variable to the view
         return view('spt-preview', compact('spt', 'badanUsahaDiajukan'))->with('success', 'SPT berhasil disimpan.');
 
-        //return redirect()->route('spt.preview', ['spt' => $spt])->with('success', 'SPT berhasil disimpan.');
+        //return redirect()->route('pengiriman-surat')->with('success', 'SPT berhasil disimpan.');
     }
 
     // Menampilkan daftar BU

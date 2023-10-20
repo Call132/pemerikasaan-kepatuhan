@@ -119,34 +119,7 @@
     @endsection
 
     @push('scripts')
-        <script>
-            $(document).ready(function() {
-                // Fungsi untuk menambah kolom pendamping
-                $("#tambah_pendamping").click(function() {
-                    var pendampingHtml = `
-                <div class="pendamping">
-                    <div class="form-group">
-                        <label for="pendamping_nama">Nama Pendamping:</label>
-                        <input type="text" class="form-control" name="pendamping_nama[]" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="pendamping_npp">NPP Pendamping:</label>
-                        <input type="text" class="form-control" name="pendamping_npp[]" required>
-                    </div>
-                    <button type="button" class="btn btn-danger hapus_pendamping mb-2">Hapus Pendamping</button>
-                </div>
-            `;
-
-                    $(".pendamping").last().after(pendampingHtml);
-                });
-
-                // Fungsi untuk menghapus kolom pendamping
-                $(document).on("click", ".hapus_pendamping", function() {
-                    $(this).closest(".pendamping").remove();
-                });
-            });
-        </script>
-
+       
         <!-- JS Libraies -->
         {{-- <script src="assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
 <script src="assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js"></script> --}}

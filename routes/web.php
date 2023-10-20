@@ -75,24 +75,18 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::post('/pengiriman-surat', [pengirimanController::class, 'cari'])->name('pengiriman-surat.cari');
 
     Route::get('/sppk/{id}', [SPPKController::class, 'create'])->name('sppk');
-    Route::get('/sppfpk/{id}', function () {
-        return view('buat-sppfpk', ['type_menu' => 'sppfpk']);
-    })->name('sppfpk');
-    Route::get('/sppl/{id}', function () {
-        return view('buat-sppl', ['type_menu' => 'sppl']);
-    })->name('sppl');
-
     Route::post('/sppk/save', [SPPKController::class, 'store'])->name('sppk.store');
-    
+
+    Route::get('/sppl/{id}', [SPPLController::class, 'create'])->name('sppl');
+    Route::post('/sppl/save', [SPPLController::class, 'store'])->name('sppl.store');
+
+    Route::get('/sppfpk/{id}', [SPPFPKController::class, 'create'])->name('sppfpk');
+    Route::post('/sppfpk/save', [SPPFPKController::class, 'store'])->name('sppfpk.store');
+
 
     Route::get('/sppfpk/preview', [SPPFPKController::class, 'preview'], function () {
         return view('sppfpk-preview');
     })->name('sppfpk.preview');
-
-    Route::get('/sppl/preview/{id}', [SPPLController::class, 'preview'], function () {
-        return view('sppl-preview');
-    })->name('sppl.preview');
-
 
 
     Route::get('data-pemeriksaan', function () {

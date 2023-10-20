@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BadanUsaha;
 use Illuminate\Http\Request;
 
 class SPPFPKController extends Controller
 {
-    public function preview()
+    public function create($id)
     {
-        return view('sppfpk-preview'); // Sesuaikan dengan nama tampilan Anda
+       $badanUsaha = BadanUsaha::find($id);
+
+
+       return view('buat-sppfpk' , compact('badanUsaha'));
     }
 }

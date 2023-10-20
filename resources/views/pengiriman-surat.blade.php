@@ -83,8 +83,8 @@
                                     </option>
                                     <option value="lapangan" {{ old('kategori') == 'lapangan' ? 'selected' : '' }}>Lapangan
                                     </option>
-                                    <option value="kantor_final" {{ old('kategori') == 'kantor_final' ? 'selected' : '' }}>
-                                        Kantor Final</option>
+                                    <option value="final" {{ old('kategori') == 'final' ? 'selected' : '' }}>
+                                        Final</option>
                                     <!-- Tambahkan opsi kategori lain sesuai kebutuhan -->
                                 </select>
                                 <button type="submit">Cari <i class="fa-solid fa-magnifying-glass"></i></button>
@@ -117,7 +117,7 @@
                                                     <a href="{{ route('sppl', ['id' => $bu->id]) }}">
                                                         <i class="fa-solid fa-file-export"></i>
                                                     </a>
-                                                @elseif ($bu->jenis_pemeriksaan == 'kantor final')
+                                                @elseif ($bu->jenis_pemeriksaan == 'final')
                                                     <a href="{{ route('sppfpk', ['id' => $bu->id]) }}">
                                                         <i class="fa-solid fa-file-export"></i>
                                                     </a>

@@ -35,6 +35,10 @@ class pengirimanController extends Controller
         $badanUsaha = DB::table('badan_usaha')
             ->where('jenis_pemeriksaan', 'like', "%" . $kategori . "%")->get();
 
+        if ($kategori == 'final') {
+            $badanUsaha = BadanUsaha::all();
+        }
+
         return view('pengiriman-surat', compact('badanUsaha', 'perencanaan'));
 
         //return redirect()->route('pengiriman-surat')->withInput($request->all())->with(['badanUsaha' => $badanUsaha, 'perencanaan' => $perencanaan, 'periode_pemeriksaan' => $start_date]);

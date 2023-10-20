@@ -53,16 +53,15 @@ class SPPKController extends Controller
 
 
 
+
         $pdf = Pdf::loadView('sppk-preview', compact('sppk', 'badanUsaha', 'namaTimPemeriksa', 'nppTimPemeriksa', 'employee'));
 
         // Generate a unique filename for the PDF (you can customize this)
-        $pdfFileName = 'Surat Perintah Pemeriksaan Kantor' . $sppk->nomor_spk . '.pdf';
+        $pdfFileName = 'Surat Perintah Pemeriksaan Kantor ' . $sppk->nomor_sppk . '.pdf';
 
         // Download the PDF
         return $pdf->download($pdfFileName);
-
-        //? redirect ke hallaman lain
-
+        // redirect ke hallaman lain
         return redirect()->route('pengiriman-surat')->with('success', 'SPPK selesai dibuat');
     }
 }

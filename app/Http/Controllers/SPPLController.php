@@ -7,6 +7,7 @@ use App\Models\employee_roles;
 use App\Models\sppl;
 use App\Models\SuratPerintahTugas;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SPPLController extends Controller
@@ -32,16 +33,17 @@ class SPPLController extends Controller
             'nama' => 'required',
             'noHp' => 'nullable'
         ]);
-
+        $tanggal_surat = Carbon::now();
 
         $sppl = new sppl($validate);
+        $sppl->tanggal_surat = $tanggal_surat;
         $sppl->spt_id = $spt->id;
         $sppl->save();
 
         //return response()->json(['message' => 'success', 'sppl' => $sppl]);
 
 
-        
+
         $pdf = Pdf::loadView('sppl-preview', compact('sppl', 'badanUsaha', 'employee'));
         $pdfFileName = 'Surat Perintah Pemeriksaan Kantor ' . $sppl->nomor_sppl . '.pdf';
         return $pdf->download($pdfFileName);

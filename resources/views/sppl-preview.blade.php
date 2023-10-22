@@ -103,7 +103,7 @@
 
 <body>
     <div class="content page1">
-        <div class="right-aligned-text">Gorontalo, {{ \Carbon\Carbon::now()->locale('id')->isoFormat('D MMMM Y') }}</div>
+        <div class="right-aligned-text">Gorontalo, {{ \Carbon\Carbon::parse($sppl->tanggal_pemeriksaan)->locale('id')->isoFormat('D MMMM Y') }}</div>
         <span class="label1">Nomor</span>: {{ $sppl->nomor_sppl }} <br>
         <span class="label1">Lampiran</span>: Satu Berkas <br>
         <span class="label1">Hal</span>: Pemberitahuan Pemeriksaan Lapangan <br>

@@ -12,8 +12,9 @@ class sppk extends Model
 
     protected $fillable = [
         'nomor_sppk',
+        'tanggal_surat',
         'waktu',
-        'tempat',
+        
     ];
 
     public function spt()
@@ -23,5 +24,9 @@ class sppk extends Model
     public function badanUsaha()
     {
         return $this->belongsTo(BadanUsaha::class);
+    }
+    public function sppfpk()
+    {
+        return $this->belongsTo(sppfpk::class, 'sppfpk_id');
     }
 }

@@ -36,7 +36,7 @@ class pengirimanController extends Controller
             ->where('jenis_pemeriksaan', 'like', "%" . $kategori . "%")->get();
 
         if ($kategori == 'final') {
-            $badanUsaha = BadanUsaha::all();
+            $badanUsaha = BadanUsaha::where('jenis_pemeriksaan', 'kantor')->get();
         }
 
         return view('pengiriman-surat', compact('badanUsaha', 'perencanaan'));

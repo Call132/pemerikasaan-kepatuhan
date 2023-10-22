@@ -5,24 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class sppl extends Model
+class sppfpk extends Model
 {
-    protected $table = 'sppl'; // Nama tabel di database
+    protected $table = 'sppfpk';
 
     protected $fillable = [
-        'nomor_sppl',
+        'nomor_sppfpk',
         'tanggal_surat',
-        'nama',
-        'noHp',
+        'waktu',
     ];
 
-    public function spt()
-    {
-        return $this->belongsTo(Spt::class);
-    }
+    // Definisikan relasi ke Badan Usaha jika diperlukan
     public function badanUsaha()
     {
         return $this->belongsTo(BadanUsaha::class);
+    }
+    public function sppk()
+    {
+        return $this->belongsTo(Sppk::class, 'sppk_id');
     }
     use HasFactory;
 }

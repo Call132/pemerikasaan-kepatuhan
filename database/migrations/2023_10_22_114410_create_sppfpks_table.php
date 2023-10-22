@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sppl', function (Blueprint $table) {
+        Schema::create('sppfpk', function (Blueprint $table) {
             $table->id();
-            $table->string('nomor_sppl');
+            $table->string('nomor_sppfpk');
             $table->date('tanggal_surat');
-            $table->string('nama');
-            $table->string('noHp');
-            $table->unsignedBigInteger('spt_id');
-            $table->foreign('spt_id')->references('id')->on('surat_perintah_tugas')->onDelete('cascade');
+            $table->time('waktu');
+            $table->unsignedBigInteger('sppk_id');
             $table->timestamps();
+            $table->foreign('sppk_id')->references('id')->on('sppk')->onDelete('cascade');
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sppl');
+        Schema::dropIfExists('sppfpk');
     }
 };

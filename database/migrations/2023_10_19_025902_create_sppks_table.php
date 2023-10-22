@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('sppk', function (Blueprint $table) {
             $table->id();
             $table->string('nomor_sppk');
+            $table->date('tanggal_surat');
             $table->time('waktu');
             $table->string('tempat');
             $table->unsignedBigInteger('spt_id');

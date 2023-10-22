@@ -8,6 +8,7 @@ use App\Models\sppk;
 use App\Models\SuratPerintahTugas;
 use App\Models\TimPemeriksa;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SPPKController extends Controller
@@ -37,17 +38,18 @@ class SPPKController extends Controller
         $validate = $request->validate([
             'nomor_sppk' => 'required',
             'waktu' => 'nullable',
-            'tempat' => 'nullable'
+           
         ]);
 
         $timPemeriksa = $spt->timPemeriksa;
 
         $namaTimPemeriksa = $timPemeriksa->nama;
         $nppTimPemeriksa = $timPemeriksa->npp;
-
+        $tanggal_surat = Carbon::now(); // Menggunakan Carbon untuk mendapatkan tanggal saat ini
 
 
         $sppk = new sppk($validate);
+        $sppk->tanggal_surat = $tanggal_surat;
         $sppk->spt_id = $spt->id;
         $sppk->save();
 

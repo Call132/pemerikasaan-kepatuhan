@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\pengirimanController;
 use App\Http\Controllers\pengirimanSurat;
 use App\Http\Controllers\perencanaanController;
+use App\Http\Controllers\programPemeriksaanController;
 use App\Http\Controllers\SptController;
 use App\Http\Controllers\SPPKController;
 use App\Http\Controllers\SPPFPKController;
@@ -71,6 +72,15 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         return view('buat-spt', ['type_menu' => 'spt']);
     });
 
+    //spt
+    Route::get('/spt', function () {
+        return view('buat-spt', ['type_menu' => 'spt']);
+    });
+    Route::get('/spt/preview', [SptController::class, 'index']);
+    //Route::get('/spt/preview', [SptController::class, 'store'])->name('spt.preview');
+    //Route::post('/spt/export-Pdf', [SptController::class, 'exportPdf'])->name('spt.exportPdf');
+    Route::post('/spt/save', [SptController::class, 'store'])->name('spt.create');
+
     Route::get('/pengiriman-surat', [pengirimanController::class, 'dashboard'])->name('pengiriman-surat');
     Route::post('/pengiriman-surat', [pengirimanController::class, 'cari'])->name('pengiriman-surat.cari');
 
@@ -87,6 +97,13 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/sppfpk/preview', [SPPFPKController::class, 'preview'], function () {
         return view('sppfpk-preview');
     })->name('sppfpk.preview');
+
+    Route::get('/program-pemeriksaan', [programPemeriksaanController::class, 'create']);
+    Route::post('/program-pemeriksaan/download/{id}', [programPemeriksaanController::class, 'download'])->name('program-pemeriksaan.download');
+
+    Route::get('/kertas-kerja', function () {
+        return view('kertas-kerja');
+    });
 
 
     Route::get('data-pemeriksaan', function () {
@@ -111,14 +128,7 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::put('/update-data-pemeriksaan/{id}', [BadanUsahaController::class, 'update'])->name('update-data-pemeriksaan');
 
 
-    //spt
-    Route::get('/spt', function () {
-        return view('buat-spt', ['type_menu' => 'spt']);
-    });
-    Route::get('/spt/preview', [SptController::class, 'index']);
-    //Route::get('/spt/preview', [SptController::class, 'store'])->name('spt.preview');
-    //Route::post('/spt/export-Pdf', [SptController::class, 'exportPdf'])->name('spt.exportPdf');
-    Route::post('/spt/save', [SptController::class, 'store'])->name('spt.create');
+
 
 
     // debugging

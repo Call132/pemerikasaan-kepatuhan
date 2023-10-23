@@ -144,7 +144,7 @@
                                                         name="jenis_pemeriksaan" required>
                                                         <option value="Kantor">Kantor</option>
                                                         <option value="Lapangan">Lapangan</option>
-                                                        <option value="Final Kantor">Final Kantor</option>
+                                                       
                                                     </select>
                                                 </div>
                                             </div>

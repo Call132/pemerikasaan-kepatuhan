@@ -95,7 +95,7 @@
                     </form>
                     @if (request()->has('periode_pemeriksaan') && request()->has('kategori') &&
                     $badanUsaha->isNotEmpty())
-                    @dump($badanUsaha)
+                 
                     <table class="table table-striped">
                         <thead>
                             <tr>

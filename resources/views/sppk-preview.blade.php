@@ -121,30 +121,38 @@
 </head>
 
 <body>
+
     <div class="content page1" style="font-size: 16px;">
         <p>
-        <div class="right-aligned-text">Gorontalo, ................</div>
-        <span class="label1">Nomor</span> : ..... <br>
+        <div class="right-aligned-text">Gorontalo, {{ \Carbon\Carbon::parse($sppk->tanggal_pemeriksaan)->locale('id')->isoFormat('D MMMM Y') }}</div>
+        <span class="label1">Nomor</span> : {{ $sppk->nomor_sppk }} <br>
         <span class="label1">Lampiran</span> : Satu Berkas <br>
         <span class="label1">Hal</span> : Panggilan Pemeriksaan
         </p>
         <p>
-            Yth. Pimpinan (Badan Usaha)<br>
-            (Alamat)<br>
+
+            {{-- @dd($badanUsaha) --}}
+            Yth. Pimpinan {{ $badanUsaha->nama_badan_usaha }}<br>
+            {{ $badanUsaha->alamat }}<br>
             di <br> Tempat
         </p>
         <p class="indent-text" style="font-size: 16px;">
             Sesuai dengan Pasal 11 huruf c Undang-Undang Republik Indonesia Nomor 24 Tahun 2011 Tentang Badan
             Penyelenggara Jaminan Sosial, BPJS Kesehatan berwenang melakukan pemeriksaan atas kepatuhan Pemberi Kerja
             pada Program Jaminan Kesehatan BPJS Kesehatan Cabang Gorontalo akan melakukan Pemeriksaan terhadap
-            <strong>(Badan Usaha)</strong> dalam hal kewajiban <strong>Pembayaran Iuran</strong>. Untuk itu kami
+            <strong>{{ $badanUsaha->nama_badan_usaha }}</strong> dalam hal kewajiban <strong>Pembayaran Iuran</strong>.
+            Untuk itu kami
             harapkan kehadiran Bapak/Ibu dengan membawa buku, catatan, dan dokumen pendukung sebagaimana terlampir dan
             memberikan keterangan yang diperlukan pada:
         </p>
         <div class="section">
             <div class="form-group" style="font-size: 16px;">
-                <p><span class="label">Hari/Tanggal</span>: </p>
-                <p><span class="label">Waktu</span>: </p>
+                <p><span class="label">Hari/Tanggal</span>:
+                    {{ \Carbon\Carbon::parse($badanUsaha->jadwal_pemeriksaan)->locale('id')->isoFormat('dddd, D MMMM Y') }}
+                </p>
+                <p><span class="label">Waktu</span>:
+                    {{ \Carbon\Carbon::parse($sppk->waktu)->locale('id')->format('H:i') }} WITA</p>
+
                 <p><span class="label">Tempat</span>: Kantor BPJS Kesehatan Cabang Gorontalo</p>
                 <p><span class="label">Agenda</span>: Pemeriksaan Kepatuhan</p>
             </div>
@@ -153,8 +161,8 @@
         <div class="section">
             <div class="form-group" style="font-size: 16px;">
                 <p>Bertemu dengan Petugas Pemeriksa</p>
-                <p><span class="label">Nama</span>: </p>
-                <p><span class="label">NPP</span>: </p>
+                <p><span class="label">Nama</span>: {{ $namaTimPemeriksa }}</p>
+                <p><span class="label">NPP</span>: {{ $nppTimPemeriksa }}</p>
             </div>
         </div>
         <br>
@@ -170,7 +178,7 @@
         <div class="signature">
             <p style="margin-right: 65px;">Kepala Cabang</p>
             <br><br><br>
-            <p style="margin-right: 55px;">Djamal Adriansyah</p>
+            <p style="margin-right: 55px;">{{ $employee }}</p>
         </div>
         <div class="footer">
             <p>RL/ta/PP.01.02</p>
@@ -182,9 +190,9 @@
                 <p style="text-align: left;">Lampiran :</p>
                 <h2 style="text-align: center;">Daftar Permintaan/Peminjaman Buku<br>Catatan atau Dokumen</h2>
                 <div class="form-group" style="font-size: 16px;">
-                    <p><span class="label2">Nama Pemberi Kerja</span>: (Badan Usaha)</p>
-                    <p><span class="label2">Kode Entitas</span>: ........................</p>
-                    <p><span class="label2">Alamat</span>: (Alamat)</p>
+                    <p><span class="label2">Nama Pemberi Kerja</span>: {{ $badanUsaha->nama_badan_usaha }}</p>
+                    <p><span class="label2">Kode Entitas</span>: {{ $badanUsaha->kode_badan_usaha }}</p>
+                    <p><span class="label2">Alamat</span>: {{ $badanUsaha->alamat }}</p>
                 </div>
             </div>
         </div>

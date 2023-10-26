@@ -33,7 +33,7 @@
 
             <div class="card-body">
                 <div class="table-responsive" style="text-align:center;">
-                    <table class="table table-bordered ">
+                    <table class="table table-striped-columns mb-0 ">
                         <thead style="background-color: #00B0F0;">
                             <tr>
                                 <th>No</th>
@@ -45,9 +45,11 @@
                         </thead>
                         <tbody class="table-light">
                             @if ($badanUsahaDiajukan->count() > 0)
-                                {{-- @dd($latestPerencanaan)   --}}
 
-                                @foreach ($badanUsahaDiajukan as $data)
+                                {{-- @dd($latestPerencanaan, $badanUsahaDiajukan) --}}
+                                @foreach ($latestPerencanaan as $data)
+                                    {{-- @dd($data) --}}
+
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $data->start_date }}</td>
@@ -72,7 +74,7 @@
                                         </td>
 
                                         <td>
-                                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                            <textarea name="note" class="form-control" id="note" rows="3"></textarea>
                                         </td>
                                     </tr>
                                 @endforeach

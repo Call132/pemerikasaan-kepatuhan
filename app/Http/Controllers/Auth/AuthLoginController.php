@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class AuthLoginController extends Controller
 {
@@ -32,14 +33,17 @@ class AuthLoginController extends Controller
         return redirect('login')->with('error', 'Email atau kata sandi salah.');
     }
 
-    public function logout(Request $request): RedirectResponse
+    public function logout(Request $request)
     {
+        
+        $request->session()->invalidate();
+        
+        $request->session()->regenerateToken();
+        Session::flush();
         Auth::logout();
 
-        $request->session()->invalidate();
+        
 
-        $request->session()->regenerateToken();
-
-        return redirect('login');
+        return response()->json(['success' => true]);
     }
 }

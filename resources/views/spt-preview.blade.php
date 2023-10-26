@@ -135,7 +135,8 @@
         </div>
         <div class="content page1">
             <h4 class="header">NOMOR: {{ $spt->nomor_spt }}</h4>
-            <p style="text-align: justify;" class="indent-first-line">
+            {{-- <p style="text-align: justify;" class="indent-first-line"> --}}
+            <p style="text-align: justify;" class="indent-text">
                 Berdasarkan Pasal 11 huruf c Undang-Undang Nomor 24 Tahun 2011 Tentang Badan Penyelenggara Jaminan
                 Sosial bahwa dalam melaksanakan tugas, BPJS Kesehatan berwenang untuk melakukan pengawasan dan
                 pemeriksaan atas kepatuhan Peserta dan Pemberi Kerja dalam memenuhi kewajibannya sesuai dengan ketentuan
@@ -153,7 +154,10 @@
                     <p><span class="label">Nama</span>: {{ $pendamping->nama }}</p>
                     <p><span class="label">NPP</span>: {{ $pendamping->npp }}</p>
                 @endforeach
-                <p><span class="label">Jabatan</span>: {{ $spt->jabatan }}</p>
+                @foreach ($spt->extPendamping as $extPendamping)
+                    <p><span class="label">Nama</span>: {{ $extPendamping->nama }}</p>
+                    <p><span class="label">Jabatan</span>: {{ $extPendamping->jabatan }}</p>
+                @endforeach
             </div>
 
             <div class="">
@@ -167,13 +171,15 @@
             <p style="text-align: right; margin-bottom:-8px; margin-right: 5px">Gorontalo, {{ $dateNow }}</p>
             <div class="signature-container" style="text-align: right;">
                 <div class="signature">
-                    <p style="margin-right: 65px;">Kepala Cabang</p>
-                    <br><br><br>
-                    <p style="margin-right: 49px;">{{ $employee }}</p>
-
+                    <div style="float: right; text-align: right;">
+                        <p style="margin-right: 65px;">Kepala Cabang</p>
+                        <br><br><br>
+                        <p style="margin-right: 46px;">{{ $employee }}</p>
+                    </div>
                 </div>
             </div>
-            <div class="footer">
+
+            <div class="footer" style="clear: both;">
                 <p>RL/ta/PP.01.02</p>
             </div>
         </div>
@@ -182,6 +188,12 @@
 
     <div class="page-break"></div>
     <div class="content page2 ">
+        <div class="header">
+            <h4>Lampiran</h4>
+        </div>
+        <div class="header">
+            <h4>Nomor : {{ $spt->nomor_spt }}</h4>
+        </div>
         <div class="card-body p-0">
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -241,6 +253,9 @@
                                 </tr>
                             </tfoot>
                         </table>
+                        <div class="footer" style="clear: both;">
+                            <p>RL/ta/PP.01.02</p>
+                        </div>
                     @else
                         <div class="card-body p-0">
                             <div class="table-responsive">
@@ -267,6 +282,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
+
                             </div>
                         </div>
                     @endif

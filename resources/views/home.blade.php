@@ -14,8 +14,81 @@
             <div class="section-header">
                 <h1>Dashboard</h1>
             </div>
-        
-
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-primary">
+                            <i class="far fa-user"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Total Admin</h4>
+                            </div>
+                            <div class="card-body">
+                                6
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-danger">
+                            <i class="far fa-newspaper"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>News</h4>
+                            </div>
+                            <div class="card-body">
+                                42
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-warning">
+                            <i class="far fa-file"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Reports</h4>
+                            </div>
+                            <div class="card-body">
+                                1,201
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-success">
+                            <i class="fas fa-circle"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Online Users</h4>
+                            </div>
+                            <div class="card-body">
+                                47
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+            @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @endif
             <div class="row">
 
                 <div class="col-lg-12 col-md-12 col-12 col-sm-12">
@@ -26,7 +99,7 @@
 
                             @if (optional($latestPerencanaan)->count() > 0)
                                 @if ($latestPerencanaan->status === 'diajukan')
-                                    <span class="badge badge-info">Belum Diapprove</span>
+                                    <span class="badge badge-danger">Belum Diapprove</span>
                                 @elseif ($latestPerencanaan->status === 'approved')
                                     <span class="badge badge-success">Approved</span>
                                 @endif
@@ -54,7 +127,7 @@
                                         </div>
                                         <!-- Menggunakan ml-auto untuk meletakkan tombol di ujung kanan -->
                                         <button type="submit" class="btn btn-primary m-auto mt-6 mr-2">Export to
-                                            Excel</button>
+                                            Excel <i class="fa-solid fa-file-export"></i></button>
                                     </div>
                                 </form>
 
@@ -79,7 +152,7 @@
                                                     <th>Jenis Pemeriksaan</th>
                                                     <th>Jadwal Pemeriksaan</th>
                                                     <th><a
-                                                            href="{{ route('data-pemeriksaan.create', ['perencanaan_id' => $latestPerencanaanId]) }}"class="btn btn-primary m-auto">Tambah</a>
+                                                            href="{{ route('data-pemeriksaan.create', ['perencanaan_id' => $latestPerencanaanId]) }}"class="btn btn-primary m-auto">Add</a>
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -103,14 +176,14 @@
                                                         <td>
                                                             <div class="btn-group " role="group">
                                                                 <a href="{{ route('edit-data-pemeriksaan', ['id' => $data->id]) }}"
-                                                                    class="btn btn-primary">Edit</a>
+                                                                    class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></a>
                                                                 <form
                                                                     action="{{ route('delete.badanusaha', ['id' => $data->id]) }}"
                                                                     method="post">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     <button type="submit"
-                                                                        class="btn btn-danger ml-2">Hapus</button>
+                                                                        class="btn btn-danger ml-2"><i class="fa-solid fa-trash"></i></button>
                                                                 </form>
                                                             </div>
                                                         </td>

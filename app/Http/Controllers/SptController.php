@@ -18,6 +18,10 @@ use Illuminate\Support\Facades\DB;
 
 class SptController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth'); // Middleware otentikasi
+    }
     public function create()
     {
         $badanUsahaDiajukan = DB::table('perencanaan')
@@ -50,6 +54,7 @@ class SptController extends Controller
             'petugas_pemeriksa_npp' => 'nullable',
             'pendamping_nama.*' => 'nullable',
             'pendamping_npp.*' => 'nullable',
+            'ext_pendamping_nama' => 'nullable',
             'jabatan' => 'nullable',
         ]);
         if (!$request->has('tanggal_spt')) {
@@ -82,6 +87,12 @@ class SptController extends Controller
                 $spt->pendamping()->save($pendamping);
             }
         }
+
+        $spt->extPendamping()->create([
+            'nama' => $request->input('ext_pendamping_nama'),
+            'jabatan' => $request->input('jabatan'),
+        ]);
+        
 
         $employee = employee_roles::where('posisi', 'Kepala Cabang')->pluck('nama')->first();
 
@@ -139,7 +150,7 @@ class SptController extends Controller
         // Pass the $spt variable to the view
         return view('spt-preview', compact('spt', 'badanUsahaDiajukan'))->with('success', 'SPT berhasil disimpan.');
 
-        //return redirect()->route('spt.preview', ['spt' => $spt])->with('success', 'SPT berhasil disimpan.');
+        //return redirect()->route('pengiriman-surat')->with('success', 'SPT berhasil disimpan.');
     }
 
     // Menampilkan daftar BU

@@ -15,7 +15,7 @@ class SuratPerintahTugas extends Model
     protected $fillable = [
         'nomor_spt',
         'tanggal_spt',
-        'jabatan',
+        
 
 
     ];
@@ -27,5 +27,10 @@ class SuratPerintahTugas extends Model
     {
         return $this->hasMany(Pendamping::class, 'surat_perintah_tugas_id');
     }
+    public function extPendamping()
+    {
+        return $this->hasMany(extPendamping::class, 'surat_perintah_tugas_id');
+    }
+
     use HasFactory;
 }

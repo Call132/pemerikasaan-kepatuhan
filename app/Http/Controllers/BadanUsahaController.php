@@ -11,6 +11,10 @@ use App\Models\perencanaan;
 
 class BadanUsahaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth'); // Middleware otentikasi
+    }
     public function exportToExcel(Request $request)
     {
         $tanggalPerencanaan = $request->input('start_date'); // Mengambil Tanggal Awal dari permintaan
@@ -41,7 +45,7 @@ class BadanUsahaController extends Controller
         // Validate the form data
         $request->validate([
             'nama_badan_usaha' => 'required|string|max:255',
-            'kode_badan_usaha' => 'required|string|max:255',
+            'kode_badan_usaha' => 'unique:badan_usaha',
             'alamat' => 'required|string',
             'kota_kab' => 'required|string|max:255',
             'jenis_ketidakpatuhan' => 'required|string|max:255',
@@ -77,11 +81,11 @@ class BadanUsahaController extends Controller
         if ($bu->save()) {
             // Data successfully saved
             session()->flash('success', 'Data berhasil ditambahkan.');
-            return redirect()->route('data-pemeriksaan.create', ['perencanaan_id' => $perencanaanId]);
+            return redirect()->route('data-pemeriksaan.create', ['perencanaan_id' => $perencanaanId])->with('success', 'Data berhasil ditambahkan.');
         } else {
             // Data failed to save
             session()->flash('error', 'Data gagal ditambahkan. Silakan coba lagi.');
-            return redirect()->route('data-pemeriksaan.create', ['perencanaan_id' => $perencanaanId]);
+            return redirect()->route('data-pemeriksaan.create', ['perencanaan_id' => $perencanaanId])->with('error', 'Data gagal ditambahkan.');
         }
     }
     public function delete($id)
@@ -126,7 +130,7 @@ class BadanUsahaController extends Controller
         // Validasi input data
         $this->validate($request, [
             'nama_badan_usaha' => 'required',
-            'kode_badan_usaha' => 'required',
+            'kode_badan_usaha' => 'unique:badan_usaha',
             'alamat' => 'required',
             'kota_kab' => 'required',
             'jenis_ketidakpatuhan' => 'required',

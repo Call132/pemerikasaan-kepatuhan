@@ -30,8 +30,7 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $bu->nama_badan_usaha }}</td>
                                 <td>
-                                    <a href="{{ route('program-pemeriksaan.form', ['id' => $bu->id]) }}"><i class="fa-solid fa-file-export }}"></a>
-
+                                    <a href="{{ route('program-pemeriksaan.form', ['id' => $bu->id]) }}"><i class="fa-solid fa-file-export }}"></i> Buat</a>
                                 </td>
                             </tr>
                             @endforeach

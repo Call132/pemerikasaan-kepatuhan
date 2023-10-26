@@ -9,10 +9,13 @@ use App\Http\Controllers\pengirimanController;
 use App\Http\Controllers\pengirimanSurat;
 use App\Http\Controllers\perencanaanController;
 use App\Http\Controllers\programPemeriksaanController;
+use App\Http\Controllers\kertasPemeriksaanController;
 use App\Http\Controllers\SptController;
 use App\Http\Controllers\SPPKController;
 use App\Http\Controllers\SPPFPKController;
 use App\Http\Controllers\SPPLController;
+use App\Http\Controllers\BAPKetController;
+
 
 use App\Models\BadanUsaha;
 use Illuminate\Support\Facades\Route;
@@ -104,9 +107,11 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     //Route::post('program-pemeriksaan/download/{id}', [programPemeriksaanController::class, 'store'])->name('program-pemeriksaan.store');
     Route::post('/program-pemeriksaan/download', [ProgramPemeriksaanController::class, 'store'])->name('program-pemeriksaan.store');
 
-    Route::get('/kertas-kerja', function () {
-        return view('kertas-kerja');
-    });
+    Route::get('/kertas-kerja', [kertasPemeriksaanController::class, 'dashboard'])->name('kertas-kerja');
+    Route::post('/kertas-kerja', [kertasPemeriksaanController::class, 'cari'])->name('kertas-kerja.cari');
+    Route::get('/kertas-kerja/download/{id}', [kertasPemeriksaanController::class, 'download'])->name('kertas-kerja.download');
+
+    Route::get('/bapket-preview', [BAPKetController::class, 'preview'])->name('bapket-preview');
 
 
     Route::get('data-pemeriksaan', function () {

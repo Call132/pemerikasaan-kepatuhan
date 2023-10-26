@@ -12,7 +12,8 @@ use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Barryvdh\DomPDF\PDF as DomPDFPDF;
-use Carbon\Carbon;
+use Carbon\Carbon as carbon;
+use Illuminate\Support\Carbon as SupportCarbon;
 use Illuminate\Support\Facades\DB;
 
 class SptController extends Controller
@@ -109,7 +110,7 @@ class SptController extends Controller
         if ($perencanaan) {
             // Mengonversi tanggal ke format Indonesia
             $tanggalMulai = Carbon::parse($perencanaan->start_date)->translatedFormat('d F Y');
-            $tanggalAkhir = Carbon::parse($perencanaan->end_date)->translatedFormat('d F Y');
+            $tanggalAkhir = carbon::parse($perencanaan->end_date)->translatedFormat('d F Y');
         } else {
             // Handle the case where no 'approved' records were found
             return response()->json(['error' => 'No approved records found'], 404);
@@ -172,5 +173,9 @@ class SptController extends Controller
 
         $sptList = SuratPerintahTugas::all();
         return view('spt-preview', compact('badanUsahaDiajukan'));
+    }
+    public function preview()
+    {
+        return view('spt-preview'); // Sesuaikan dengan nama tampilan Anda
     }
 }

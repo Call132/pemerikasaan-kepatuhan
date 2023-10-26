@@ -60,7 +60,7 @@
                         </div>
                         </p>
                     </div>
-                    <form method="POST" action="{{ route('pengiriman-surat.cari') }}">
+                    <form method="POST" action="{{ route('kertas-kerja.cari') }}">
                         @csrf
                         <div class="form-group">
 

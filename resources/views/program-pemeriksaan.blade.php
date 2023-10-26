@@ -30,13 +30,7 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $bu->nama_badan_usaha }}</td>
                                 <td>
-                                    <form action="{{ route('program-pemeriksaan.download', ['id' => $bu->id]) }}"
-                                        method="POST">
-                                        @csrf
-                                        <button type="submit" class="btn btn-primary"><i
-                                                class="fas fa-file-download "></i>
-                                            Download</button>
-                                    </form>
+                                    <a href="{{ route('program-pemeriksaan.form', ['id' => $bu->id]) }}"><i class="fa-solid fa-file-export }}"></a>
 
                                 </td>
                             </tr>

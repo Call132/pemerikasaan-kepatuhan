@@ -98,8 +98,11 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         return view('sppfpk-preview');
     })->name('sppfpk.preview');
 
-    Route::get('/program-pemeriksaan', [programPemeriksaanController::class, 'create']);
-    Route::post('/program-pemeriksaan/download/{id}', [programPemeriksaanController::class, 'download'])->name('program-pemeriksaan.download');
+    Route::get('/program-pemeriksaan', [programPemeriksaanController::class, 'create'])->name('program-pemeriksaan');
+    Route::get('/program-pemeriksaan/form/{id}', [programPemeriksaanController::class, 'form'])->name('program-pemeriksaan.form');
+   // Route::get('/program-pemeriksaan/download/{id}', [programPemeriksaanController::class, 'download'])->name('program-pemeriksaan.download');
+    //Route::post('program-pemeriksaan/download/{id}', [programPemeriksaanController::class, 'store'])->name('program-pemeriksaan.store');
+    Route::post('/program-pemeriksaan/download', [ProgramPemeriksaanController::class, 'store'])->name('program-pemeriksaan.store');
 
     Route::get('/kertas-kerja', function () {
         return view('kertas-kerja');

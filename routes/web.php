@@ -110,6 +110,9 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/kertas-kerja/form/{id}', [kertasPemeriksaanController::class, 'form'])->name('kertas-kerja.form');
     Route::post('/kertas-kerja/download', [kertasPemeriksaanController::class, 'store'])->name('kertas-kerja.store');
 
+    Route::get('/bapket/form/{id}', [kertasPemeriksaanController::class, 'formBapket'])->name('bapket.form');
+    Route::post('/bapket/download', [kertasPemeriksaanController::class, 'storeBapket'])->name('bapket.store');
+
     Route::get('/bapket-preview', [BAPKetController::class, 'preview'])->name('bapket-preview');
 
 

@@ -36,16 +36,63 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="panel panel-default">
-                            <form>
+                            <form method="post" action="{{ route('bapket.store', ['id' => $badanUsaha->id]) }}">
                                 @csrf
                                 <div class="card-header text-center">
                                     <h5>Formulir Catatan Hasil Pemeriksaan</h5>
+                                </div>
+                                @php
+                                $jumlah_tunggakan = number_format(floatval($badanUsaha->jumlah_tunggakan), 2, ',', '.');
+                                @endphp
+                               
+                                <input type="hidden" value="{{ $spt->id }}" name="spt_id">
+                                <input type="hidden" value="{{ $badanUsaha->id }}" name="bu_id">
+
+                                <div class="form-group">
+                                    <label for="TimPemeriksa">Tim Pemeriksa</label>
+                                    <input value="{{ $timPemeriksa->nama }}" class="form-control" type="text"
+                                        name="timPemeriksa" id="timPemeriksa">
+                                </div>
+                                <div class="form-group">
+                                    <label for="timPemeriksaNpp">Tim Pemeriksa</label>
+                                    <input value="{{ $timPemeriksa->npp }}" class="form-control" type="text"
+                                        name="timPemeriksaNpp" id="timPemeriksaNpp">
+                                </div>
+                                <div class="card-header text-center text-black ">
+                                    <h5>Informasi Pemberi Kerja</h5>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Nama">Nama</label>
+                                    <input class="form-control" type="text" name="nama" id="nama" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Jabatan">Jabatan</label>
+                                    <input class="form-control" type="text" name="jabatan" id="jabatan" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nama_bu">Nama Badan Usaha</label>
+                                    <input value="{{ $badanUsaha->nama_badan_usaha }}" class="form-control" type="text" name="nama_bu" id="nama_bu">
+                                </div>
+                                <div class="form-group">
+                                    <label for="kode_bu">Kode Badan Usaha</label>
+                                    <input value="{{ $badanUsaha->kode_badan_usaha }}" class="form-control" type="text" name="kode_bu" id="kode_bu">
                                 </div>
                                 <div class="card-header text-center">
                                     <h5>Berita Acara Pengambilan Keterangan</h5>
                                 </div>
 
-                                
+                                <div class="form-group">
+                                    <label for="tunggakanIuran">Tunggakan Iuran</label>
+                                    <input value="{{ $jumlah_tunggakan }}" class="form-control" type="text" name="tunggakanIuran" required id="tunggakanIuran">
+                                </div>
+                                <div class="form-group">
+                                    <label for="bulanMenunggak">Bulan Menunggak</label>
+                                    <input class="form-control" type="text" name="bulanMenunggak" required id="bulanMenunggak">
+                                </div>
+                                <div class="form-group">
+                                    <label for="sebabMenunggak">Sebab Menunggak</label>
+                                    <input class="form-control" type="text" name="sebabMenunggak" required id="sebabMenunggak">
+                                </div>
                                 <button type="submit" class="btn btn-primary ">Submit</button>
                             </form>
 

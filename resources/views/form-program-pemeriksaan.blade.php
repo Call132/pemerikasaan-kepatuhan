@@ -90,13 +90,13 @@
                                     <label>Realisasi</label><br>
                                     <div class="div">
                                         <label class="radio-label">
-                                            <input type="radio" name="aspek_tenaga_kerja" value="Ya">
+                                            <input type="radio" name="aspek_tenaga_kerja" value="Ya" required>
                                             <span>Ya</span>
                                         </label>
                                     </div>
                                     <div class="div">
                                         <label class="radio-label">
-                                            <input type="radio" name="aspek_tenaga_kerja" value="Tidak">
+                                            <input type="radio" name="aspek_tenaga_kerja" value="Tidak" required>
                                             <span>Tidak</span>
                                         </label>
                                     </div>
@@ -107,13 +107,13 @@
                                     <label>Realisasi</label><br>
                                     <div class="div">
                                         <label class="radio-label">
-                                            <input type="radio" name="aspek_iuran" value="Ya">
+                                            <input type="radio" name="aspek_iuran" value="Ya" required>
                                             <span>Ya</span>
                                         </label>
                                     </div>
                                     <div class="div">
                                         <label class="radio-label">
-                                            <input type="radio" name="aspek_iuran" value="Tidak">
+                                            <input type="radio" name="aspek_iuran" value="Tidak" required>
                                             <span>Tidak</span>
                                         </label>
                                     </div>
@@ -143,13 +143,13 @@
 
                                     <div class="div">
                                         <label class="radio-label">
-                                            <input type="radio" name="peraturan_perusahaan" value="Ya">
+                                            <input type="radio" name="peraturan_perusahaan" value="Ya" required>
                                             <span>Ada</span>
                                         </label>
                                     </div>
                                     <div class="div">
                                         <label class="radio-label">
-                                            <input type="radio" name="peraturan_perusahaan" value="Tidak">
+                                            <input type="radio" name="peraturan_perusahaan" value="Tidak" required>
                                             <span>Tidak Ada</span>
                                         </label>
                                     </div>
@@ -160,13 +160,13 @@
                                         Pekerja</label>
                                     <div class="div">
                                         <label class="radio-label">
-                                            <input type="radio" name="daftar_pekerja" value="Ya">
+                                            <input type="radio" name="daftar_pekerja" value="Ya" required>
                                             <span>Ada</span>
                                         </label>
                                     </div>
                                     <div class="div">
                                         <label class="radio-label">
-                                            <input type="radio" name="daftar_pekerja" value="Tidak">
+                                            <input type="radio" name="daftar_pekerja" value="Tidak" required>
                                             <span>Tidak Ada</span>
                                         </label>
                                     </div>
@@ -176,13 +176,13 @@
                                     <label>Struktur Organisasi</label>
                                     <div class="div">
                                         <label class="radio-label">
-                                            <input type="radio" name="struktur_organisasi" value="Ya">
+                                            <input type="radio" name="struktur_organisasi" value="Ya" required>
                                             <span>Ada</span>
                                         </label>
                                     </div>
                                     <div class="div">
                                         <label class="radio-label">
-                                            <input type="radio" name="struktur_organisasi" value="Tidak">
+                                            <input type="radio" name="struktur_organisasi" value="Tidak" required>
                                             <span>Tidak Ada</span>
                                         </label>
                                     </div>
@@ -192,13 +192,13 @@
                                     <label>Daftar Slip Gaji Seluruh Pekerja</label>
                                     <div class="div">
                                         <label class="radio-label">
-                                            <input type="radio" name="daftar_slip_gaji" value="Ya">
+                                            <input type="radio" name="daftar_slip_gaji" value="Ya" required>
                                             <span>Ada</span>
                                         </label>
                                     </div>
                                     <div class="div">
                                         <label class="radio-label">
-                                            <input type="radio" name="daftar_slip_gaji" value="Tidak">
+                                            <input type="radio" name="daftar_slip_gaji" value="Tidak" required>
                                             <span>Tidak Ada</span>
                                         </label>
                                     </div>
@@ -208,13 +208,13 @@
                                     <label>Slip Gaji Pekerja</label>
                                     <div class="div">
                                         <label class="radio-label">
-                                            <input type="radio" name="slip_gaji" value="Ya">
+                                            <input type="radio" name="slip_gaji" value="Ya" required>
                                             <span>Ada</span>
                                         </label>
                                     </div>
                                     <div class="div">
                                         <label class="radio-label">
-                                            <input type="radio" name="slip_gaji" value="Tidak">
+                                            <input type="radio" name="slip_gaji" value="Tidak" required>
                                             <span>Tidak Ada</span>
                                         </label>
                                     </div>
@@ -224,13 +224,13 @@
                                     <label>Absensi Pekerja</label>
                                     <div class="div">
                                         <label class="radio-label">
-                                            <input type="radio" name="absensi" value="Ya">
+                                            <input type="radio" name="absensi" value="Ya" required>
                                             <span>Ada</span>
                                         </label>
                                     </div>
                                     <div class="div">
                                         <label class="radio-label">
-                                            <input type="radio" name="absensi" value="Tidak">
+                                            <input type="radio" name="absensi" value="Tidak" required>
                                             <span>Tidak Ada</span>
                                         </label>
                                     </div>

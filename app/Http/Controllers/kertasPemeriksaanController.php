@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\KertasPemeriksaan;
 use App\Models\BadanUsaha;
 use App\Models\perencanaan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -13,15 +14,21 @@ use Maatwebsite\Excel\Facades\Excel;
 class kertasPemeriksaanController extends Controller
 {
 
-    public function dashboard()
+    public function create()
     {
         // Ambil data perencanaan dan relasikan dengan BadanUsaha
-        $perencanaan = perencanaan::all();
         $badanUsaha = BadanUsaha::all();
-
-
+        $perencanaan = perencanaan::all();
         // Then, return a view
-        return view('kertas-kerja', compact('perencanaan', 'badanUsaha'));
+        return view('kertas-kerja', compact('badanUsaha', 'perencanaan'));
+    }
+
+    public function form($id)
+    {
+        $badanUsaha = BadanUsaha::findOrFail($id);
+        $jadwal_pemeriksaan = Carbon::parse($badanUsaha->jadwal_pemeriksaan)->isoFormat('MMMM', 'ID');
+
+        return view('form-kertas-kerja', compact('badanUsaha', 'jadwal_pemeriksaan'));
     }
     public function cari(Request $request)
     {
@@ -43,22 +50,34 @@ class kertasPemeriksaanController extends Controller
         }
 
         return view('kertas-kerja', compact('badanUsaha', 'perencanaan'));
-
-        //return redirect()->route('pengiriman-surat')->withInput($request->all())->with(['badanUsaha' => $badanUsaha, 'perencanaan' => $perencanaan, 'periode_pemeriksaan' => $start_date]);
     }
-    public function previewKKP($id)
-{
-    // Ambil data Badan Usaha berdasarkan $id
-    $badanUsaha = BadanUsaha::find($id);
 
-    // Kembalikan tampilan "preview kkp" dengan data Badan Usaha
-    return view('preview-kkp', compact('badanUsaha'));
-}
-public function download($id)
+    public function store(Request $request)
     {
-        $badanUsaha = BadanUsaha::findOrFail($id);
-        
-        
-        return Excel::download(new KertasPemeriksaan($badanUsaha), 'Kertas Kerja Pemeriksaan.xlsx');
+        $validator = $request->validate([
+            'bu_id' => 'required',
+            'npwp' => 'required',
+            'ref_pekerja' => 'required',
+            'pemeriksa' => 'required',
+            'master_file' => 'required',
+            'koreksi' => 'required',
+            'ref_iuran' => 'required',
+            'total_pekerja' => 'required',
+            'jumlah_bulan_menunggak' => 'required',
+        ]);
+        if ($validator) {
+            $id = $request->input('bu_id');
+            $badanUsaha = BadanUsaha::findOrFail($id);
+            $npwp = $request->input('npwp');
+            $refPekerja = $request->input('ref_pekerja');
+            $pemeriksa = $request->input('pemeriksa');
+            $master_file = $request->input('master_file');
+            $koreksi = $request->input('koreksi');
+            $refIuran = $request->input('ref_iuran');
+            $totalPekerja = $request->input('total_pekerja');
+            $bulanMenunggak = $request->input('jumlah_bulan_menunggak');
+
+            return Excel::download(new KertasPemeriksaan($badanUsaha, $npwp, $refPekerja, $pemeriksa, $master_file, $koreksi, $refIuran, $totalPekerja, $bulanMenunggak), 'Kertas Kerja Pemeriksaan.xlsx');
+        }
     }
 }

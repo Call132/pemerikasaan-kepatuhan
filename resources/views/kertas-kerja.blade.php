@@ -6,6 +6,10 @@
 <link rel="stylesheet" href="{{ asset('library/jqvmap/dist/jqvmap.min.css') }}">
 <link rel="stylesheet" href="{{ asset('library/summernote/dist/summernote-bs4.min.css') }}">
 <style>
+    a {
+        margin: 10px;
+    }
+
     form {
         display: flex;
         justify-content: center;
@@ -64,9 +68,10 @@
                         @csrf
                         <div class="form-group">
 
-                            {{-- @dd($perencanaan) --}}
+
                             <select name="periode_pemeriksaan" id="periode_pemeriksaan">
                                 <option value="">Periode Pemeriksaan</option>
+
                                 @foreach ($perencanaan as $data)
                                 <option value="{{ $data->start_date }}" {{-- @if ($data->start_date ==
                                     old('periode_pemeriksaan')) selected @endi> --}}
@@ -76,7 +81,6 @@
                                 @endforeach
                             </select>
                         </div>
-
                         <div class="form-group">
                             <select name="kategori" id="kategori">
                                 <option value="">Jenis Pemeriksaan</option>
@@ -95,7 +99,7 @@
                     </form>
                     @if (request()->has('periode_pemeriksaan') && request()->has('kategori') &&
                     $badanUsaha->isNotEmpty())
-                 
+
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -111,40 +115,30 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $bu->nama_badan_usaha }}</td>
                                 <td>{{ $bu->jenis_pemeriksaan }}</td>
-                                <td>
-                                <!-- Tombol Buat Surat di setiap baris -->
-                                <a href="{{ route('kertas-kerja.download', ['id' => $bu->id]) }}" class="btn btn-primary">KKP</a>
-                                <a href="{{ route('bapket-preview') }}" class="btn btn-primary">BAPKet</a>
 
-                            </td>
                                 <td>
-                                  @if ($bu->jenis_pemeriksaan == 'Lapangan' && request('kategori') != 'final')
-                                      <a href="{{ route('sppl', ['id' => $bu->id]) }}">
-                                          <i class="fa-solid fa-file-export"></i>
-                                      </a>
-                                  @elseif ($bu->jenis_pemeriksaan == 'Kantor' && request('kategori') == 'final')
-                                      <a href="{{ route('sppfpk', ['id' => $bu->id]) }}">
-                                          <i class="fa-solid fa-file-export"></i>
-                                      </a>
-                                  @elseif ($bu->jenis_pemeriksaan == 'Kantor')
-                                      <a href="{{ route('sppk', ['id' => $bu->id]) }}">
-                                          <i class="fa-solid fa-file-export"></i>
-                                      </a>
-                                  @endif
+                                    @if ($bu->jenis_pemeriksaan == 'Lapangan' && request('kategori') != 'final')
+                                    <a href="{{ route('kertas-kerja.form', ['id' => $bu->id]) }}">
+                                        <i class="fa-solid fa-file-export }}"></i> KKP</a>
+
+                                    <a href="#"><i class="fa-solid fa-file-export"></i>BAPKET</a>
+                                    @elseif ($bu->jenis_pemeriksaan == 'Kantor' && request('kategori') == 'final')
+                                    <a href="{{ route('sppfpk', ['id' => $bu->id]) }}">
+                                        <i class="fa-solid fa-file-export"></i>
+                                    </a>
+                                    @elseif ($bu->jenis_pemeriksaan == 'Kantor')
+                                    <a href="{{ route('sppk', ['id' => $bu->id]) }}">
+                                        <i class="fa-solid fa-file-export"></i>
+                                    </a>
+                                    @endif
                                 </td>
-
                             </tr>
                             @endforeach
                         </tbody>
-
-
                     </table>
                     @elseif (!request()->has('periode_pemeriksaan'))
                     <p>Tidak ada hasil yang sesuai dengan kategori.</p>
                     @endif
-
-
-
                 </div>
             </div>
         </div>
@@ -158,9 +152,5 @@
     <script src="{{ asset('library/jqvmap/dist/maps/jquery.vmap.world.js') }}"></script>
     <script src="{{ asset('library/summernote/dist/summernote-bs4.min.js') }}"></script>
     <script src="{{ asset('library/chocolat/dist/js/jquery.chocolat.min.js') }}"></script>
-
-
-
-
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/index-0.js') }}"></script>

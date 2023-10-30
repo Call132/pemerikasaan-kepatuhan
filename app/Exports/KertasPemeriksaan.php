@@ -3,6 +3,8 @@
 namespace App\Exports;
 
 use App\Models\BadanUsaha;
+use App\Models\employee_roles;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -16,13 +18,22 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
 
 {
     protected $badanUsaha;
+    protected $npwp, $refPekerja, $pemeriksa, $master_file, $koreksi, $refIuran, $totalPekerja, $bulanMenunggak;
     /**
      * @return \Illuminate\Support\Collection
      */
 
-    public function __construct(BadanUsaha $badanUsaha)
+    public function __construct($badanUsaha, $npwp, $refPekerja, $pemeriksa, $master_file, $koreksi, $refIuran, $totalPekerja, $bulanMenunggak)
     {
         $this->badanUsaha = $badanUsaha->id;
+        $this->npwp = $npwp;
+        $this->refPekerja = $refPekerja;
+        $this->pemeriksa = $pemeriksa;
+        $this->master_file = $master_file;
+        $this->koreksi = $koreksi;
+        $this->refIuran = $refIuran;
+        $this->totalPekerja = $totalPekerja;
+        $this->bulanMenunggak = $bulanMenunggak;
     }
 
 
@@ -51,25 +62,36 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
         $sheet->getColumnDimension('H')->setWidth(14.1);
         $sheet->getColumnDimension('G')->setWidth(11.8);
         $sheet->getColumnDimension('F')->setWidth(15.6);
-        $sheet->getColumnDimension('E')->setWidth(6);
+        $sheet->getColumnDimension('E')->setWidth(8.6);
         $sheet->getColumnDimension('A')->setWidth(3.8);
         return [
+
 
             'A1:I1' => [
                 'font' => [
                     'bold' => true, // Tebal (bold)
                     'size' => 14,
-                    'name' => 'Calibri', // Mengatur font Arial
+
                 ],
                 'alignment' => [
                     'horizontal' => 'center', // Tengah (center)
                     'vertical' => 'center',     // Tengah (center)
                 ],
             ],
+            'A1:I30' => [
+                'font' => [
+                    'size' => 10,
+
+
+                ],
+
+            ],
+            
+            
             'A11' => [
                 'font' => [
                     'bold' => true, // Tebal (bold)
-                    'name' => 'Calibri', // Mengatur font Arial
+
                     'size' => 11,
                 ],
                 'alignment' => [
@@ -79,7 +101,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
             ],
             'A12' => [
                 'font' => [
-                    'name' => 'Calibri', // Mengatur font Arial
+                    // Mengatur font Arial
                     'size' => 11,
                 ],
                 'alignment' => [
@@ -89,7 +111,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
             ],
             'D3:I9' => [
                 'font' => [
-                    'name' => 'Calibri', // Mengatur font Arial
+                    // Mengatur font Arial
                     'size' => 10,
                 ],
                 'alignment' => [
@@ -109,7 +131,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                     'vertical' => 'center',     // Tengah (center)
                 ],
                 'font' => [
-                    'name' => 'Calibri', // Mengatur font Arial
+                    // Mengatur font Arial
                     'size' => 11,
                     'bold' => true, // Tebal (bold)
                 ],
@@ -122,7 +144,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
             ],
             'D3:F9' => [
                 'font' => [
-                    'name' => 'Calibri', // Mengatur font Arial
+                    // Mengatur font Arial
                     'size' => 10,
                 ],
             ],
@@ -142,7 +164,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                     'vertical' => 'center',     // Tengah (center)
                 ],
             ],
-            'A14:H15' => [
+            'A14:I15' => [
                 'font' => [
                     'size' => 8,
                 ],
@@ -152,8 +174,12 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                         'color' => ['argb' => '000000'],
                     ], // Warna hitam
                 ],
+                'alignment' => [
+                    'horizontal' => 'center', // Tengah (center)
+                    'vertical' => 'center',     // Tengah (center)
+                ],
             ],
-            'I14:I15' => [
+            'I14:H15' => [
                 'font' => [
                     'size' => 8,
                 ],
@@ -163,6 +189,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                         'color' => ['argb' => '000000'],
                     ], // Warna hitam
                 ],
+                
             ],
             'A14:A15' => [
                 'font' => [
@@ -203,13 +230,13 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
             'A13:I15' => [
                 'font' => [
                     'size' => 8,
-                    'name' => 'Arial', // Mengatur font Arial
+                    // Mengatur font Arial
                 ],
             ],
             'A17' => [
                 'font' => [
                     'bold' => true, // Tebal (bold)
-                    'name' => 'Calibri', // Mengatur font Arial
+                    // Mengatur font Arial
                     'size' => 11,
                 ],
                 'alignment' => [
@@ -259,7 +286,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                     ], // Warna hitam
                 ],
                 'alignment' => [
-                    'horizontal' => 'left', // Tengah (center)
+                    'horizontal' => 'center', // Tengah (center)
                     'vertical' => 'center',     // Tengah (center)
                 ],
             ],
@@ -275,7 +302,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
             'A18:I18' => [
                 'font' => [
                     'size' => 8,
-                    'name' => 'Arial', // Mengatur font Arial
+                    // Mengatur font Arial
                 ],
                 'alignment' => [
                     'horizontal' => 'center', // Tengah (center)
@@ -296,7 +323,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
             'A22' => [
                 'font' => [
                     'bold' => true, // Tebal (bold)
-                    'name' => 'Calibri', // Mengatur font Arial
+                    // Mengatur font Arial
                     'size' => 11,
                 ],
                 'alignment' => [
@@ -307,7 +334,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
             'A23:I23' => [
                 'font' => [
                     'bold' => true, // Tebal (bold)
-                    'name' => 'Calibri', // Mengatur font Arial
+                    // Mengatur font Arial
                     'size' => 11,
                 ],
                 'alignment' => [
@@ -324,7 +351,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
             'A24:I24' => [
                 'font' => [
                     'bold' => true, // Tebal (bold)
-                    'name' => 'Arial', // Mengatur font Arial
+                    // Mengatur font Arial
                     'size' => 8,
                 ],
                 'alignment' => [
@@ -340,7 +367,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
             ],
             'A25:I25' => [
                 'font' => [
-                    'name' => 'Arial', // Mengatur font Arial
+                    // Mengatur font Arial
                     'size' => 8,
                 ],
                 'borders' => [
@@ -352,7 +379,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
             ],
             'A25' => [
                 'font' => [
-                    'name' => 'Arial', // Mengatur font Arial
+                    // Mengatur font Arial
                     'size' => 8,
                 ],
                 'borders' => [
@@ -369,7 +396,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
             'B25' => [
                 'font' => [
                     'italic' => true, // Tebal (bold)
-                    'name' => 'Arial', // Mengatur font Arial
+                    // Mengatur font Arial
                     'size' => 8,
                 ],
                 'borders' => [
@@ -386,7 +413,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
             'F25' => [
                 'font' => [
                     'italic' => true, // Tebal (bold)
-                    'name' => 'Arial', // Mengatur font Arial
+                    // Mengatur font Arial
                     'size' => 8,
                 ],
                 'borders' => [
@@ -403,7 +430,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
             'A28:I28' => [
                 'font' => [
                     'bold' => true, // Tebal (bold)
-                    'name' => 'Arial', // Mengatur font Arial
+                    // Mengatur font Arial
                     'size' => 8,
                 ],
                 'alignment' => [
@@ -420,7 +447,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
             'A29:I29' => [
                 'font' => [
                     'bold' => true, // Tebal (bold)
-                    'name' => 'Arial', // Mengatur font Arial
+                    // Mengatur font Arial
                     'size' => 8,
                 ],
                 'alignment' => [
@@ -436,7 +463,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
             ],
             'A30:I33' => [
                 'font' => [
-                    'name' => 'Arial', // Mengatur font Arial
+                    // Mengatur font Arial
                     'size' => 8,
                 ],
                 'alignment' => [
@@ -452,7 +479,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
             ],
             'A30:B33' => [
                 'font' => [
-                    'name' => 'Arial', // Mengatur font Arial
+                    // Mengatur font Arial
                     'size' => 8,
                     'bold' => true, // Tebal (bold)
                 ],
@@ -469,7 +496,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
             ],
             'F30:G33' => [
                 'font' => [
-                    'name' => 'Arial', // Mengatur font Arial
+                    // Mengatur font Arial
                     'size' => 8,
                     'bold' => true, // Tebal (bold)
                 ],
@@ -501,6 +528,11 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                 unset($data['created_at']);
                 unset($data['updated_at']);
                 unset($data['perencanaan_id']);
+                $jadwal_pemeriksaan = Carbon::parse($data->jadwal_pemeriksaan)->isoFormat('MMMM', 'ID');
+                $jumlah_tunggakan = number_format($data->jumlah_tunggakan, 0, ',', '.');
+
+                $employee = employee_roles::where('posisi', 'Kepala Bagian')->pluck('nama')->first();
+                $petugasPemeriksa = employee_roles::where('posisi', 'Tim Pemeriksa')->pluck('nama')->first();
 
                 $sheet->setCellValue('A3', 'Kertas Kerja Pemeriksaan');
                 $sheet->mergeCells('A3:C9');
@@ -528,11 +560,11 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->mergeCells('G4:I4');
                 $sheet->setCellValue('G5', $data->kode_badan_usaha);
                 $sheet->mergeCells('G5:I5');
-                $sheet->setCellValue('G6', ''); // Gantilah dengan data yang sesuai
+                $sheet->setCellValue('G6', $this->npwp); // Gantilah dengan data yang sesuai
                 $sheet->mergeCells('G6:I6');
-                $sheet->setCellValue('G7', $data->jadwal_pemeriksaan);
+                $sheet->setCellValue('G7', $jadwal_pemeriksaan);
                 $sheet->mergeCells('G7:I7');
-                $sheet->setCellValue('G8', ''); // Gantilah dengan data yang sesuai
+                $sheet->setCellValue('G8', 'pemeriksaan ' . $data->jenis_pemeriksaan); // Gantilah dengan data yang sesuai
                 $sheet->mergeCells('G8:I8');
                 $sheet->setCellValue('G9', $data->jenis_ketidakpatuhan);
                 $sheet->mergeCells('G9:I9');
@@ -551,16 +583,20 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->mergeCells('B13:D13');
                 $sheet->mergeCells('B14:D15');
                 $sheet->setCellValue('E13', 'Ref.');
-                $sheet->setCellValue('E14', '-');
+                $sheet->setCellValue('E14', $this->refPekerja);
                 $sheet->mergeCells('E14:E15');
                 $sheet->setCellValue('F13', 'Pemeriksa');
+                $sheet->setCellValue('F14', $this->pemeriksa);
                 $sheet->mergeCells('F14:F15');
                 $sheet->setCellValue('G13', 'Master File');
+                $sheet->setCellValue('G14', $this->master_file);
                 $sheet->mergeCells('G14:G15');
                 $sheet->setCellValue('H13', 'Koreksi');
+                $sheet->setCellValue('H14', $this->koreksi);
                 $sheet->mergeCells('H14:H15');
                 $sheet->setCellValue('I13', 'Keterangan');
                 $sheet->setCellValue('I14', 'Total Tunggakan :');
+                $sheet->setCellValue('I15', 'Rp.' . $jumlah_tunggakan);
 
                 $sheet->setCellValue('A17', 'B. Identifikasi Perhitungan Iuran');
                 $sheet->mergeCells('A17:I17');
@@ -575,13 +611,17 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->setCellValue('B20', 'Menunggak pembayaran iuran');
                 $sheet->getStyle('B20')->getAlignment()->setWrapText(true); // Aktifkan wrap text
                 $sheet->setCellValue('C18', 'Ref');
+                $sheet->setCellValue('C20', $this->refIuran);
                 $sheet->mergeCells('C18:C19');
                 $sheet->setCellValue('D18', 'Total Pekerja');
+                $sheet->setCellValue('D20', $this->totalPekerja);
                 $sheet->mergeCells('D18:D19');
                 $sheet->setCellValue('E18', 'Jumlah Bulan Menunggak');
+                $sheet->setCellValue('E20', $this->bulanMenunggak);
                 $sheet->mergeCells('E18:E19');
                 $sheet->getStyle('E18')->getAlignment()->setWrapText(true); // Aktifkan wrap text
                 $sheet->setCellValue('F18', 'Total Tunggakan');
+                $sheet->setCellValue('F20', 'Rp.' . $jumlah_tunggakan);
                 $sheet->mergeCells('F18:F19');
                 $sheet->setCellValue('G18', 'Pimpinan mengakui dan bersedia untuk melakukan pembayaran iuran');
                 $sheet->mergeCells('G18:I20');
@@ -626,17 +666,17 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->getStyle('H29')->getAlignment()->setWrapText(true); // Aktifkan wrap text
                 $sheet->setCellValue('I29', 'Tanda Tangan');
                 $sheet->getStyle('I29')->getAlignment()->setWrapText(true); // Aktifkan wrap text
-                $sheet->setCellValue('A30', 'Tinsiawati R Atilu (Petugas Pemeriksa)');
+                $sheet->setCellValue('A30', $petugasPemeriksa . ' (Petugas Pemeriksa)');
                 $sheet->getStyle('A30')->getAlignment()->setWrapText(true); // Aktifkan wrap text
                 $sheet->mergeCells('A30:B33');
-                $sheet->setCellValue('C30', '7/20/2023');
+                $sheet->setCellValue('C30', '');
                 $sheet->getStyle('A30')->getAlignment()->setWrapText(true); // Aktifkan wrap text
                 $sheet->mergeCells('C30:C33');
                 $sheet->mergeCells('D30:E33');
-                $sheet->setCellValue('F30', 'Richard Friki Lasut (KABAG. PKP)');
+                $sheet->setCellValue('F30', $employee . ' (KABAG. PKP)');
                 $sheet->getStyle('F30')->getAlignment()->setWrapText(true); // Aktifkan wrap text
                 $sheet->mergeCells('F30:G33');
-                $sheet->setCellValue('H30', '7/20/2023');
+                $sheet->setCellValue('H30', '');
                 $sheet->getStyle('H30')->getAlignment()->setWrapText(true); // Aktifkan wrap text
                 $sheet->mergeCells('H30:H33');
                 $sheet->mergeCells('I30:I33');

@@ -103,13 +103,12 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 
     Route::get('/program-pemeriksaan', [programPemeriksaanController::class, 'create'])->name('program-pemeriksaan');
     Route::get('/program-pemeriksaan/form/{id}', [programPemeriksaanController::class, 'form'])->name('program-pemeriksaan.form');
-   // Route::get('/program-pemeriksaan/download/{id}', [programPemeriksaanController::class, 'download'])->name('program-pemeriksaan.download');
-    //Route::post('program-pemeriksaan/download/{id}', [programPemeriksaanController::class, 'store'])->name('program-pemeriksaan.store');
     Route::post('/program-pemeriksaan/download', [ProgramPemeriksaanController::class, 'store'])->name('program-pemeriksaan.store');
 
-    Route::get('/kertas-kerja', [kertasPemeriksaanController::class, 'dashboard'])->name('kertas-kerja');
+    Route::get('/kertas-kerja', [kertasPemeriksaanController::class, 'create'])->name('kertas-kerja');
     Route::post('/kertas-kerja', [kertasPemeriksaanController::class, 'cari'])->name('kertas-kerja.cari');
-    Route::get('/kertas-kerja/download/{id}', [kertasPemeriksaanController::class, 'download'])->name('kertas-kerja.download');
+    Route::get('/kertas-kerja/form/{id}', [kertasPemeriksaanController::class, 'form'])->name('kertas-kerja.form');
+    Route::post('/kertas-kerja/download', [kertasPemeriksaanController::class, 'store'])->name('kertas-kerja.store');
 
     Route::get('/bapket-preview', [BAPKetController::class, 'preview'])->name('bapket-preview');
 

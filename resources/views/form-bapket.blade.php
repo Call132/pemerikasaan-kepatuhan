@@ -36,7 +36,8 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="panel panel-default">
-                            <form method="post" action="{{ route('bapket.store', ['id' => $badanUsaha->id]) }}">
+                            <form id="myForm" method="post"
+                                action="{{ route('bapket.store', ['id' => $badanUsaha->id]) }}">
                                 @csrf
                                 <div class="card-header text-center">
                                     <h5>Formulir Catatan Hasil Pemeriksaan</h5>
@@ -44,10 +45,8 @@
                                 @php
                                 $jumlah_tunggakan = number_format(floatval($badanUsaha->jumlah_tunggakan), 2, ',', '.');
                                 @endphp
-                               
                                 <input type="hidden" value="{{ $spt->id }}" name="spt_id">
                                 <input type="hidden" value="{{ $badanUsaha->id }}" name="bu_id">
-
                                 <div class="form-group">
                                     <label for="TimPemeriksa">Tim Pemeriksa</label>
                                     <input value="{{ $timPemeriksa->nama }}" class="form-control" type="text"
@@ -71,31 +70,39 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="nama_bu">Nama Badan Usaha</label>
-                                    <input value="{{ $badanUsaha->nama_badan_usaha }}" class="form-control" type="text" name="nama_bu" id="nama_bu">
+                                    <input value="{{ $badanUsaha->nama_badan_usaha }}" class="form-control" type="text"
+                                        name="nama_bu" id="nama_bu">
                                 </div>
                                 <div class="form-group">
                                     <label for="kode_bu">Kode Badan Usaha</label>
-                                    <input value="{{ $badanUsaha->kode_badan_usaha }}" class="form-control" type="text" name="kode_bu" id="kode_bu">
+                                    <input value="{{ $badanUsaha->kode_badan_usaha }}" class="form-control" type="text"
+                                        name="kode_bu" id="kode_bu">
                                 </div>
                                 <div class="card-header text-center">
                                     <h5>Berita Acara Pengambilan Keterangan</h5>
                                 </div>
+                                <div class="form-group">
+                                    <label for="nomor">Nomor Bapket</label>
+                                    <input type="text" class="form-control" name="no_bapket" id="no_bapket">
+                                </div>
 
                                 <div class="form-group">
                                     <label for="tunggakanIuran">Tunggakan Iuran</label>
-                                    <input value="{{ $jumlah_tunggakan }}" class="form-control" type="text" name="tunggakanIuran" required id="tunggakanIuran">
+                                    <input value="{{ $jumlah_tunggakan }}" class="form-control" type="text"
+                                        name="tunggakanIuran" required id="tunggakanIuran">
                                 </div>
                                 <div class="form-group">
                                     <label for="bulanMenunggak">Bulan Menunggak</label>
-                                    <input class="form-control" type="text" name="bulanMenunggak" required id="bulanMenunggak">
+                                    <input class="form-control" type="text" name="bulanMenunggak" required
+                                        id="bulanMenunggak">
                                 </div>
                                 <div class="form-group">
                                     <label for="sebabMenunggak">Sebab Menunggak</label>
-                                    <input class="form-control" type="text" name="sebabMenunggak" required id="sebabMenunggak">
+                                    <input class="form-control" type="text" name="sebabMenunggak" required
+                                        id="sebabMenunggak">
                                 </div>
-                                <button type="submit" class="btn btn-primary ">Submit</button>
+                                <button type="submit" class="btn btn-primary " onclick="submitForm()">Submit</button>
                             </form>
-
                         </div>
                     </div>
                 </div>
@@ -114,6 +121,15 @@
     <script src="{{ asset('library/jqvmap/dist/maps/jquery.vmap.world.js') }}"></script>
     <script src="{{ asset('library/summernote/dist/summernote-bs4.min.js') }}"></script>
     <script src="{{ asset('library/chocolat/dist/js/jquery.chocolat.min.js') }}"></script>
+    <script>
+        function submitForm() {
+        document.getElementById('myForm').addEventListener('submit', function() {
+            setTimeout(function() {
+                window.location.href = '/kertas-kerja';
+            }, 3000); // Redirect after 1 second (adjust the delay as needed)
+        });
+    }
+    </script>
 
 
     <!-- Page Specific JS File -->

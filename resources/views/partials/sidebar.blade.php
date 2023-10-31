@@ -18,45 +18,39 @@
                 <a href="{{ url('/') }}" class="nav-link has-dropdown" style="line-height: 1;"><i
                         class="fas fa-fire"></i><span>Perencanaan Pemeriksaan</span></a>
                 <ul class="dropdown-menu">
-                    <li class='{{ Request::is('perencanaan') ? 'active' : '' }}'>
+                    <li class='{{ Request::is(' perencanaan') ? 'active' : '' }}'>
                         <a class="nav-link" href="{{ url('perencanaan') }}">Buat Perencanaan</a>
                     </li>
-                    <li class='{{ Request::is('spt') ? 'active' : '' }}'>
+                    <li class='{{ Request::is(' spt') ? 'active' : '' }}'>
                         <a class="nav-link" href="{{ url('/spt') }}">Surat Perintah Tugas</a>
                     </li>
-                    <li class='{{ Request::is('Pengiriman-surat') ? 'active' : '' }}'>
+                    <li class='{{ Request::is(' Pengiriman-surat') ? 'active' : '' }}'>
                         <a class="nav-link" href="{{ url('/pengiriman-surat') }}">Pengiriman Surat</a>
                     </li>
-                    <li class='{{ Request::is('program-pemeriksaan') ? 'active' : '' }}'>
+                    <li class='{{ Request::is(' program-pemeriksaan') ? 'active' : '' }}'>
                         <a class="nav-link" href="{{ url('/program-pemeriksaan') }}">Program Pemeriksaan</a>
                     </li>
-                    
+
                 </ul>
             </li>
-            <li class="nav-item dropdown ">
-                <a href="{{ url('/') }}" class="nav-link has-dropdown" style="line-height: 1;"><i
+            <li class="nav-item ">
+                <a href="{{ url('/kertas-kerja') }}" class="nav-link" style="line-height: 1;"><i
                         class="fas fa-fire"></i><span>Pelaksanaan Pemeriksaan</span></a>
-                <ul class="dropdown-menu">
-                    <li class='{{ Request::is('kertas-kerja') ? 'active' : '' }}'>
-                        <a class="nav-link" href="{{ url('/kertas-kerja') }}">Kertas Kerja Pemeriksaan</a>
-                    </li>
-                    <li class='{{ Request::is('spt') ? 'active' : '' }}'>
-                        <a class="nav-link" href="{{ url('/spt') }}" style="line-height: 1;">Formulir Catatan Hasil
-                            Pemeriksaan</a>
-                    </li>
-                    <li class='{{ Request::is('sppk') ? 'active' : '' }}'>
-                        <a class="nav-link" style="line-height: 1;" href="{{ url('/sppk') }}">Berita Acara Pengambilan
-                            Keterangan</a>
-                    </li>
-                </ul>
+
             </li>
-           
+
             <li class="nav-item dropdown">
-                <a href="{{ url('/') }}" class="nav-link has-dropdown" style="line-height: 1;"><i
-                        class="fas fa-fire"></i><span>Laporan Monitoring</span></a>
+                <a class="nav-link has-dropdown" style="line-height: 1;"><i class="fas fa-fire"></i><span>Laporan
+                        Pemeriksaan</span></a>
                 <ul class="dropdown-menu">
-                    <li class='{{ Request::is('perencanaan') ? 'active' : '' }}'>
-                        <a class="nav-link" href="{{ url('perencanaan') }}">Rekapan</a>
+                    <li class='{{ Request::is(' ') ? 'active' : '' }}'>
+                        <a class="nav-link" href="{{ url('') }}">Laporan Hasil Pemeriksaan Sementara</a>
+                    </li>
+                    <li class='{{ Request::is(' ') ? 'active' : '' }}'>
+                        <a class="nav-link" href="{{ url('') }}">Surat Pemberitahuan Hasil Pemeriksaan</a>
+                    </li>
+                    <li class='{{ Request::is(' ') ? 'active' : '' }}'>
+                        <a class="nav-link" href="{{ url('') }}">Laporan Hasil Pemeriksaan Akhir</a>
                     </li>
                 </ul>
     </aside>

@@ -140,7 +140,7 @@
     <div class="content">
         <br>
         <p class="centered"><strong>BERITA ACARA PENGAMBILAN KETERANGAN</strong></p>
-        <p class="centered"><strong>Nomor : ........................</strong></p>
+        <p class="centered"><strong>Nomor : {{ $noBapket }}</strong></p>
     </div>
     <p style="text-indent: 35px; text-align: justify">
         Pada hari ini {{ \Carbon\Carbon::now()->isoFormat('dddd') }} Tanggal {{ \Carbon\Carbon::now()->isoFormat('DD')
@@ -210,7 +210,7 @@
         Pimpinan atau Pejabat yang ditunjuk berupa Surat Pemberitahuan Hasil Pemeriksaan selambat-lambatnya 3 (tiga)
         hari kerja sejak ditandatanganinya Berita Acara ini atau BPJS Kesehatan dapat melakukan permintaan data atau
         keterangan dalam hal masih diperlukan data untuk mendukung proses pemeriksaan atas kepatuhan.</p>
-        <br>
+    <br>
     <p style="text-align: right; margin-bottom:-8px; margin-right: 5px">Gorontalo, {{
         \Carbon\Carbon::now()->isoFormat('D MMMM Y') }}</p>
     <p style="text-align: left; margin-bottom:-8px; margin-left: 67px">..................,</p>

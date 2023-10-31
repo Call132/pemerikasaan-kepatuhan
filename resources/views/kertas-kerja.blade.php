@@ -40,6 +40,7 @@
 </style>
 @endpush
 @section('main')
+
 <div class="row">
     <div class="main-content">
         <section class="section">
@@ -73,10 +74,9 @@
                                 <option value="">Periode Pemeriksaan</option>
 
                                 @foreach ($perencanaan as $data)
-                                <option value="{{ $data->start_date }}" {{-- @if ($data->start_date ==
-                                    old('periode_pemeriksaan')) selected @endi> --}}
-                                    {{ old('periode_pemeriksaan') === $data->start_date ? 'selected' : '' }}>
-                                    {{ $data->start_date }}
+                                <option value="{{ \Carbon\Carbon::parse($data->start_date)->isoFormat('YYYY-MM-DD') }}"
+                                    {{ old('periode_pemeriksaan')===$data->start_date ? 'selected' : '' }}>
+                                    {{ \Carbon\Carbon::parse($data->start_date)->isoFormat('D MMMM Y') }}
                                 </option>
                                 @endforeach
                             </select>
@@ -120,14 +120,21 @@
                                     @if ($bu->jenis_pemeriksaan == 'Lapangan' && request('kategori') != 'final')
                                     <a href="{{ route('kertas-kerja.form', ['id' => $bu->id]) }}">
                                         <i class="fa-solid fa-file-export }}"></i> KKP</a>
-                                    <a href="{{ route('bapket.form', ['id' => $bu->id]) }}"><i class="fa-solid fa-file-export"></i>BAPKET</a>
+                                    <a href="{{ route('bapket.form', ['id' => $bu->id]) }}"><i
+                                            class="fa-solid fa-file-export"></i>BAPKET</a>
                                     @elseif ($bu->jenis_pemeriksaan == 'Kantor' && request('kategori') == 'final')
                                     <a href="{{ route('sppfpk', ['id' => $bu->id]) }}">
                                         <i class="fa-solid fa-file-export"></i>KKP
                                     </a>
+                                    <a href="{{ route('bapket.form', ['id' => $bu->id]) }}">
+                                        <i class="fa-solid fa-file-export"></i>BAPKET
+                                    </a>
                                     @elseif ($bu->jenis_pemeriksaan == 'Kantor')
                                     <a href="{{ route('sppk', ['id' => $bu->id]) }}">
                                         <i class="fa-solid fa-file-export"></i>KKP
+                                    </a>
+                                    <a href="{{ route('bapket.form', ['id' => $bu->id]) }}">
+                                        <i class="fa-solid fa-file-export"></i>BAPKET
                                     </a>
                                     @endif
                                 </td>

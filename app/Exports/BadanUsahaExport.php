@@ -158,17 +158,7 @@ class BadanUsahaExport implements FromCollection, WithHeadings, ShouldAutoSize, 
                 $event->sheet->getColumnDimension('H')->setWidth(5); // Jumlah Tunggakan
                 $event->sheet->getColumnDimension('I')->setWidth(5); // Jenis Pemeriksaan
                 $event->sheet->getColumnDimension('J')->setWidth(12); // Jadwal Pemeriksaan 
-                // Mengatur lebar kolom
-                /*$event->sheet->getColumnDimension('A')->setAutoSize(true); // No
-            $event->sheet->getColumnDimension('B')->setAutoSize(true); // Nama Badan Usaha
-            $event->sheet->getColumnDimension('C')->setAutoSize(true); // Kode Badan Usaha
-            $event->sheet->getColumnDimension('D')->setAutoSize(true); // Alamat
-            $event->sheet->getColumnDimension('E')->setAutoSize(true); // Kota/Kab
-            $event->sheet->getColumnDimension('F')->setAutoSize(true); // Jenis Ketidakpatuhan
-            $event->sheet->getColumnDimension('G')->setAutoSize(true); // Tanggal Terakhir Bayar
-            $event->sheet->getColumnDimension('H')->setAutoSize(true); // Jumlah Tunggakan
-            $event->sheet->getColumnDimension('I')->setAutoSize(true); // Jenis Pemeriksaan
-            $event->sheet->getColumnDimension('J')->setAutoSize(true); // Jadwal Pemeriksaan*/
+
 
                 $event->sheet->getStyle('A3:J3')->applyFromArray([
                     'fill' => [
@@ -195,7 +185,9 @@ class BadanUsahaExport implements FromCollection, WithHeadings, ShouldAutoSize, 
                     // ...
 
                     // Menghitung total tunggakan
-                    $totalTunggakan += floatval(str_replace(['Rp ', '.', ','], '', $data->jumlah_tunggakan));
+                   // $totalTunggakan += floatval(str_replace(['Rp ', '.'], '', $data->jumlah_tunggakan));
+                    $totalTunggakan = $data->jumlah_tunggakan->sum('jumlah_tunggakan');
+
 
 
                     // ...
@@ -206,7 +198,7 @@ class BadanUsahaExport implements FromCollection, WithHeadings, ShouldAutoSize, 
                     $event->sheet->setCellValue('E' . $row, $data->kota_kab);
                     $event->sheet->setCellValue('F' . $row, $data->jenis_ketidakpatuhan);
                     $event->sheet->setCellValue('G' . $row, $data->tanggal_terakhir_bayar);
-                    $event->sheet->setCellValue('H' . $row, 'Rp ' . number_format(floatval(str_replace(['Rp ', '.', ','], '', $data->jumlah_tunggakan)), 2, ',', '.')); // Format rupiah
+                    $event->sheet->setCellValue('H' . $row, 'Rp ' . number_format($data->jumlah_tunggakan, 2, ',', '.'));
                     $event->sheet->setCellValue('I' . $row, $data->jenis_pemeriksaan);
                     $event->sheet->setCellValue('J' . $row, $data->jadwal_pemeriksaan);
                     $event->sheet->getStyle('A' . $row . ':J' . $row)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);

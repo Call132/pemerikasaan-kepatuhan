@@ -73,7 +73,7 @@ class BadanUsahaController extends Controller
         $bu->jadwal_pemeriksaan = $request->input('jadwal_pemeriksaan');
 
         $inputValue = $request->input('jumlah_tunggakan');
-        $cleanValue = str_replace(['Rp ', '.', ','], '', $inputValue);
+        $cleanValue = str_replace(['Rp ', '.'], '', $inputValue);
         $jumlahTunggakan = floatval($cleanValue);
         $bu->jumlah_tunggakan = $jumlahTunggakan;
         // Save the data to the database

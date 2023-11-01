@@ -15,8 +15,8 @@ use App\Http\Controllers\SPPKController;
 use App\Http\Controllers\SPPFPKController;
 use App\Http\Controllers\SPPLController;
 use App\Http\Controllers\BAPKetController;
-
-
+use App\Http\Controllers\laporanPemeriksaanController;
+use App\Http\Controllers\lhpsController;
 use App\Models\BadanUsaha;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
@@ -114,6 +114,18 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::post('/bapket/download', [kertasPemeriksaanController::class, 'storeBapket'])->name('bapket.store');
 
     Route::get('/bapket-preview', [BAPKetController::class, 'preview'])->name('bapket-preview');
+
+    Route::get('/lhps', [lhpsController::class, 'index'])->name('lhps');
+    Route::post('/lhps', [lhpsController::class, 'cari'])->name('lhps.cari');
+    Route::get('/lhps/form/{id}', [lhpsController::class, 'form'])->name('lhps.form');
+    Route::post('/lhps/download', [lhpsController::class, 'store'])->name('lhps.store');
+
+    Route::get('/sphp', [laporanPemeriksaanController::class, 'sphp']);
+
+    Route::get('/lhpa', [laporanPemeriksaanController::class, 'lhpa']);
+    Route::post('/lhpa', [laporanPemeriksaanController::class, 'cariLhpa'])->name('lhpa.cari');
+    Route::get('/lhpa/form/{id}', [laporanPemeriksaanController::class, 'formLhpa'])->name('lhpa.form');
+    Route::post('/lhpa/download', [laporanPemeriksaanController::class, 'storeLhpa'])->name('lhpa.store');
 
 
     Route::get('data-pemeriksaan', function () {

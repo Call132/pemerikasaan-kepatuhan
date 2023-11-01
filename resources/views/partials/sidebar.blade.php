@@ -40,17 +40,17 @@
             </li>
 
             <li class="nav-item dropdown">
-                <a class="nav-link has-dropdown" style="line-height: 1;"><i class="fas fa-fire"></i><span>Laporan
-                        Pemeriksaan</span></a>
+                <a class="nav-link has-dropdown" style="line-height: 1;"><i class="fas fa-fire"></i>
+                    <span>Laporan Pemeriksaan</span></a>
                 <ul class="dropdown-menu">
-                    <li class='{{ Request::is(' ') ? 'active' : '' }}'>
-                        <a class="nav-link" href="{{ url('') }}">Laporan Hasil Pemeriksaan Sementara</a>
+                    <li class='{{ Request::is(' ') ? ' active' : '' }}'>
+                        <a class="nav-link" href="{{ url('/lhps') }}">Laporan Hasil Pemeriksaan Sementara</a>
                     </li>
-                    <li class='{{ Request::is(' ') ? 'active' : '' }}'>
-                        <a class="nav-link" href="{{ url('') }}">Surat Pemberitahuan Hasil Pemeriksaan</a>
+                    <li class='{{ Request::is(' ') ? ' active' : '' }}'>
+                        <a class="nav-link" href="{{ url('/sphp') }}">Surat Pemberitahuan Hasil Pemeriksaan</a>
                     </li>
-                    <li class='{{ Request::is(' ') ? 'active' : '' }}'>
-                        <a class="nav-link" href="{{ url('') }}">Laporan Hasil Pemeriksaan Akhir</a>
+                    <li class='{{ Request::is(' ') ? ' active' : '' }}'>
+                        <a class="nav-link" href="{{ url('/lhpa') }}">Laporan Hasil Pemeriksaan Akhir</a>
                     </li>
                 </ul>
     </aside>

@@ -125,14 +125,14 @@
                                     <a href="{{ route('bapket.form', ['id' => $bu->id]) }}"><i
                                             class="fa-solid fa-file-export"></i>BAPKET</a>
                                     @elseif ($bu->jenis_pemeriksaan == 'Kantor' && request('kategori') == 'final')
-                                    <a href="{{ route('sppfpk', ['id' => $bu->id]) }}">
+                                    <a href="{{ route('kertas-kerja.form', ['id' => $bu->id]) }}">
                                         <i class="fa-solid fa-file-export"></i>KKP
                                     </a>
                                     <a href="{{ route('bapket.form', ['id' => $bu->id]) }}">
                                         <i class="fa-solid fa-file-export"></i>BAPKET
                                     </a>
                                     @elseif ($bu->jenis_pemeriksaan == 'Kantor')
-                                    <a href="{{ route('sppk', ['id' => $bu->id]) }}">
+                                    <a href="{{ route('kertas-kerja.form', ['id' => $bu->id]) }}">
                                         <i class="fa-solid fa-file-export"></i>KKP
                                     </a>
                                     <a href="{{ route('bapket.form', ['id' => $bu->id]) }}">

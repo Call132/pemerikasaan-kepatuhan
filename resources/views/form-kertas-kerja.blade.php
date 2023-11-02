@@ -42,7 +42,7 @@
                     <div class="col-md-12">
                         <div class="panel panel-default">
                             <form method="post"
-                                action="{{ route('kertas-kerja.store', ['id' => $badanUsaha->id]) }}">
+                                action="{{ route('kertas-kerja.store', ['id' => $badanUsaha->id]) }}" id="myForm">
                                 @csrf
                                 <div class="div text-center" >
                                     <h5>Informasi Badan Usaha</h5>
@@ -139,7 +139,7 @@
                                         class="form-control" id="jumlah_bulan_menunggak" name="jumlah_bulan_menunggak"
                                         >
                                 </div>
-                                <button type="submit" class="btn btn-primary ">Submit</button>
+                                <button type="submit" class="btn btn-primary " onclick="submitForm()">Submit</button>
                             </form>
 
                         </div>
@@ -159,6 +159,15 @@
     {{-- <script src="{{ asset() }}"></script> --}}
     {{-- <script src="{{ asset() }}"></script> --}}
     <script src="{{ asset('library/jquery-ui-dist/jquery-ui.min.js') }}"></script>
+    <script>
+        function submitForm() {
+        document.getElementById('myForm').addEventListener('submit', function() {
+            setTimeout(function() {
+                window.location.href = '/kertas-kerja';
+            }, 3000); // Redirect after 1 second (adjust the delay as needed)
+        });
+    }
+    </script>
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/modules-datatables.js') }}"></script>

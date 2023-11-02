@@ -42,7 +42,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="panel panel-default">
-                                <form method="POST" action="{{ route('sppk.store') }}">
+                                <form method="POST" action="{{ route('sppk.store') }}" id="myForm">
                                     @csrf
                                     
 
@@ -101,7 +101,7 @@
                                             id="alamat" name="alamat" disabled>
                                     </div>
 
-                                    <button type="submit" class="btn btn-primary">Buat SPPK</button>
+                                    <button type="submit" class="btn btn-primary" onclick="submitForm()">Buat SPPK</button>
                                 </form>
                             </div>
                         </div>
@@ -120,6 +120,15 @@
         {{-- <script src="{{ asset() }}"></script> --}}
         {{-- <script src="{{ asset() }}"></script> --}}
         <script src="{{ asset('library/jquery-ui-dist/jquery-ui.min.js') }}"></script>
+        <script>
+            function submitForm() {
+            document.getElementById('myForm').addEventListener('submit', function() {
+                setTimeout(function() {
+                    window.location.href = '/pengiriman-surat';
+                }, 3000); // Redirect after 1 second (adjust the delay as needed)
+            });
+        }
+        </script>
 
         <!-- Page Specific JS File -->
         <script src="{{ asset('js/page/modules-datatables.js') }}"></script>

@@ -42,7 +42,7 @@
                     <div class="col-md-12">
                         <div class="panel panel-default">
                             <form method="post"
-                                action="{{ route('program-pemeriksaan.store', ['id' => $badanUsaha->id]) }}">
+                                action="{{ route('program-pemeriksaan.store', ['id' => $badanUsaha->id]) }}" id="myForm">
                                 @csrf
                                 <input type="hidden" name="bu_id" value="{{ $badanUsaha->id }}">
 
@@ -236,7 +236,7 @@
                                     </div>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary ">Submit</button>
+                                <button type="submit" class="btn btn-primary " onclick="submitForm()">Submit</button>
                             </form>
 
                         </div>
@@ -256,6 +256,15 @@
     {{-- <script src="{{ asset() }}"></script> --}}
     {{-- <script src="{{ asset() }}"></script> --}}
     <script src="{{ asset('library/jquery-ui-dist/jquery-ui.min.js') }}"></script>
+    <script>
+        function submitForm() {
+        document.getElementById('myForm').addEventListener('submit', function() {
+            setTimeout(function() {
+                window.location.href = '/program-pemeriksaan';
+            }, 3000); // Redirect after 1 second (adjust the delay as needed)
+        });
+    }
+    </script>
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/modules-datatables.js') }}"></script>

@@ -128,15 +128,15 @@
     <script src="{{ asset('library/jqvmap/dist/maps/jquery.vmap.world.js') }}"></script>
     <script src="{{ asset('library/summernote/dist/summernote-bs4.min.js') }}"></script>
     <script src="{{ asset('library/chocolat/dist/js/jquery.chocolat.min.js') }}"></script>
-    {{-- <script>
+    <script>
         function submitForm() {
         document.getElementById('myForm').addEventListener('submit', function() {
             setTimeout(function() {
-                window.location.href = '/lhps';
+                window.location.href = '/lhpa';
             }, 3000); // Redirect after 1 second (adjust the delay as needed)
         });
     }
-    </script> --}}
+    </script>
 
 
     <!-- Page Specific JS File -->

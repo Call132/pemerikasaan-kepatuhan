@@ -8,6 +8,7 @@
         body {
             font-family: Arial, Helvetica, sans-serif;
             text-align: justify;
+            word-spacing: 1px;
             margin: 40px;
 
         }
@@ -65,40 +66,45 @@
 
 <body>
 
+
     <div class="header">
-        <p class="label">Nomor </p>: <br>
+        <p class="label">Nomor </p>: {{ $sphp->no_sphp }} <br>
         <p class="label">Hal </p>: Pemberitahuan Hasil Pemeriksaan
     </div>
     <div class="position">
-        Gorontalo, ...........
+        Gorontalo, {{ \Carbon\Carbon::now()->isoFormat('D MMMM Y') }}
     </div>
     <div class="content  page1">
         <div class="div">
-            <p style="padding-bottom: 2px;">Yth. Pimpinan (Nama Badan Usaha) <br>
-                (Alamat) <br>
+            <p style="padding-bottom: 2px;">Yth. Pimpinan ({{ $badanUsaha->nama_badan_usaha }}) <br>
+                ({{ $badanUsaha->alamat }}) <br>
                 di <br>
                 Tempat</p> <br>
         </div>
+
+
         <div class="div">
-            <p style="text-indent: 35px;">Sehubungan dengan telah dilaksanakan pemeriksaan lapangan terhadap Badan Usaha
-                (Nama Badan Usaha) pada
-                tanggal (Tanggal Pemeriksaan) berdasarkan Surat Perintah Tugas Nomor : (Nomor SPT) tanggal (Tanggal
-                SPT),
+            <p style="text-indent: 35px;">Sehubungan dengan telah dilaksanakan pemeriksaan {{
+                $badanUsaha->jenis_pemeriksaan }} terhadap Badan Usaha
+                ({{ $badanUsaha->nama_badan_usaha }}) pada
+                tanggal ({{ \Carbon\Carbon::parse($sphp->tgl_sphp)->isoFormat('D MMMM Y') }}) berdasarkan Surat Perintah
+                Tugas Nomor : ({{ $spt->nomor_spt }}) tanggal ({{\Carbon\Carbon::parse($spt->tanggal_spt)->isoFormat('D
+                MMMM Y')}}),
                 maka bersama ini kami sampaikan hal-hal sebagai berikut:</p>
         </div>
 
 
         <div class="div">
-            <p>1. Bahwa hasil pemeriksaan lapangan terhadap (Nama Badan Usaha), sebagai berikut:
+            <p>1. Bahwa hasil pemeriksaan lapangan terhadap ({{ $badanUsaha->nama_badan_usaha }}), sebagai berikut:
             </p>
 
-            <p style="text-indent: 18px;">a. ....</p>
-            <p style="text-indent: 18px;">b. ...</p>
-            <p style="text-indent: 18px;">c. ...</p>
-            <p style="text-indent: 18px;">uraian hasil</p>
+            <p style="margin-left: 35px;">a. {{ $sphp->p_a }}</p>
+            <p style="margin-left: 35px;">b. {{ $sphp->p_b }}</p>
+            <p style="margin-left: 35px;">c. {{ $sphp->p_c }}</p>
         </div>
         <div class="div">
-            <p>2. Mengacu pada pasal 19 Undang-undang Nomor 24 Tahun 2011 Tentang BPJS, yang menyebutkan:
+            <p style="text-align: justify">2. Mengacu pada pasal 19 Undang-undang Nomor 24 Tahun 2011 Tentang BPJS, yang
+                menyebutkan:
             <p style="margin-left: 35px;">
                 a. Pemberi Kerja wajib melaporkan pelanggaran ketentuan yang berlaku di Badan Usaha. Pemberi Kerja wajib
                 memungut iuran yang menjadi beban Peserta dan
@@ -130,41 +136,40 @@
                 memungut iuran dari Pekerjanya, membayar iuran yang menjadi tanggungjawabnya, dan menyetor iuran
                 tersebut
                 kepada BPJS Kesehatan paling lambat tanggal 10 setiap Bulan.</p>
-            <div style="display: flex;">
-                <p>a.</p>
-                <p style="margin-left: 5px;">Apabila Pemberi Kerja tidak membayar iuran sampai dengan akhir bulan
-                    berjalan maka penjaminan Peserta
-                    diberhentikan sementara sejak tanggal 1 bulan berikutnya dan Pemberi Kerja wajib bertanggungjawab
-                    pada saat
-                    pekerjanya membutuhkan pelayanan kesehatan sesuai dengan Manfaat yang diberikan BPJS Kesehatan.
-                    Penghentian
-                    sementara penjaminan peserta berakhir dan status kepesertaan aktif kembali, apabila:
-                </p>
-
-
-            </div>
-            <div style="display: flex;">
-                <p>1)</p>
-                <p style="margin-left: 5px;"> telah membayar iuran bulan tertunggak, paling banyak untuk waktu 24
-                    (dua
-                    puluh empat) bulan dan</p>
-            </div>
         </div>
     </div>
-    <div class="page-break"></div>
     <div class="content page2">
+        <div style="display: flex;">
+
+            <p style="margin-left: 35px;">a. Apabila Pemberi Kerja tidak membayar iuran sampai dengan akhir bulan
+                berjalan maka penjaminan Peserta
+                diberhentikan sementara sejak tanggal 1 bulan berikutnya dan Pemberi Kerja wajib bertanggungjawab
+                pada saat
+                pekerjanya membutuhkan pelayanan kesehatan sesuai dengan Manfaat yang diberikan BPJS Kesehatan.
+                Penghentian
+                sementara penjaminan peserta berakhir dan status kepesertaan aktif kembali, apabila:
+            </p>
+
+        </div>
+        <br>
+        <div style="display: flex;">
+            <p style="margin-left: 45px;">1) telah membayar iuran bulan tertunggak, paling banyak untuk waktu 24
+                (dua
+                puluh empat) bulan dan</p>
+        </div>
+
+
+
 
         <div style="display: flex;">
-            <p>2)</p>
-            <p style="margin-left: 5px;"> membayar iuran pada bulan saat Peserta ingin mengakhiri pemberhentian
+            <p style="margin-left: 45px;">2) membayar iuran pada bulan saat Peserta ingin mengakhiri pemberhentian
                 sementara jaminan.</p>
         </div>
 
-
+        <br>
         <div class="div">
             <div style="display: flex;">
-                <p>b.
-                <p style="margin-left: 5px;"> Bahwa dalam waktu 45 (empat puluh lima) hari sejak status kepesertaan
+                <p style="margin-left: 35px;">b. Bahwa dalam waktu 45 (empat puluh lima) hari sejak status kepesertaan
                     aktif kembali, Pemberi Kerja
                     wajib
                     membayar denda sebesar 5% (lima persen) dari perkiraan biaya paket Indonesian Case Based Groups
@@ -209,7 +214,7 @@
         <div class="signature">
             <p style="margin-right: 65px;">Kepala Cabang</p>
             <br><br><br>
-            <p style="margin-right: 55px;">Djamal Ardiansya</p>
+            <p style="margin-right: 55px;">{{ $employee }}</p>
         </div>
         <div class="footer">
             <p>RL/ta/PP.01.02</p>

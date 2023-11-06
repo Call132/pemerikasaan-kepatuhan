@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\lhps;
 use App\Models\BadanUsaha;
+use App\Models\lhps as ModelsLhps;
 use App\Models\perencanaan;
 use App\Models\SuratPerintahTugas;
 use Carbon\Carbon;
@@ -76,45 +77,41 @@ class lhpsController extends Controller
             'tanggapan_bu' => 'required',
             'rekomendasi_pemeriksa' => 'required',
         ]);
-
+        $lhps = new ModelsLhps();
+        $lhps->tgl_lhps = Carbon::now()->format('Y-m-d');
         $id = $request->input('bu_id');
         $badanUsaha = BadanUsaha::findOrFail($id);
+        $lhps->badan_usaha_id = $request->input('bu_id');
         $spt = $request->input('spt_id');
         $jumlahTunggakan = $request->input('jumlah_tunggakan');
-        $bulanMenunggak = $request->input('bulan_menunggak');
-        $jumlahPekerja = $request->input('jumlah_pekerja');
-        $lastYearBulan = $request->input('tmtLastYearBulan');
-        $lastYearNominal = $request->input('tmtLastYearNominal');
-        $thisYearBulan = $request->input('thisYearBulan');
-        $thisYearNominal = $request->input('thisYearNominal');
-        $tanggapanBu = $request->input('tanggapan_bu');
-        $rekomendasiPemeriksa = $request->input('rekomendasi_pemeriksa');
+        $lhps->jumlah_bulan_menunggak = $request->input('bulan_menunggak');
+        $lhps->jumlah_pekerja = $request->input('jumlah_pekerja');
+        $lhps->last_year_bulan = $request->input('tmtLastYearBulan');
+        $lhps->last_year_nominal = $request->input('tmtLastYearNominal');
+        $lhps->this_year_bulan = $request->input('thisYearBulan');
+        $lhps->this_year_nominal = $request->input('thisYearNominal');
+        $lhps->tanggapan_bu = $request->input('tanggapan_bu');
+        $lhps->rekomendasi_pemeriksa = $request->input('rekomendasi_pemeriksa');
 
-        if (empty($lastYearBulan)) {
-            $lastYearBulan = '-';
+        if (empty($lhps->last_year_bulan)) {
+            $lhps->last_year_bulan = 0;
         }
-        if (empty($lastYearNominal)) {
-            $lastYearNominal = '-';
+        if (empty($lhps->last_year_nominal)) {
+            $lhps->last_year_nominal = 0;
         }
-        if (empty($thisYearBulan)) {
-            $thisYearBulan = '-';
+        if (empty($lhps->this_year_bulan)) {
+            $lhps->this_year_bulan = 0;
         }
-        if (empty($thisYearNominal)) {
-            $thisYearNominal = '-';
+        if (empty($lhps->this_year_nominal)) {
+            $lhps->this_year_nominal = 0;
         }
+        $lhps->save();
+        
 
         return Excel::download(
             new lhps(
                 $badanUsaha,
-                $jumlahTunggakan,
-                $bulanMenunggak,
-                $jumlahPekerja,
-                $lastYearBulan,
-                $lastYearNominal,
-                $thisYearBulan,
-                $thisYearNominal,
-                $tanggapanBu,
-                $rekomendasiPemeriksa,
+                $lhps,
                 $spt
             ),
             'Laporan Hasil Pemeriksaan Sementara ' . $badanUsaha->nama_badan_usaha . '.xlsx'

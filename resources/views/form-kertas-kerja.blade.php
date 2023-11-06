@@ -85,6 +85,16 @@
                                         disabled>
                                 </div>
 
+                                <div class="form-group">
+                                    <label for="uraian">Uraian :</label>
+                                    <input type="text" class="form-control" id="uraian" name="uraian">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="tanggapan_bu">Tanggapan Badan Usaha:</label>
+                                    <input type="text" class="form-control" name="tanggapan_bu" id="">
+                                </div>
+
                                 <div class="div text-center">
                                     <h5>Identifikasi Pekerja</h5>
                                 </div>

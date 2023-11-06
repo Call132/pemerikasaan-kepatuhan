@@ -121,6 +121,9 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::post('/lhps/download', [lhpsController::class, 'store'])->name('lhps.store');
 
     Route::get('/sphp', [laporanPemeriksaanController::class, 'sphp']);
+    Route::post('/sphp', [laporanPemeriksaanController::class, 'cariSphp'])->name('sphp.cari');
+    Route::get('/sphp/form/{id}', [laporanPemeriksaanController::class, 'formSphp'])->name('sphp.form');
+    Route::post('/sphp/download', [laporanPemeriksaanController::class, 'storeSphp'])->name('sphp.store');
 
     Route::get('/lhpa', [laporanPemeriksaanController::class, 'lhpa']);
     Route::post('/lhpa', [laporanPemeriksaanController::class, 'cariLhpa'])->name('lhpa.cari');

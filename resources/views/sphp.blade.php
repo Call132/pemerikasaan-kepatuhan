@@ -66,7 +66,7 @@ iv class="row">
                     </div>
                     </p>
                 </div>
-                <form method="POST" action="{{ route('lhps.cari') }}">
+                <form method="POST" action="{{ route('sphp.cari') }}">
                     @csrf
                     <div class="form-group">
 
@@ -120,15 +120,15 @@ iv class="row">
                             <td>
 
                                 @if ($bu->jenis_pemeriksaan == 'Lapangan' && request('kategori') != 'final')
-                                <a href="{{ route('lhps.form', ['id' => $bu->id]) }}">
-                                    <i class="fa-solid fa-file-export }}"></i> LHPS</a>
+                                <a href="{{ route('sphp.form', ['id' => $bu->id]) }}">
+                                    <i class="fa-solid fa-file-export }}"></i> SPHP</a>
                                 @elseif ($bu->jenis_pemeriksaan == 'Kantor' && request('kategori') == 'final')
-                                <a href="{{ route('lhps.form', ['id' => $bu->id]) }}">
-                                    <i class="fa-solid fa-file-export"></i>LHPS
+                                <a href="{{ route('sphp.form', ['id' => $bu->id]) }}">
+                                    <i class="fa-solid fa-file-export"></i>SPHP
                                 </a>
                                 @elseif ($bu->jenis_pemeriksaan == 'Kantor')
-                                <a href="{{ route('lhps.form', ['id' => $bu->id]) }}">
-                                    <i class="fa-solid fa-file-export"></i>LHPS
+                                <a href="{{ route('sphp.form', ['id' => $bu->id]) }}">
+                                    <i class="fa-solid fa-file-export"></i>SPHP
                                 </a>
 
 

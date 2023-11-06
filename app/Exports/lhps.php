@@ -17,49 +17,31 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class lhps implements FromCollection, WithEvents, WithStyles
 {
-    protected $badanUsaha;
-    protected $jumlahTunggakan,
-        $bulanMenunggak,
-        $jumlahPekerja,
-        $lastYearBulan,
-        $lastYearNominal,
-        $thisYearBulan,
-        $thisYearNominal,
-        $tanggapanBu,
-        $spt,
-        $rekomendasiPemeriksa;
+    protected $badanUsaha, $spt, $lhps;
+
+
 
     public function __construct(
         $badanUsaha,
-        $jumlahTunggakan,
-        $bulanMenunggak,
-        $jumlahPekerja,
-        $lastYearBulan,
-        $lastYearNominal,
-        $thisYearBulan,
-        $thisYearNominal,
-        $tanggapanBu,
-        $rekomendasiPemeriksa,
-        $spt
+        $lhps,
+        $spt,
     ) {
-        $this->badanUsaha = $badanUsaha->id;
-        $this->jumlahTunggakan = $jumlahTunggakan;
-        $this->bulanMenunggak = $bulanMenunggak;
-        $this->rekomendasiPemeriksa = $rekomendasiPemeriksa;
-        $this->tanggapanBu = $tanggapanBu;
-        $this->jumlahPekerja = $jumlahPekerja;
-        $this->lastYearBulan = $lastYearBulan;
-        $this->lastYearNominal = $lastYearNominal;
-        $this->thisYearBulan = $thisYearBulan;
-        $this->thisYearNominal = $thisYearNominal;
+        $this->badanUsaha = $badanUsaha;
         $this->spt = $spt;
+        $this->lhps = $lhps;
+
+        
+
+     
     }
     /**
      * @return \Illuminate\Support\Collection
      */
     public function collection()
     {
-        $data = BadanUsaha::findOrFail($this->badanUsaha);
+        
+        $data = BadanUsaha::where('id', $this->lhps->badan_usaha_id)->get();
+
         $data = collect([]);
 
         return $data;
@@ -198,7 +180,7 @@ class lhps implements FromCollection, WithEvents, WithStyles
         return [
             AfterSheet::class => function (AfterSheet $event) {
                 $sheet = $event->sheet;
-                $data = BadanUsaha::findOrFail($this->badanUsaha);
+                $data = $this->badanUsaha;
                 $timPemeriksa = TimPemeriksa::latest()->first();
                 $pendamping = Pendamping::where('surat_perintah_tugas_id', $this->spt)->get();
                 $extpendamping = extPendamping::where('surat_perintah_tugas_id', $this->spt)->get();
@@ -221,7 +203,7 @@ class lhps implements FromCollection, WithEvents, WithStyles
 
                 $Pemeriksa = array_merge($namaPendamping, $namaExtPendamping); // Menggabungkan kedua array
 
-                $jumlahTunggakan = floatval($this->jumlahTunggakan);
+                $jumlahTunggakan = floatval($this->badanUsaha->jumlah_tunggakan);
                 $formaterr = $formater->format($jumlahTunggakan);
                 $format = ucwords($formaterr);
 
@@ -257,35 +239,36 @@ class lhps implements FromCollection, WithEvents, WithStyles
                 $sheet->setCellValue('A7', 'TEMUAN HASIL PEMERIKSAAN');
                 $sheet->setCellValue('A8', 'IDENTIFIKASI TUNGGAKAN IURAN');
                 $sheet->setCellValue('A9', 'Jumlah Nominal Tungakan');
-                $sheet->setCellValue('A10', 'Rp.' . number_format($this->jumlahTunggakan, 2, ',', '.'));
+                $sheet->setCellValue('A10', 'Rp.' . number_format($this->badanUsaha->jumlah_tunggakan, 2, ',', '.'));
                 $sheet->setCellValue('D9', 'Jumlah Bulan Menunggak');
-                $sheet->setCellValue('D10', $this->bulanMenunggak . ' Bulan');
+                $sheet->setCellValue('D10', $this->lhps->jumlah_bulan_menunggak . ' Bulan');
                 $sheet->setCellValue('G9', 'Jumlah Pekerja Terdaftar');
-                $sheet->setCellValue('G10', $this->jumlahPekerja . ' Orang');
+                $sheet->setCellValue('G10', $this->lhps->jumlah_pekerja . ' Orang');
 
                 $sheet->setCellValue('A11', 'IDENTIFIKASI RINCIAN TUNGGAKAN');
                 $sheet->setCellValue('A12', 'Keterangan');
-                $sheet->setCellValue('C12', 'TMT Desember 2022');
-                $sheet->setCellValue('D12', 'Tahun 2023  (sd. Bulan Pemeriksaan dilakukan)');
+                $oneYearAgo = Carbon::now()->subYear();
+                $sheet->setCellValue('C12', 'TMT Desember ' . $oneYearAgo->format('Y'));
+                $sheet->setCellValue('D12', 'Tahun '.Carbon::now()->format('Y').'  (sd. Bulan Pemeriksaan dilakukan)');
                 $sheet->setCellValue('F12', 'Total');
                 $sheet->setCellValue('G12', 'Pembilang');
 
                 $sheet->setCellValue('A13', 'Bulan Menunggak');
-                $sheet->setCellValue('C13', $this->lastYearBulan);
-                $sheet->setCellValue('D13', $this->thisYearBulan);
-                $sheet->setCellValue('F13', $this->bulanMenunggak);
-                $sheet->setCellValue('G13', ucwords($formater->format($this->bulanMenunggak)) . ' Bulan' );
+                $sheet->setCellValue('C13', $this->lhps->last_year_bulan);
+                $sheet->setCellValue('D13', $this->lhps->this_year_bulan);
+                $sheet->setCellValue('F13', $this->lhps->last_year_bulan + $this->lhps->this_year_bulan);
+                $sheet->setCellValue('G13', ucwords($formater->format($this->lhps->last_year_bulan + $this->lhps->this_year_bulan)) . ' Bulan');
                 $sheet->setCellValue('A14', 'Nominal Tunggakan');
-                $sheet->setCellValue('C14', 'Rp.' . $this->lastYearNominal);
-                $sheet->setCellValue('D14', 'Rp.' . $this->thisYearNominal);
-                $sheet->setCellValue('F14', 'Rp.' . number_format($this->jumlahTunggakan, 2, ',', '.'));
+                $sheet->setCellValue('C14', 'Rp.' . $this->lhps->last_year_nominal);
+                $sheet->setCellValue('D14', 'Rp.' . $this->lhps->this_year_nominal);
+                $sheet->setCellValue('F14', 'Rp.' . number_format($this->lhps->last_year_nominal + $this->lhps->this_year_nominal, 2, ',', '.'));
                 $sheet->setCellValue('G14', $format . ' Rupiah');
 
                 $sheet->setCellValue('A16', 'TANGGAPAN BADAN USAHA :');
-                $sheet->setCellValue('A17', $this->tanggapanBu);
+                $sheet->setCellValue('A17', $this->lhps->tanggapan_bu);
 
                 $sheet->setCellValue('A18', 'REKOMENDASI PEMERIKSA :');
-                $sheet->setCellValue('A19', $this->rekomendasiPemeriksa);
+                $sheet->setCellValue('A19', $this->lhps->rekomendasi_pemeriksa);
 
                 $sheet->setCellValue('D21', 'Nama');
                 $sheet->setCellValue('F21', 'Tanda Tangan');

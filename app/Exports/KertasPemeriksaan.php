@@ -17,37 +17,29 @@ use Maatwebsite\Excel\Concerns\WithView;
 class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
 
 {
-    protected $badanUsaha;
-    protected $npwp, $refPekerja, $pemeriksa, $master_file, $koreksi, $refIuran, $totalPekerja, $bulanMenunggak;
+    protected $badanUsaha, $pemeriksa, $kertasKerja;
+    
     /**
      * @return \Illuminate\Support\Collection
      */
 
-    public function __construct($badanUsaha, $npwp, $refPekerja, $pemeriksa, $master_file, $koreksi, $refIuran, $totalPekerja, $bulanMenunggak)
+    public function __construct($badanUsaha,$pemeriksa,$kertasKerja)
     {
-        $this->badanUsaha = $badanUsaha->id;
-        $this->npwp = $npwp;
-        $this->refPekerja = $refPekerja;
+    
+        $this->badanUsaha = $badanUsaha;
         $this->pemeriksa = $pemeriksa;
-        $this->master_file = $master_file;
-        $this->koreksi = $koreksi;
-        $this->refIuran = $refIuran;
-        $this->totalPekerja = $totalPekerja;
-        $this->bulanMenunggak = $bulanMenunggak;
+        $this->kertasKerja = $kertasKerja;
+
     }
 
 
-
-    /*public function view(): View
-    {
-        return view('export.exportProgramPemeriksaan', [
-            'badanUsaha' => $this->badanUsaha,
-        ]);
-    }*/
     public function collection()
     {
-        $data = BadanUsaha::findOrFail($this->badanUsaha);
+        $data = BadanUsaha::where('id', $this->kertasKerja->badan_usaha_id)->get();
+
         $data = collect([]);
+
+
 
 
         return $data;
@@ -523,7 +515,10 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->setCellValue('A1', 'KERTAS KERJA PEMERIKSAAN');
                 $sheet->mergeCells('A1:I1');
 
-                $data = BadanUsaha::findOrFail($this->badanUsaha);
+                $data = $this->badanUsaha;
+
+                
+
 
                 unset($data['created_at']);
                 unset($data['updated_at']);
@@ -560,7 +555,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->mergeCells('G4:I4');
                 $sheet->setCellValue('G5', $data->kode_badan_usaha);
                 $sheet->mergeCells('G5:I5');
-                $sheet->setCellValue('G6', $this->npwp); // Gantilah dengan data yang sesuai
+                $sheet->setCellValue('G6', $this->kertasKerja->npwp); // Gantilah dengan data yang sesuai
                 $sheet->mergeCells('G6:I6');
                 $sheet->setCellValue('G7', $jadwal_pemeriksaan);
                 $sheet->mergeCells('G7:I7');
@@ -579,20 +574,20 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->setCellValue('A14', '1.');
                 $sheet->mergeCells('A14:A15');
                 $sheet->setCellValue('B13', 'Uraian');
-                $sheet->setCellValue('B14', 'Menunggak pembayaran iuran');
+                $sheet->setCellValue('B14', $this->kertasKerja->uraian);
                 $sheet->mergeCells('B13:D13');
                 $sheet->mergeCells('B14:D15');
                 $sheet->setCellValue('E13', 'Ref.');
-                $sheet->setCellValue('E14', $this->refPekerja);
+                $sheet->setCellValue('E14', $this->kertasKerja->ref_pekerja);
                 $sheet->mergeCells('E14:E15');
                 $sheet->setCellValue('F13', 'Pemeriksa');
                 $sheet->setCellValue('F14', $this->pemeriksa);
                 $sheet->mergeCells('F14:F15');
                 $sheet->setCellValue('G13', 'Master File');
-                $sheet->setCellValue('G14', $this->master_file);
+                $sheet->setCellValue('G14', $this->kertasKerja->master_file);
                 $sheet->mergeCells('G14:G15');
                 $sheet->setCellValue('H13', 'Koreksi');
-                $sheet->setCellValue('H14', $this->koreksi);
+                $sheet->setCellValue('H14', $this->kertasKerja->koreksi);
                 $sheet->mergeCells('H14:H15');
                 $sheet->setCellValue('I13', 'Keterangan');
                 $sheet->setCellValue('I14', 'Total Tunggakan :');
@@ -608,22 +603,22 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->setCellValue('A20', '1.');
                 $sheet->setCellValue('B18', 'Uraian');
                 $sheet->mergeCells('B18:B19');
-                $sheet->setCellValue('B20', 'Menunggak pembayaran iuran');
+                $sheet->setCellValue('B20', $this->kertasKerja->uraian);
                 $sheet->getStyle('B20')->getAlignment()->setWrapText(true); // Aktifkan wrap text
                 $sheet->setCellValue('C18', 'Ref');
-                $sheet->setCellValue('C20', $this->refIuran);
+                $sheet->setCellValue('C20', $this->kertasKerja->ref_iuran);
                 $sheet->mergeCells('C18:C19');
                 $sheet->setCellValue('D18', 'Total Pekerja');
-                $sheet->setCellValue('D20', $this->totalPekerja);
+                $sheet->setCellValue('D20', $this->kertasKerja->total_pekerja);
                 $sheet->mergeCells('D18:D19');
                 $sheet->setCellValue('E18', 'Jumlah Bulan Menunggak');
-                $sheet->setCellValue('E20', $this->bulanMenunggak);
+                $sheet->setCellValue('E20', $this->kertasKerja->jumlah_bulan_menunggak);
                 $sheet->mergeCells('E18:E19');
                 $sheet->getStyle('E18')->getAlignment()->setWrapText(true); // Aktifkan wrap text
                 $sheet->setCellValue('F18', 'Total Tunggakan');
                 $sheet->setCellValue('F20', 'Rp.' . $jumlah_tunggakan);
                 $sheet->mergeCells('F18:F19');
-                $sheet->setCellValue('G18', 'Pimpinan mengakui dan bersedia untuk melakukan pembayaran iuran');
+                $sheet->setCellValue('G18', $this->kertasKerja->tanggapan_bu);
                 $sheet->mergeCells('G18:I20');
                 $sheet->getStyle('G18')->getAlignment()->setWrapText(true); // Aktifkan wrap text
 
@@ -638,7 +633,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->mergeCells('F24:I24');
                 $sheet->setCellValue('A25', '1');
                 $sheet->getRowDimension(25)->setRowHeight(27);
-                $sheet->setCellValue('B25', 'Menunggak pembayaran iuran');
+                $sheet->setCellValue('B25', $this->kertasKerja->uraian);
                 $sheet->getStyle('B25')->getAlignment()->setWrapText(true); // Aktifkan wrap text
                 $sheet->mergeCells('B25:E25');
                 $sheet->setCellValue('F25', 'Pasal 19 ayat (1) dan (2) Undang-undang Nomor 24 Tahun 2011 Tentang BPJS');

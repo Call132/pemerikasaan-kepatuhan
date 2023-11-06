@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\KertasPemeriksaan;
 use App\Models\BadanUsaha;
+use App\Models\kertasKerja;
 use App\Models\perencanaan;
 use App\Models\SuratPerintahTugas;
 use App\Models\TimPemeriksa;
@@ -72,28 +73,33 @@ class kertasPemeriksaanController extends Controller
         $validator = $request->validate([
             'bu_id' => 'required',
             'npwp' => 'required',
+            'uraian' => 'required',
+            'tanggapan_bu' => 'required',
             'ref_pekerja' => 'required',
             'pemeriksa' => 'required',
-            'master_file' => 'required',
+            'master_file' => 'nullable',
             'koreksi' => 'required',
             'ref_iuran' => 'required',
             'total_pekerja' => 'required',
             'jumlah_bulan_menunggak' => 'required',
         ]);
-        if ($validator) {
-            $id = $request->input('bu_id');
-            $badanUsaha = BadanUsaha::findOrFail($id);
-            $npwp = $request->input('npwp');
-            $refPekerja = $request->input('ref_pekerja');
-            $pemeriksa = $request->input('pemeriksa');
-            $master_file = $request->input('master_file');
-            $koreksi = $request->input('koreksi');
-            $refIuran = $request->input('ref_iuran');
-            $totalPekerja = $request->input('total_pekerja');
-            $bulanMenunggak = $request->input('jumlah_bulan_menunggak');
+        $kertasKerja = new kertasKerja();
+        $id = $request->input('bu_id');
+        $badanUsaha = BadanUsaha::findOrFail($id);
+        $kertasKerja->badan_usaha_id = $request->input('bu_id');
+        $kertasKerja->npwp = $request->input('npwp');
+        $kertasKerja->uraian = $request->input('uraian');
+        $kertasKerja->tanggapan_bu = $request->input('tanggapan_bu');
+        $kertasKerja->ref_pekerja = $request->input('ref_pekerja');
+        $pemeriksa = $request->input('pemeriksa');
+        $kertasKerja->master_file = $request->input('master_file');
+        $kertasKerja->koreksi = $request->input('koreksi');
+        $kertasKerja->ref_iuran = $request->input('ref_iuran');
+        $kertasKerja->total_pekerja = $request->input('total_pekerja');
+        $kertasKerja->jumlah_bulan_menunggak = $request->input('jumlah_bulan_menunggak');
+        $kertasKerja->save();
 
-            return Excel::download(new KertasPemeriksaan($badanUsaha, $npwp, $refPekerja, $pemeriksa, $master_file, $koreksi, $refIuran, $totalPekerja, $bulanMenunggak), 'Kertas Kerja Pemeriksaan ' . $badanUsaha->nama_badan_usaha .  '.xlsx');
-        }
+        return Excel::download(new KertasPemeriksaan($badanUsaha, $pemeriksa, $kertasKerja), 'Kertas Kerja Pemeriksaan ' . $badanUsaha->nama_badan_usaha .  '.xlsx');
     }
 
     public function formBapket($id)

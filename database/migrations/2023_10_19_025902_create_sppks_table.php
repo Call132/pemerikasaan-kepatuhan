@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('nomor_sppk');
             $table->date('tanggal_surat');
             $table->time('waktu');
-            $table->string('tempat');
             $table->unsignedBigInteger('spt_id');
             $table->timestamps();
             $table->foreign('spt_id')->references('id')->on('surat_perintah_tugas')->onDelete('cascade');

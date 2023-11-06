@@ -92,21 +92,18 @@ class SptController extends Controller
             'nama' => $request->input('ext_pendamping_nama'),
             'jabatan' => $request->input('jabatan'),
         ]);
-        
+
 
         $employee = employee_roles::where('posisi', 'Kepala Cabang')->pluck('nama')->first();
 
 
 
 
-        $badanUsahaDiajukan = DB::table('perencanaan')
-            ->join('badan_usaha', 'perencanaan.id', '=', 'badan_usaha.perencanaan_id')
-            ->where('perencanaan.status', 'approved')
-            ->select('badan_usaha.*')
-            ->get();
         // Mengambil data perencanaan
         $perencanaan = perencanaan::where('status', 'approved')->latest()
             ->first();
+        $badanUsahaDiajukan = BadanUsaha::where('perencanaan_id', $perencanaan->id)->get();
+        
         if ($perencanaan) {
             // Mengonversi tanggal ke format Indonesia
             $tanggalMulai = Carbon::parse($perencanaan->start_date)->translatedFormat('d F Y');
@@ -129,6 +126,8 @@ class SptController extends Controller
             return $item;
         });
 
+
+        
         //return view('spt-preview', compact('badanUsahaDiajukan'))->with('success', 'SPT berhasil disimpan.');
         // Generate the PDF
 

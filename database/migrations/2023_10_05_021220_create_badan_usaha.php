@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('badan_usaha', function (Blueprint $table) {
             $table->id();
             $table->string('nama_badan_usaha');
-            $table->string('kode_badan_usaha')->unique();
+            $table->string('kode_badan_usaha');
             $table->string('alamat');
             $table->string('kota_kab');
             $table->string('jenis_ketidakpatuhan');

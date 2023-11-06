@@ -41,10 +41,10 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="panel panel-default">
-                            <form method="post"
-                                action="{{ route('kertas-kerja.store', ['id' => $badanUsaha->id]) }}" id="myForm">
+                            <form method="post" action="{{ route('kertas-kerja.store', ['id' => $badanUsaha->id]) }}"
+                                id="myForm">
                                 @csrf
-                                <div class="div text-center" >
+                                <div class="div text-center">
                                     <h5>Informasi Badan Usaha</h5>
                                 </div>
                                 <input type="hidden" name="bu_id" value="{{ $badanUsaha->id }}">
@@ -84,60 +84,48 @@
                                         class="form-control" id="jenis_ketidakpatuhan" name="jenis_ketidakpatuhan"
                                         disabled>
                                 </div>
-                                
-                                <div class="div text-center" >
+
+                                <div class="div text-center">
                                     <h5>Identifikasi Pekerja</h5>
                                 </div>
                                 <div class="form-group">
                                     <label for="ref_pekerja">Ref :</label>
-                                    <input type="text"
-                                        class="form-control" id="ref_pekerja" name="ref_pekerja"
-                                        >
+                                    <input type="text" class="form-control" id="ref_pekerja" name="ref_pekerja">
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label for="pemeriksa">Pemeriksa :</label>
-                                    <input type="text"
-                                        class="form-control" id="pemeriksa" name="pemeriksa"
-                                        >
+                                    <input type="text" class="form-control" id="pemeriksa" name="pemeriksa">
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label for="master_file">Master File :</label>
-                                    <input type="text"
-                                        class="form-control" id="master_file" name="master_file"
-                                        >
+                                    <input type="text" class="form-control" id="master_file" name="master_file">
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label for="koreksi">Koreksi :</label>
-                                    <input type="text"
-                                        class="form-control" id="koreksi" name="koreksi"
-                                        >
+                                    <input type="text" class="form-control" id="koreksi" name="koreksi">
                                 </div>
-                                
+
                                 <div class="div text-center">
                                     <h5>Identifikasi Perhitungan Iuran</h5>
                                 </div>
                                 <div class="form-group">
                                     <label for="ref_iuran">Ref:</label>
-                                    <input type="text"
-                                        class="form-control" id="ref_iuran" name="ref_iuran"
-                                        >
+                                    <input type="text" class="form-control" id="ref_iuran" name="ref_iuran">
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label for="total_pekerja">Total Pekerja:</label>
-                                    <input type="text"
-                                        class="form-control" id="total_pekerja" name="total_pekerja"
-                                        >
+                                    <input type="text" class="form-control" id="total_pekerja" name="total_pekerja">
                                 </div>
-                                
+
+
                                 <div class="form-group">
                                     <label for="jumlah_bulan_menunggak">Jumlah Bulan Menunggak:</label>
-                                    <input type="text"
-                                        class="form-control" id="jumlah_bulan_menunggak" name="jumlah_bulan_menunggak"
-                                        >
+                                    <input type="text" value="{{ $bulanMenunggak }}" class="form-control"
+                                        id="jumlah_bulan_menunggak" name="jumlah_bulan_menunggak">
                                 </div>
                                 <button type="submit" class="btn btn-primary " onclick="submitForm()">Submit</button>
                             </form>

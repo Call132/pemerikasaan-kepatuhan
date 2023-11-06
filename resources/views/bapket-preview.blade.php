@@ -70,7 +70,7 @@
         <br>
         <p style="text-indent: 35px; text-align: justify">Pada hari ini {{ \Carbon\Carbon::now()->isoFormat('dddd')
             }} Tanggal {{
-            \Carbon\Carbon::now()->isoFormat('DD') }} Bulan {{ \Carbon\Carbon::now()->isoFormat('MMMM') }} Tahun Dua
+            \Carbon\Carbon::now()->isoFormat('D') }} Bulan {{ \Carbon\Carbon::now()->isoFormat('MMMM') }} Tahun Dua
             Ribu Dua Puluh Tiga berdasarkan Surat Perintah Tugas Nomor: {{ $spt->nomor_spt }} tanggal
             {{\Carbon\Carbon::parse($spt->tanggal_spt)->isoFormat('D MMMM Y')}},
             yang bertandatangan di bawah ini:</p>
@@ -120,7 +120,7 @@
     <br>
     <p style="text-align: right; margin-bottom:-8px; margin-right: 5px">Gorontalo, {{
         \Carbon\Carbon::now()->isoFormat('D MMMM Y') }}</p>
-    <p style="text-align: left; margin-bottom:-8px; margin-left: 10px">..................,</p>
+    <p style="text-align: left; margin-bottom:-8px; margin-left: 67px">{{ $badanUsaha->nama_badan_usaha }},</p>
     <div class="signature-container" style="text-align: right;">
         <div class="signature">
             <div style="float: right; text-align: left; margin-right: 67px;">
@@ -143,7 +143,7 @@
         <p class="centered"><strong>Nomor : {{ $noBapket }}</strong></p>
     </div>
     <p style="text-indent: 35px; text-align: justify">
-        Pada hari ini {{ \Carbon\Carbon::now()->isoFormat('dddd') }} Tanggal {{ \Carbon\Carbon::now()->isoFormat('DD')
+        Pada hari ini {{ \Carbon\Carbon::now()->isoFormat('dddd') }} Tanggal {{ \Carbon\Carbon::now()->isoFormat('D')
         }} Bulan {{ \Carbon\Carbon::now()->isoFormat('MMMM') }} Tahun Dua Ribu Dua Puluh Tiga berdasarkan
         Surat Perintah Tugas Nomor: {{ $spt->nomor_spt }} tanggal {{
         \Carbon\Carbon::parse($spt->tanggal_spt)->isoFormat('D MMMM Y') }} yang bertandatangan di bawah ini:
@@ -162,10 +162,12 @@
     <br>
     <div class="section">
         <div class="form-group">
-            <p style="text-indent: 19px;"><span class="label">Nama</span>: </p>
-            <p style="text-indent: 19px;"><span class="label">Jabatan</span>: </p>
-            <p style="text-indent: 19px;"><span class="label">Nama Pemberi Kerja</span>: </p>
-            <p style="text-indent: 19px;"><span class="label">Kode Badan Usaha</span>: </p>
+            <p style="text-indent: 19px;"><span class="label">Nama</span>: {{ $nama }}</p>
+            <p style="text-indent: 19px;"><span class="label">Jabatan</span>: {{ $jabatan }}</p>
+            <p style="text-indent: 19px;"><span class="label">Nama Pemberi Kerja</span>: {{
+                $badanUsaha->nama_badan_usaha }}</p>
+            <p style="text-indent: 19px;"><span class="label">Kode Badan Usaha</span>: {{ $badanUsaha->kode_badan_usaha
+                }}</p>
         </div>
     </div>
 
@@ -213,7 +215,7 @@
     <br>
     <p style="text-align: right; margin-bottom:-8px; margin-right: 5px">Gorontalo, {{
         \Carbon\Carbon::now()->isoFormat('D MMMM Y') }}</p>
-    <p style="text-align: left; margin-bottom:-8px; margin-left: 67px">..................,</p>
+    <p style="text-align: left; margin-bottom:-8px; margin-left: 67px">{{ $badanUsaha->nama_badan_usaha }},</p>
     <div class="signature-container" style="text-align: right;">
         <div class="signature">
             <div style="float: right; text-align: left; margin-right: 67px;">
@@ -221,7 +223,6 @@
                 <p>{{ $timPemeriksa->nama }}</p>
                 <p> NPP : {{ $timPemeriksa->npp }}</p>
             </div>
-
             <div style="float: left; text-align: left; margin:left 67px">
                 <br><br><br><br>
                 <p style="border-bottom: 1px solid #000; padding-bottom: 0;">{{ $nama }}</p>

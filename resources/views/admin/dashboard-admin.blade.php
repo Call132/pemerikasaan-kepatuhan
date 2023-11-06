@@ -44,7 +44,7 @@
                             </tr>
                         </thead>
                         <tbody class="table-light">
-                            @if ($badanUsahaDiajukan->count() > 0)
+                            @if ($latestPerencanaan->count() > 0)
 
                                 {{-- @dd($latestPerencanaan, $badanUsahaDiajukan) --}}
                                 @foreach ($latestPerencanaan as $data)

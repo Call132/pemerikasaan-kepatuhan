@@ -9,6 +9,7 @@ use App\Models\SuratPerintahTugas;
 use App\Models\TimPemeriksa;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -31,8 +32,12 @@ class kertasPemeriksaanController extends Controller
     {
         $badanUsaha = BadanUsaha::findOrFail($id);
         $jadwal_pemeriksaan = Carbon::parse($badanUsaha->jadwal_pemeriksaan)->isoFormat('MMMM', 'ID');
+        $lastPaymentDate = $badanUsaha->tanggal_terakhir_bayar;
+        $currentDate = Carbon::now()->format('Y-m-d');
 
-        return view('form-kertas-kerja', compact('badanUsaha', 'jadwal_pemeriksaan'));
+        $bulanMenunggak = (new DateTime($lastPaymentDate))->diff((new DateTime($currentDate))->modify('1 month'))->m;
+
+        return view('form-kertas-kerja', compact('badanUsaha', 'jadwal_pemeriksaan', 'bulanMenunggak'));
     }
     public function cari(Request $request)
     {
@@ -45,12 +50,18 @@ class kertasPemeriksaanController extends Controller
         $kategori = $request->input('kategori');
 
         // Ambil data Badan Usaha berdasarkan kedua kriteria pencarian
-        $perencanaan = perencanaan::all();
+        $perencanaan = perencanaan::where('start_date', 'like', "%" . $start_date . "%")->get();
+
+
+        foreach ($perencanaan as $p) {
+            $p->id;
+        }
+
         $badanUsaha = DB::table('badan_usaha')
-            ->where('jenis_pemeriksaan', 'like', "%" . $kategori . "%")->get();
+            ->where('jenis_pemeriksaan', 'like', "%" . $kategori . "%")->where('perencanaan_id', $p->id)->get();
 
         if ($kategori == 'final') {
-            $badanUsaha = BadanUsaha::where('jenis_pemeriksaan', 'kantor')->get();
+            $badanUsaha = BadanUsaha::where('jenis_pemeriksaan', 'kantor')->where('perencanaan_id', $p->id)->get();
         }
 
         return view('kertas-kerja', compact('badanUsaha', 'perencanaan'));
@@ -81,7 +92,7 @@ class kertasPemeriksaanController extends Controller
             $totalPekerja = $request->input('total_pekerja');
             $bulanMenunggak = $request->input('jumlah_bulan_menunggak');
 
-            return Excel::download(new KertasPemeriksaan($badanUsaha, $npwp, $refPekerja, $pemeriksa, $master_file, $koreksi, $refIuran, $totalPekerja, $bulanMenunggak), 'Kertas Kerja Pemeriksaan.xlsx');
+            return Excel::download(new KertasPemeriksaan($badanUsaha, $npwp, $refPekerja, $pemeriksa, $master_file, $koreksi, $refIuran, $totalPekerja, $bulanMenunggak), 'Kertas Kerja Pemeriksaan ' . $badanUsaha->nama_badan_usaha .  '.xlsx');
         }
     }
 
@@ -90,7 +101,11 @@ class kertasPemeriksaanController extends Controller
         $badanUsaha = BadanUsaha::findOrFail($id);
         $timPemeriksa = TimPemeriksa::latest()->first();
         $spt = SuratPerintahTugas::latest()->first();
-        return view('form-bapket', compact('badanUsaha', 'timPemeriksa', 'spt'));
+        $lastPaymentDate = $badanUsaha->tanggal_terakhir_bayar;
+        $currentDate = Carbon::now()->format('Y-m-d');
+
+        $bulanMenunggak = (new DateTime($lastPaymentDate))->diff((new DateTime($currentDate))->modify('1 month'))->m;
+        return view('form-bapket', compact('badanUsaha', 'timPemeriksa', 'spt', 'bulanMenunggak'));
     }
 
 
@@ -100,8 +115,6 @@ class kertasPemeriksaanController extends Controller
             'spt_id' => 'required',
             'bu_id' => 'required',
             'no_bapket' => 'required',
-            'timPemeriksa' => 'required',
-            'timPemeriksaNpp' => 'required',
             'nama' => 'required',
             'jabatan' => 'required',
             'tunggakanIuran' => 'required',

@@ -50,12 +50,12 @@
                                 <div class="form-group">
                                     <label for="TimPemeriksa">Tim Pemeriksa</label>
                                     <input value="{{ $timPemeriksa->nama }}" class="form-control" type="text"
-                                        name="timPemeriksa" id="timPemeriksa">
+                                        name="timPemeriksa" id="timPemeriksa" disabled>
                                 </div>
                                 <div class="form-group">
                                     <label for="timPemeriksaNpp">Tim Pemeriksa</label>
                                     <input value="{{ $timPemeriksa->npp }}" class="form-control" type="text"
-                                        name="timPemeriksaNpp" id="timPemeriksaNpp">
+                                        name="timPemeriksaNpp" id="timPemeriksaNpp" disabled>
                                 </div>
                                 <div class="card-header text-center text-black ">
                                     <h5>Informasi Pemberi Kerja</h5>
@@ -71,12 +71,12 @@
                                 <div class="form-group">
                                     <label for="nama_bu">Nama Badan Usaha</label>
                                     <input value="{{ $badanUsaha->nama_badan_usaha }}" class="form-control" type="text"
-                                        name="nama_bu" id="nama_bu">
+                                        name="nama_bu" id="nama_bu" disabled>
                                 </div>
                                 <div class="form-group">
                                     <label for="kode_bu">Kode Badan Usaha</label>
                                     <input value="{{ $badanUsaha->kode_badan_usaha }}" class="form-control" type="text"
-                                        name="kode_bu" id="kode_bu">
+                                        name="kode_bu" id="kode_bu" disabled>
                                 </div>
                                 <div class="card-header text-center">
                                     <h5>Berita Acara Pengambilan Keterangan</h5>
@@ -89,11 +89,11 @@
                                 <div class="form-group">
                                     <label for="tunggakanIuran">Tunggakan Iuran</label>
                                     <input value="{{ $jumlah_tunggakan }}" class="form-control" type="text"
-                                        name="tunggakanIuran" required id="tunggakanIuran">
+                                        name="tunggakanIuran" required id="tunggakanIuran" >
                                 </div>
                                 <div class="form-group">
                                     <label for="bulanMenunggak">Bulan Menunggak</label>
-                                    <input class="form-control" type="text" name="bulanMenunggak" required
+                                    <input value="{{ $bulanMenunggak }}" class="form-control" type="text" name="bulanMenunggak" required
                                         id="bulanMenunggak">
                                 </div>
                                 <div class="form-group">

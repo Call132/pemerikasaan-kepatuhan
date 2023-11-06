@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Models\BadanUsaha;
 use App\Models\employee_roles;
+use App\Models\perencanaan;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -29,11 +30,12 @@ class BadanUsahaExport implements FromCollection, WithHeadings, ShouldAutoSize, 
     }
     public function collection()
     {
-        return BadanUsaha::all()->map(function ($item) {
+        $perencanaan = perencanaan::latest()->first();
+        
+        return BadanUsaha::where('perencanaan_id', $perencanaan->id)->get()->map(function ($item) {
             unset($item['created_at']);
             unset($item['updated_at']);
             unset($item['perencanaan_id']);
-
 
             return $item;
         });
@@ -75,22 +77,6 @@ class BadanUsahaExport implements FromCollection, WithHeadings, ShouldAutoSize, 
                 ],
             ],
         ];
-    }
-    public function view(): View
-    {
-        $data = BadanUsaha::whereBetween('tanggal_pemeriksaan', [$this->startDate, $this->endDate])
-            ->get()
-            ->map(function ($item) {
-                unset($item['created_at']);
-                unset($item['updated_at']);
-                unset($item['status']);
-
-                return $item;
-            });
-
-        return view('export.badan_usaha', [
-            'data' => $data,
-        ]);
     }
     public function registerEvents(): array
     {
@@ -177,7 +163,10 @@ class BadanUsahaExport implements FromCollection, WithHeadings, ShouldAutoSize, 
 
                 // Data dimulai dari baris ke-4
                 $row = 4;
-                $badanUsaha = BadanUsaha::all();
+                $perencanaan = perencanaan::latest()->first();
+                $badanUsaha = BadanUsaha::where('perencanaan_id', $perencanaan->id)->get();
+
+                
                 $totalTunggakan = 0; // Inisialisasi total tunggakan
                 $no = 1; // Inisialisasi nomor urutan
 
@@ -185,8 +174,8 @@ class BadanUsahaExport implements FromCollection, WithHeadings, ShouldAutoSize, 
                     // ...
 
                     // Menghitung total tunggakan
-                   // $totalTunggakan += floatval(str_replace(['Rp ', '.'], '', $data->jumlah_tunggakan));
-                    $totalTunggakan = $data->jumlah_tunggakan->sum('jumlah_tunggakan');
+                    $totalTunggakan += floatval($data->jumlah_tunggakan);
+                    // $totalTunggakan = $data->jumlah_tunggakan->sum('jumlah_tunggakan');
 
 
 
@@ -220,6 +209,7 @@ class BadanUsahaExport implements FromCollection, WithHeadings, ShouldAutoSize, 
                 $event->sheet->getStyle('B' . ($lastRow + 1) . ':G' . ($lastRow + 1))->getAlignment()->setHorizontal('center'); // Untuk mengatur teks ke kanan
                 $event->sheet->getStyle('H' . ($lastRow + 1) . ':J' . ($lastRow + 1))->getFont()->setBold(true);
                 $event->sheet->mergeCells('H' . ($lastRow + 1) . ':J' . ($lastRow + 1)); // Gabung kolom H sampai J
+
 
 
                 $event->sheet->getStyle('A' . ($lastRow + 1) . ':J' . ($lastRow + 1))->applyFromArray([

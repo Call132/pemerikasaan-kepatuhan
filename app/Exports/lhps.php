@@ -21,6 +21,10 @@ class lhps implements FromCollection, WithEvents, WithStyles
     protected $jumlahTunggakan,
         $bulanMenunggak,
         $jumlahPekerja,
+        $lastYearBulan,
+        $lastYearNominal,
+        $thisYearBulan,
+        $thisYearNominal,
         $tanggapanBu,
         $spt,
         $rekomendasiPemeriksa;
@@ -30,6 +34,10 @@ class lhps implements FromCollection, WithEvents, WithStyles
         $jumlahTunggakan,
         $bulanMenunggak,
         $jumlahPekerja,
+        $lastYearBulan,
+        $lastYearNominal,
+        $thisYearBulan,
+        $thisYearNominal,
         $tanggapanBu,
         $rekomendasiPemeriksa,
         $spt
@@ -40,6 +48,10 @@ class lhps implements FromCollection, WithEvents, WithStyles
         $this->rekomendasiPemeriksa = $rekomendasiPemeriksa;
         $this->tanggapanBu = $tanggapanBu;
         $this->jumlahPekerja = $jumlahPekerja;
+        $this->lastYearBulan = $lastYearBulan;
+        $this->lastYearNominal = $lastYearNominal;
+        $this->thisYearBulan = $thisYearBulan;
+        $this->thisYearNominal = $thisYearNominal;
         $this->spt = $spt;
     }
     /**
@@ -245,11 +257,11 @@ class lhps implements FromCollection, WithEvents, WithStyles
                 $sheet->setCellValue('A7', 'TEMUAN HASIL PEMERIKSAAN');
                 $sheet->setCellValue('A8', 'IDENTIFIKASI TUNGGAKAN IURAN');
                 $sheet->setCellValue('A9', 'Jumlah Nominal Tungakan');
-                $sheet->setCellValue('A10', 'Rp.' . $this->jumlahTunggakan);
+                $sheet->setCellValue('A10', 'Rp.' . number_format($this->jumlahTunggakan, 2, ',', '.'));
                 $sheet->setCellValue('D9', 'Jumlah Bulan Menunggak');
-                $sheet->setCellValue('D10', $this->bulanMenunggak);
+                $sheet->setCellValue('D10', $this->bulanMenunggak . ' Bulan');
                 $sheet->setCellValue('G9', 'Jumlah Pekerja Terdaftar');
-                $sheet->setCellValue('G10', $this->jumlahPekerja);
+                $sheet->setCellValue('G10', $this->jumlahPekerja . ' Orang');
 
                 $sheet->setCellValue('A11', 'IDENTIFIKASI RINCIAN TUNGGAKAN');
                 $sheet->setCellValue('A12', 'Keterangan');
@@ -259,8 +271,14 @@ class lhps implements FromCollection, WithEvents, WithStyles
                 $sheet->setCellValue('G12', 'Pembilang');
 
                 $sheet->setCellValue('A13', 'Bulan Menunggak');
-                $sheet->setCellValue('G13', $formater->format($this->jumlahPekerja));
+                $sheet->setCellValue('C13', $this->lastYearBulan);
+                $sheet->setCellValue('D13', $this->thisYearBulan);
+                $sheet->setCellValue('F13', $this->bulanMenunggak);
+                $sheet->setCellValue('G13', ucwords($formater->format($this->bulanMenunggak)) . ' Bulan' );
                 $sheet->setCellValue('A14', 'Nominal Tunggakan');
+                $sheet->setCellValue('C14', 'Rp.' . $this->lastYearNominal);
+                $sheet->setCellValue('D14', 'Rp.' . $this->thisYearNominal);
+                $sheet->setCellValue('F14', 'Rp.' . number_format($this->jumlahTunggakan, 2, ',', '.'));
                 $sheet->setCellValue('G14', $format . ' Rupiah');
 
                 $sheet->setCellValue('A16', 'TANGGAPAN BADAN USAHA :');

@@ -13,7 +13,7 @@
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1> Laporan Hasil Pemeriksaan Akhir</h1>
+            <h1> Laporan Hasil Pemeriksaan Akhir {{ $badanUsaha->nama_badan_usaha }}</h1>
         </div>
     </section>
     <div class="container">
@@ -43,16 +43,12 @@
                                 $jumlah_tunggakan = floatval($badanUsaha->jumlah_tunggakan);
                                 @endphp
 
-                                <div class="card-header text-center">
-                                    <h5>Formulir Hasil Pemeriksaan Sementara {{ $badanUsaha->nama_badan_usaha }}</h5>
-                                </div>
-
-                                <input type="hidden" value="{{ $badanUsaha->id }}" name="bu_id">
-                                <input type="hidden" value="{{ $spt->id }}" name="spt_id">
 
                                 <div class="card-header">
-                                    <h5>Temuan Hasil Pemeriksaan</h5>
+                                    <h5>Identifikasi Tunggakan Iuran</h5>
                                 </div>
+                                <input type="hidden" value="{{ $badanUsaha->id }}" name="bu_id">
+                                <input type="hidden" value="{{ $spt->id }}" name="spt_id">
 
                                 <div class="form-group">
                                     <label for="jumlah tunggakan">Jumlah Nominal Tunggakan</label>
@@ -61,25 +57,53 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah bulan menunggak">Jumlah Bulan Menunggak</label>
-                                    <input class="form-control" type="text" name="bulan_menunggak" id="bulan_menunggak">
+                                    <input value="{{ $bulanMenunggak }}" class="form-control" type="text"
+                                        name="bulan_menunggak" id="bulan_menunggak">
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah Pekerja">Jumlah Pekerja Terdaftar</label>
                                     <input class="form-control" type="text" name="jumlah_pekerja" id="jumlah_pekerja">
                                 </div>
+                                <div class="card-header">
+                                    <h5>Identifikasi Rincian Tunggakan</h5>
+                                </div>
+
+                                <label for="tmtLastYear" id="tmtLastYearLabel">TMT Desember tahun sebelumnya</label>
+                                <div class="form-group">
+                                    <label for="tmtLastYearBulan">Bulan Menunggak</label>
+                                    <input type="text" name="tmtLastYearBulan" class="form-control">
+                                </div>
 
                                 <div class="form-group">
-                                    <label for="nominal Pembayaran">Nominal Pembayaran</label>
-                                    <input type="text" name="nominal_pembayaran" id="nominal_pembayaran"
-                                        class="form-control" required>
+                                    <label for="tmtLastYearNominal">Nominal Tunggakan</label>
+                                    <input type="number" name="tmtLastYearNominal" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="tmtLastyearPembayaran">Nominal Pembayaran</label>
+                                    <input type="number" class="form-control" name="tmtLastyearPembayaran" id="tmtLastyearPembayaran">
+                                </div>
+
+                                <label for="tmtLastYear" id="thisYear">TMT Desember tahun tahun sekarang</label>
+                                <div class="form-group">
+                                    <label for="tmtLastYearBulan">Bulan Menunggak</label>
+                                    <input type="text" name="thisYearBulan" class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="tmtLastYearNominal">Nominal Tunggakan</label>
+                                    <input type="number" name="thisYearNominal" class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="thisYearPembayaran">Nominal Pembayaran</label>
+                                    <input type="text" name="thisYearPembayaran" class="form-control">
                                 </div>
 
                                 <div class="form-group">
                                     <label>Tindak Lanjut Hasil Pemeriksaan</label><br>
                                     <div class="div">
                                         <label class="radio-label">
-                                            <input type="radio" name="tindak_lanjut" value="dibayar_seluruhnya"
-                                                required>
+                                            <input type="radio" name="tindak_lanjut" value="seluruhnya" required>
                                             <span>Dibayar Seluruhnya</span>
                                         </label>
                                     </div>
@@ -137,7 +161,29 @@
         });
     }
     </script>
-
+    <script>
+        // Mendapatkan tahun saat ini
+    var tahunSaatIni = new Date().getFullYear();
+    
+    // Mengisi tahun sebelumnya
+    var tahunSebelumnya = tahunSaatIni - 1;
+    
+    // Mendapatkan elemen label
+    var label = document.getElementById("tmtLastYearLabel");
+    
+    // Mengubah teks label dengan tahun sebelumnya
+    label.textContent = "TMT Desember " + tahunSebelumnya;
+    </script>
+    <script>
+        // Mendapatkan tahun saat ini
+    var tahunSaatIni = new Date().getFullYear();
+    
+    // Mendapatkan elemen label
+    var label = document.getElementById("thisYear");
+    
+    // Mengubah teks label menjadi tahun saat ini
+    label.textContent = "Tahun " + tahunSaatIni + " (sd. Bulan Pemeriksaan dilakukan)";
+    </script>
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/index-0.js') }}"></script>

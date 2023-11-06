@@ -68,9 +68,7 @@
                             <select name="periode_pemeriksaan" id="periode_pemeriksaan">
                                 <option value="">Pilih Periode Pemeriksaan</option>
                                 @foreach ($perencanaan as $data)
-                                <option value="{{ $data->start_date }}" {{-- @if ($data->start_date ==
-                                    old('periode_pemeriksaan')) selected @endi> --}}
-                                    {{ old('periode_pemeriksaan') === $data->start_date ? 'selected' : '' }}>
+                                <option value="{{ $data->start_date }}">
                                     {{ $data->start_date }}
                                 </option>
                                 @endforeach
@@ -95,7 +93,7 @@
                     </form>
                     @if (request()->has('periode_pemeriksaan') && request()->has('kategori') &&
                     $badanUsaha->isNotEmpty())
-                 
+
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -112,19 +110,19 @@
                                 <td>{{ $bu->nama_badan_usaha }}</td>
                                 <td>{{ $bu->jenis_pemeriksaan }}</td>
                                 <td>
-                                  @if ($bu->jenis_pemeriksaan == 'Lapangan' && request('kategori') != 'final')
-                                      <a href="{{ route('sppl', ['id' => $bu->id]) }}">
-                                          <i class="fa-solid fa-file-export"></i>
-                                      </a>
-                                  @elseif ($bu->jenis_pemeriksaan == 'Kantor' && request('kategori') == 'final')
-                                      <a href="{{ route('sppfpk', ['id' => $bu->id]) }}">
-                                          <i class="fa-solid fa-file-export"></i>
-                                      </a>
-                                  @elseif ($bu->jenis_pemeriksaan == 'Kantor')
-                                      <a href="{{ route('sppk', ['id' => $bu->id]) }}">
-                                          <i class="fa-solid fa-file-export"></i>
-                                      </a>
-                                  @endif
+                                    @if ($bu->jenis_pemeriksaan == 'Lapangan' && request('kategori') != 'final')
+                                    <a href="{{ route('sppl', ['id' => $bu->id]) }}">
+                                        <i class="fa-solid fa-file-export"></i>
+                                    </a>
+                                    @elseif ($bu->jenis_pemeriksaan == 'Kantor' && request('kategori') == 'final')
+                                    <a href="{{ route('sppfpk', ['id' => $bu->id]) }}">
+                                        <i class="fa-solid fa-file-export"></i>
+                                    </a>
+                                    @elseif ($bu->jenis_pemeriksaan == 'Kantor')
+                                    <a href="{{ route('sppk', ['id' => $bu->id]) }}">
+                                        <i class="fa-solid fa-file-export"></i>
+                                    </a>
+                                    @endif
                                 </td>
 
                             </tr>

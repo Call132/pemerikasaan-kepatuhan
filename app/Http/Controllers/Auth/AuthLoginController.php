@@ -44,6 +44,6 @@ class AuthLoginController extends Controller
 
         
 
-        return response()->json(['success' => true]);
+        return redirect('/login');
     }
 }

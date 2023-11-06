@@ -31,12 +31,18 @@ class pengirimanController extends Controller
         $kategori = $request->input('kategori');
 
         // Ambil data Badan Usaha berdasarkan kedua kriteria pencarian
-        $perencanaan = perencanaan::all();
+        $perencanaan = perencanaan::where('start_date', 'like', "%" . $start_date . "%")->get();
+
+
+        foreach ($perencanaan as $p) {
+            $p->id;
+        }
+
         $badanUsaha = DB::table('badan_usaha')
-            ->where('jenis_pemeriksaan', 'like', "%" . $kategori . "%")->get();
+            ->where('jenis_pemeriksaan', 'like', "%" . $kategori . "%")->where('perencanaan_id', $p->id)->get();
 
         if ($kategori == 'final') {
-            $badanUsaha = BadanUsaha::where('jenis_pemeriksaan', 'kantor')->get();
+            $badanUsaha = BadanUsaha::where('jenis_pemeriksaan', 'kantor')->where('perencanaan_id', $p->id)->get();
         }
 
         return view('pengiriman-surat', compact('badanUsaha', 'perencanaan'));

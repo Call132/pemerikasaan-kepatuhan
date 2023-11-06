@@ -606,7 +606,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->setCellValue('A18', 'NO');
                 $sheet->mergeCells('A18:A19');
                 $sheet->setCellValue('A20', '1.');
-                $sheet->setCellValue('B18', 'NO');
+                $sheet->setCellValue('B18', 'Uraian');
                 $sheet->mergeCells('B18:B19');
                 $sheet->setCellValue('B20', 'Menunggak pembayaran iuran');
                 $sheet->getStyle('B20')->getAlignment()->setWrapText(true); // Aktifkan wrap text

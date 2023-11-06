@@ -13,7 +13,7 @@
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1> Laporan Hasil Pemeriksaan</h1>
+            <h1> Laporan Hasil Pemeriksaan {{ $badanUsaha->nama_badan_usaha }}</h1>
         </div>
     </section>
     <div class="container">
@@ -42,17 +42,14 @@
                                 @php
                                 $jumlah_tunggakan = floatval($badanUsaha->jumlah_tunggakan);
                                 @endphp
-                                <div class="card-header text-center">
-                                    <h5>Formulir Hasil Pemeriksaan Sementara {{ $badanUsaha->nama_badan_usaha }}</h5>
-                                </div>
 
                                 <input type="hidden" value="{{ $badanUsaha->id }}" name="bu_id">
                                 <input type="hidden" value="{{ $spt->id }}" name="spt_id">
 
-                                <div class="card-header">
-                                    <h5>Temuan Hasil Pemeriksaan</h5>
-                                </div>
 
+                                <div class="card-header">
+                                    <h5>Identifikasi Tunggakan iuran</h5>
+                                </div>
                                 <div class="form-group">
                                     <label for="jumlah tunggakan">Jumlah Nominal Tunggakan</label>
                                     <input class="form-control" type="number" name="jumlah_tunggakan"
@@ -60,13 +57,41 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah bulan menunggak">Jumlah Bulan Menunggak</label>
-                                    <input class="form-control" type="text" name="bulan_menunggak" id="bulan_menunggak">
+                                    <input value="{{ $bulanMenunggak }}" class="form-control" type="text"
+                                        name="bulan_menunggak" id="bulan_menunggak">
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah Pekerja">Jumlah Pekerja Terdaftar</label>
                                     <input class="form-control" type="text" name="jumlah_pekerja" id="jumlah_pekerja">
                                 </div>
 
+                                <div class="card-header">
+                                    <h5>Identifikasi Rincian Tunggakan</h5>
+                                </div>
+
+                                <label for="tmtLastYear" id="tmtLastYearLabel">TMT Desember tahun sebelumnya</label>
+                                <div class="form-group">
+                                    <label for="tmtLastYearBulan">Bulan Menunggak</label>
+                                    <input type="text" name="tmtLastYearBulan" class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="tmtLastYearNominal">Nominal Tunggakan</label>
+                                    <input type="number" name="tmtLastYearNominal" class="form-control">
+                                </div>
+
+                                <label for="tmtLastYear" id="thisYear">TMT Desember tahun sebelumnya</label>
+                                <div class="form-group">
+                                    <label for="tmtLastYearBulan">Bulan Menunggak</label>
+                                    <input type="text" name="thisYearBulan" class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="tmtLastYearNominal">Nominal Tunggakan</label>
+                                    <input type="number" name="thisYearNominal" class="form-control">
+                                </div>
+
+                                <hr>
                                 <div class="form-group">
                                     <label for="tanggapan bu">Tanggapan Badan Usaha</label>
                                     <input type="text" name="tanggapan_bu" id="tanggapan_bu" class="form-control"
@@ -106,6 +131,29 @@
             }, 3000); // Redirect after 1 second (adjust the delay as needed)
         });
     }
+    </script>
+    <script>
+        // Mendapatkan tahun saat ini
+        var tahunSaatIni = new Date().getFullYear();
+        
+        // Mengisi tahun sebelumnya
+        var tahunSebelumnya = tahunSaatIni - 1;
+        
+        // Mendapatkan elemen label
+        var label = document.getElementById("tmtLastYearLabel");
+        
+        // Mengubah teks label dengan tahun sebelumnya
+        label.textContent = "TMT Desember " + tahunSebelumnya;
+    </script>
+    <script>
+        // Mendapatkan tahun saat ini
+        var tahunSaatIni = new Date().getFullYear();
+        
+        // Mendapatkan elemen label
+        var label = document.getElementById("thisYear");
+        
+        // Mengubah teks label menjadi tahun saat ini
+        label.textContent = "Tahun " + tahunSaatIni + " (sd. Bulan Pemeriksaan dilakukan)";
     </script>
 
 

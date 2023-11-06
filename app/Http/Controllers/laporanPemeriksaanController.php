@@ -6,6 +6,8 @@ use App\Exports\lhpa;
 use App\Models\BadanUsaha;
 use App\Models\perencanaan;
 use App\Models\SuratPerintahTugas;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -36,12 +38,18 @@ class laporanPemeriksaanController extends Controller
         $kategori = $request->input('kategori');
 
         // Ambil data Badan Usaha berdasarkan kedua kriteria pencarian
-        $perencanaan = perencanaan::all();
+        $perencanaan = perencanaan::where('start_date', 'like', "%" . $start_date . "%")->get();
+
+
+        foreach ($perencanaan as $p) {
+            $p->id;
+        }
+
         $badanUsaha = DB::table('badan_usaha')
-            ->where('jenis_pemeriksaan', 'like', "%" . $kategori . "%")->get();
+            ->where('jenis_pemeriksaan', 'like', "%" . $kategori . "%")->where('perencanaan_id', $p->id)->get();
 
         if ($kategori == 'final') {
-            $badanUsaha = BadanUsaha::where('jenis_pemeriksaan', 'kantor')->get();
+            $badanUsaha = BadanUsaha::where('jenis_pemeriksaan', 'kantor')->where('perencanaan_id', $p->id)->get();
         }
         return view('lhpa', compact('badanUsaha', 'perencanaan'));
     }
@@ -50,8 +58,12 @@ class laporanPemeriksaanController extends Controller
     {
         $badanUsaha = BadanUsaha::findOrFail($id);
         $spt = SuratPerintahTugas::latest()->first();
+        $lastPaymentDate = $badanUsaha->tanggal_terakhir_bayar;
+        $currentDate = Carbon::now()->format('Y-m-d');
 
-        return view('form-lhpa', compact('badanUsaha', 'spt'));
+        $bulanMenunggak = (new DateTime($lastPaymentDate))->diff((new DateTime($currentDate))->modify('1 month'))->m;
+
+        return view('form-lhpa', compact('badanUsaha', 'spt', 'bulanMenunggak'));
     }
 
     public function storeLhpa(Request $request)
@@ -62,6 +74,12 @@ class laporanPemeriksaanController extends Controller
             'jumlah_tunggakan' => 'required',
             'bulan_menunggak' => 'required',
             'jumlah_pekerja' => 'required',
+            'tmtLastYearBulan' => 'nullable',
+            'tmtLastYearNominal' => 'nullable',
+            'tmtLastyearPembayaran' => 'nullable',
+            'thisYearBulan' => 'nullable',
+            'thisYearNominal' => 'nullable',
+            'thisYearPembayaran' => 'nullable',
             'tindak_lanjut' => 'required',
             'rekomendasi_pemeriksa' => 'required',
         ]);
@@ -72,8 +90,34 @@ class laporanPemeriksaanController extends Controller
         $jumlahTunggakan = $request->input('jumlah_tunggakan');
         $bulanMenunggak = $request->input('bulan_menunggak');
         $jumlahPekerja = $request->input('jumlah_pekerja');
+        $lastYearBulan = $request->input('tmtLastYearBulan');
+        $lastYearNominal = $request->input('tmtLastYearNominal');
+        $lastYearPembayaran = $request->input('tmtLastyearPembayaran');
+        $thisYearBulan = $request->input('thisYearBulan');
+        $thisYearNominal = $request->input('thisYearNominal');
+        $thisYearPembayaran = $request->input('thisYearPembayaran');
+
         $tindakLanjut = $request->input('tindak_lanjut');
         $rekomendasiPemeriksa = $request->input('rekomendasi_pemeriksa');
+
+        if (empty($lastYearBulan)) {
+            $lastYearBulan = 0;
+        }
+        if (empty($lastYearNominal)) {
+            $lastYearNominal = 0;
+        }
+        if (empty($thisYearBulan)) {
+            $thisYearBulan = 0;
+        }
+        if (empty($thisYearNominal)) {
+            $thisYearNominal = 0;
+        }
+        if (empty($lastYearPembayaran)) {
+            $lastYearPembayaran = 0;
+        }
+        if (empty($thisYearPembayaran)) {
+            $thisYearPembayaran = 0;
+        }
 
         return Excel::download(
             new lhpa(
@@ -81,6 +125,12 @@ class laporanPemeriksaanController extends Controller
                 $jumlahTunggakan,
                 $bulanMenunggak,
                 $jumlahPekerja,
+                $lastYearBulan,
+                $lastYearNominal,
+                $lastYearPembayaran,
+                $thisYearBulan,
+                $thisYearNominal,
+                $thisYearPembayaran,
                 $tindakLanjut,
                 $spt,
                 $rekomendasiPemeriksa,

@@ -20,6 +20,12 @@ class lhpa implements FromCollection, WithStyles, WithEvents
     protected $badanUsaha, $jumlahTunggakan,
         $bulanMenunggak,
         $jumlahPekerja,
+        $lastYearBulan,
+        $lastYearNominal,
+        $lastYearPembayaran,
+        $thisYearBulan,
+        $thisYearNominal,
+        $thisYearPembayaran,
         $tindakLanjut,
         $spt,
         $rekomendasiPemeriksa;
@@ -29,6 +35,12 @@ class lhpa implements FromCollection, WithStyles, WithEvents
         $jumlahTunggakan,
         $bulanMenunggak,
         $jumlahPekerja,
+        $lastYearBulan,
+        $lastYearNominal,
+        $lastYearPembayaran,
+        $thisYearBulan,
+        $thisYearNominal,
+        $thisYearPembayaran,
         $tindakLanjut,
         $spt,
         $rekomendasiPemeriksa
@@ -37,6 +49,13 @@ class lhpa implements FromCollection, WithStyles, WithEvents
         $this->jumlahTunggakan = $jumlahTunggakan;
         $this->bulanMenunggak = $bulanMenunggak;
         $this->jumlahPekerja = $jumlahPekerja;
+        $this->lastYearBulan = $lastYearBulan;
+        $this->lastYearNominal = $lastYearNominal;
+        $this->lastYearPembayaran = $lastYearPembayaran;
+        $this->thisYearBulan = $thisYearBulan;
+        $this->thisYearNominal = $thisYearNominal;
+        $this->lastYearBulan = $lastYearBulan;
+        $this->thisYearPembayaran = $thisYearPembayaran;
         $this->tindakLanjut = $tindakLanjut;
         $this->spt = $spt;
         $this->rekomendasiPemeriksa = $rekomendasiPemeriksa;
@@ -225,6 +244,11 @@ class lhpa implements FromCollection, WithStyles, WithEvents
                 $formaterr = $formater->format($jumlahTunggakan);
                 $format = ucwords($formaterr);
 
+                $bu = $data::where('nama_badan_usaha', $data->nama_badan_usaha)
+                    ->get();
+
+                $totalPembayaran = $this->lastYearPembayaran + $this->thisYearPembayaran;
+
 
 
 
@@ -258,11 +282,11 @@ class lhpa implements FromCollection, WithStyles, WithEvents
                 $sheet->setCellValue('A7', 'TEMUAN HASIL PEMERIKSAAN');
                 $sheet->setCellValue('A8', 'IDENTIFIKASI TUNGGAKAN IURAN');
                 $sheet->setCellValue('A9', 'Jumlah Nominal Tungakan');
-                $sheet->setCellValue('A10', 'Rp.' . $this->jumlahTunggakan);
+                $sheet->setCellValue('A10', 'Rp.' . number_format($this->jumlahTunggakan, 2, ',', '.'));
                 $sheet->setCellValue('D9', 'Jumlah Bulan Menunggak');
-                $sheet->setCellValue('D10', $this->bulanMenunggak);
+                $sheet->setCellValue('D10', $this->bulanMenunggak . ' Bulan');
                 $sheet->setCellValue('G9', 'Jumlah Pekerja Terdaftar');
-                $sheet->setCellValue('G10', $this->jumlahPekerja);
+                $sheet->setCellValue('G10', $this->jumlahPekerja . ' Orang');
 
                 $sheet->setCellValue('A11', 'IDENTIFIKASI RINCIAN TUNGGAKAN');
                 $sheet->setCellValue('A12', 'Keterangan');
@@ -272,18 +296,46 @@ class lhpa implements FromCollection, WithStyles, WithEvents
                 $sheet->setCellValue('G12', 'Pembilang');
 
                 $sheet->setCellValue('A13', 'Bulan Menunggak');
-                $sheet->setCellValue('G13', $formater->format($this->jumlahPekerja));
+                $sheet->setCellValue('C13', $this->lastYearBulan);
+                $sheet->setCellValue('D13', $this->thisYearBulan);
+                $sheet->setCellValue('F13', $this->bulanMenunggak);
+                $sheet->setCellValue('G13', $formater->format($this->bulanMenunggak) . ' Bulan');
                 $sheet->setCellValue('A14', 'Nominal Tunggakan');
+                $sheet->setCellValue('C14', 'Rp. ' . $this->lastYearNominal);
+                $sheet->setCellValue('D14', 'Rp. ' . $this->thisYearNominal);
+                $sheet->setCellValue('F14', 'Rp. ' . number_format($this->jumlahTunggakan, 2, ',', '.'));
                 $sheet->setCellValue('G14', $format . ' Rupiah');
 
+
                 $sheet->setcellvalue('A15', 'Nominal Pembayaran');
+                $sheet->setcellvalue('C15', 'Rp. ' . $this->lastYearPembayaran);
+                $sheet->setcellvalue('D15', 'Rp. ' . $this->thisYearPembayaran);
+                $sheet->setcellvalue('F15', 'Rp. ' . number_format($totalPembayaran, 2, ',', '.'));
+                $sheet->setcellvalue('G15', ucwords($formater->format($totalPembayaran)) . ' Rupiah');
+
 
                 $sheet->setCellvalue('A17', 'TINDAK LANJUT HASIL PEMERIKSAAN :');
                 $sheet->setCellvalue('A18', 'Dibayar Seluruhnya');
+                if ($this->tindakLanjut == 'seluruhnya') {
+                    $sheet->setCellvalue('C20', '✔');
+                    $sheet->getStyle('C20')->getFont()->setName('Arial Unicode MS');
+                }
                 $sheet->setCellvalue('C18', 'Dibayar Sebagian');
                 $sheet->setCellvalue('C19', 'Relaksasi');
+                if ($this->tindakLanjut == 'relaksasi') {
+                    $sheet->setCellvalue('C20', '✔');
+                    $sheet->getStyle('C20')->getFont()->setName('Arial Unicode MS');
+                }
                 $sheet->setCellvalue('E19', 'Rekonsiliasi');
+                if ($this->tindakLanjut == 'rekonsiliasi') {
+                    $sheet->setCellvalue('E20', '✔');
+                    $sheet->getStyle('E20')->getFont()->setName('Arial Unicode MS');
+                }
                 $sheet->setCellvalue('G18', 'Tidak Dibayarkan');
+                if ($this->tindakLanjut == 'tidak_dibayarkan') {
+                    $sheet->setCellvalue('G20', '✔');
+                    $sheet->getStyle('G20')->getFont()->setName('Arial Unicode MS');
+                }
 
                 $sheet->setcellvalue('A21', 'REKOMENDASI PEMERIKSA :');
                 $sheet->setcellvalue('A22', $this->rekomendasiPemeriksa);

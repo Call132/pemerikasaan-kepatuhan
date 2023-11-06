@@ -45,7 +45,7 @@ class BadanUsahaController extends Controller
         // Validate the form data
         $request->validate([
             'nama_badan_usaha' => 'required|string|max:255',
-            'kode_badan_usaha' => 'unique:badan_usaha',
+            'kode_badan_usaha' => 'required|string|max:255',
             'alamat' => 'required|string',
             'kota_kab' => 'required|string|max:255',
             'jenis_ketidakpatuhan' => 'required|string|max:255',
@@ -127,32 +127,36 @@ class BadanUsahaController extends Controller
     }
     public function update(Request $request, $id)
     {
-        // Validasi input data
-        $this->validate($request, [
+        // Validasi data yang dikirim melalui form
+        $validate = $request->validate([
             'nama_badan_usaha' => 'required',
-            'kode_badan_usaha' => 'unique:badan_usaha',
+            'kode_badan_usaha' => 'required',
             'alamat' => 'required',
             'kota_kab' => 'required',
             'jenis_ketidakpatuhan' => 'required',
-            'tanggal_terakhir_bayar' => 'required|date',
-            'jumlah_tunggakan' => 'required|numeric',
+            'tanggal_terakhir_bayar' => 'required',
+            'jumlah_tunggakan' => 'required',
             'jenis_pemeriksaan' => 'required',
-            'jadwal_pemeriksaan' => 'required|date',
-            // tambahkan validasi lainnya sesuai kebutuhan
+            'jadwal_pemeriksaan' => 'required',
         ]);
 
-        // Temukan data badan usaha berdasarkan ID
-        $badanUsaha = BadanUsaha::find($id);
+        // Proses pembaruan data
+        $data = BadanUsaha::find($id);
+        $data->nama_badan_usaha = $request->input('nama_badan_usaha');
+        $data->kode_badan_usaha = $request->input('kode_badan_usaha');
+        $data->alamat = $request->input('alamat');
+        $data->kota_kab = $request->input('kota_kab');
+        $data->jenis_ketidakpatuhan = $request->input('jenis_ketidakpatuhan');
+        $data->tanggal_terakhir_bayar = $request->input('tanggal_terakhir_bayar');
+        $data->jumlah_tunggakan = $request->input('jumlah_tunggakan');
+        $data->jenis_pemeriksaan = $request->input('jenis_pemeriksaan');
+        $data->jadwal_pemeriksaan = $request->input('jadwal_pemeriksaan');
 
-        // Periksa apakah data badan usaha ditemukan
-        if (!$badanUsaha) {
-            return redirect()->route('halaman_lain')->with('error', 'Data tidak ditemukan');
+
+        if ($validate) {
+            $data->save();
+            return redirect('/')->with('success', 'Data berhasil diperbarui.');
         }
-
-        // Update data badan usaha dengan data yang dikirimkan dari form
-        $badanUsaha->update($request->all());
-
-        // Setelah berhasil mengupdate data, alihkan pengguna ke halaman "home.blade.php"
-        return redirect('/')->with('success', 'Data berhasil diperbarui');
+        return redirect()->intended('/edit-data-pemeriksaan')->with('error', 'Data gagal diperbarui.');
     }
 }

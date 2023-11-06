@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\ProgramPemeriksaan;
 use App\Models\BadanUsaha;
 use App\Models\employee_roles;
+use App\Models\perencanaan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -14,8 +15,12 @@ class programPemeriksaanController extends Controller
 {
     public function create()
     {
+        $perencanaan = perencanaan::all();
+        foreach ($perencanaan as $p) {
+            $p->id;
+        }
 
-        $badanUsaha = BadanUsaha::all();
+        $badanUsaha = BadanUsaha::where('perencanaan_id', $p->id)->get();
 
         return view('program-pemeriksaan', compact('badanUsaha'));
     }

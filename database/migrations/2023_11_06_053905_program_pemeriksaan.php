@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('daftar_slip_gaji');
             $table->string('slip_gaji');
             $table->string('absensi');
+            $table->foreign('badan_usaha_id')->references('id')->on('badan_usaha')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

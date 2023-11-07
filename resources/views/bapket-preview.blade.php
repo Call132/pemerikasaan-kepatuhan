@@ -131,8 +131,8 @@
 
             <div style="float: left; text-align: left; margin:left 67px">
                 <br><br><br><br>
-                <p style="border-bottom: 1px solid #000; padding-bottom: 0;">{{ $nama }}</p>
-                <p> Jabatan : {{ $jabatan}}</p>
+                <p style="border-bottom: 1px solid #000; padding-bottom: 0;">{{ $bapket->nama_pemberi_kerja }}</p>
+                <p> Jabatan : {{ $bapket->jabatan }}</p>
             </div>
         </div>
     </div>
@@ -140,7 +140,7 @@
     <div class="content">
         <br>
         <p class="centered"><strong>BERITA ACARA PENGAMBILAN KETERANGAN</strong></p>
-        <p class="centered"><strong>Nomor : {{ $noBapket }}</strong></p>
+        <p class="centered"><strong>Nomor : {{ $bapket->no_bapket }}</strong></p>
     </div>
     <p style="text-indent: 35px; text-align: justify">
         Pada hari ini {{ \Carbon\Carbon::now()->isoFormat('dddd') }} Tanggal {{ \Carbon\Carbon::now()->isoFormat('D')
@@ -162,8 +162,8 @@
     <br>
     <div class="section">
         <div class="form-group">
-            <p style="text-indent: 19px;"><span class="label">Nama</span>: {{ $nama }}</p>
-            <p style="text-indent: 19px;"><span class="label">Jabatan</span>: {{ $jabatan }}</p>
+            <p style="text-indent: 19px;"><span class="label">Nama</span>: {{ $bapket->nama_pemberi_kerja }}</p>
+            <p style="text-indent: 19px;"><span class="label">Jabatan</span>: {{ $bapket->jabatan }}</p>
             <p style="text-indent: 19px;"><span class="label">Nama Pemberi Kerja</span>: {{
                 $badanUsaha->nama_badan_usaha }}</p>
             <p style="text-indent: 19px;"><span class="label">Kode Badan Usaha</span>: {{ $badanUsaha->kode_badan_usaha
@@ -179,7 +179,7 @@
     <br>
     <p style="text-indent: 35px; text-align: justify">BPJS Kesehatan dan
         Pemberi Kerja bersama ini menerangkan bahwa telah dilakukan Pengambilan Keterangan atas Kepatuhan Program
-        Jaminan Sosial Kesehatan, dengan hasil berikut :</p>
+        Jaminan Sosial Kesehatan, dengan hasil berikut :</p><br>
     <table style="border-collapse:collapse;border:none; width:100%;">
         <tbody>
             <tr>
@@ -195,18 +195,18 @@
                 <td
                     style="width: 464.4pt;border-right: 1pt solid black;border-bottom: 1pt solid black;border-left: 1pt solid black;border-image: initial;border-top: none;margin: 5px;vertical-align: top;">
                     <p>
-                        <span class="label">Tunggakan Iuran</span>: Rp. {{ $tunggakanIuran }}
+                        <span class="label">Tunggakan Iuran</span>: Rp. {{ number_format($badanUsaha->jumlah_tunggakan, 2, ',', '.') }}
                     </p>
                     <p>
-                        <span class="label">Bulan Menunggak</span>: {{ $bulanMenunggak }}
+                        <span class="label">Bulan Menunggak</span>: {{ $bapket->bulan_menunggak }}
                     </p>
                     <p>
-                        <span class="label">Sebab menunggak</span>: {{ $sebabMenunggak }}
+                        <span class="label">Sebab menunggak</span>: {{ $bapket->sebab_menunggak }}
                     </p>
                 </td>
             </tr>
         </tbody>
-    </table>
+    </table><br>
     <p style="text-indent: 35px; text-align: justify">
         Sebagai tindaklanjut atas hasil pemeriksaan yang telah dilakukan, BPJS Kesehatan akan menyampaikan kepada
         Pimpinan atau Pejabat yang ditunjuk berupa Surat Pemberitahuan Hasil Pemeriksaan selambat-lambatnya 3 (tiga)
@@ -225,8 +225,8 @@
             </div>
             <div style="float: left; text-align: left; margin:left 67px">
                 <br><br><br><br>
-                <p style="border-bottom: 1px solid #000; padding-bottom: 0;">{{ $nama }}</p>
-                <p> Jabatan : {{ $jabatan}}</p>
+                <p style="border-bottom: 1px solid #000; padding-bottom: 0;">{{ $bapket->nama_pemberi_kerja }}</p>
+                <p> Jabatan : {{ $bapket->jabatan }}</p>
             </div>
         </div>
     </div>

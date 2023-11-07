@@ -17,39 +17,24 @@ use Maatwebsite\Excel\Concerns\WithView;
 class ProgramPemeriksaan implements FromCollection, WithStyles, WithEvents
 
 {
-    protected $badanUsaha;
-    protected $npwp;
-    protected $tenagaKerja;
-    protected $iuran;
-    protected $peraturan;
-    protected $pekerja;
-    protected $struktur;
-    protected $slipGajiList;
-    protected $slipGaji;
-    protected $absen;
+    protected $badanUsaha, $programPemeriksaan;
+
 
     /**
      * @return \Illuminate\Support\Collection
      */
 
-    public function __construct($badanUsaha, $npwp, $tenagaKerja, $iuran, $peraturan, $pekerja, $struktur, $slipGajiList, $slipGaji, $absen)
+    public function __construct($badanUsaha, $programPemeriksaan)
     {
-        $this->badanUsaha = $badanUsaha->id;
-        $this->npwp = $npwp;
-        $this->tenagaKerja = $tenagaKerja;
-        $this->iuran = $iuran;
-        $this->peraturan = $peraturan;
-        $this->pekerja = $pekerja;
-        $this->struktur = $struktur;
-        $this->slipGajiList = $slipGajiList;
-        $this->slipGaji = $slipGaji;
-        $this->absen = $absen;
+        $this->badanUsaha = $badanUsaha;
+        $this->programPemeriksaan = $programPemeriksaan;
+       
     }
 
 
     public function collection()
     {
-        $data = BadanUsaha::findOrFail($this->badanUsaha);
+        $data = BadanUsaha::where('id', $this->badanUsaha->id)->get();
         $data = collect([]);
 
 
@@ -213,7 +198,7 @@ class ProgramPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->getColumnDimension('H')->setWidth(22);
                 $sheet->getColumnDimension('L')->setWidth(22);
                 $sheet->getRowDimension(61)->setRowHeight(45);
-                $data = BadanUsaha::findOrFail($this->badanUsaha);
+                $data = $this->badanUsaha;
 
                 unset($data['created_at']);
                 unset($data['updated_at']);
@@ -252,7 +237,7 @@ class ProgramPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->mergeCells('I4:L4');
                 $sheet->setCellValue('I5', $data->kode_badan_usaha);
                 $sheet->mergeCells('I5:L5');
-                $sheet->setCellValue('I6', $this->npwp);
+                $sheet->setCellValue('I6', $this->programPemeriksaan->npwp);
                 $sheet->mergeCells('I6:L6');
                 $sheet->setCellValue('I7', $jadwal_pemeriksaan);
                 $sheet->mergeCells('I7:L7');
@@ -336,7 +321,7 @@ class ProgramPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->mergeCells('K41:L42');
 
 
-                if ($this->tenagaKerja == 'Ya') {
+                if ($this->programPemeriksaan->aspek_tenaga_kerja == 'Ya') {
                     $sheet->setCellValue('I41', '✔');
                     $sheet->getStyle('I41')->getFont()->setName('Arial Unicode MS');
                 } else {
@@ -359,7 +344,7 @@ class ProgramPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->getDelegate()->getStyle('I43')->getFont()->setName('wingdings');
 
 
-                if ($this->iuran == 'Ya') {
+                if ($this->programPemeriksaan->aspek_iuran == 'Ya') {
                     $sheet->setCellValue('I43', '✔');
                     $sheet->getStyle('I43')->getFont()->setName('Arial Unicode MS');
                 } else {
@@ -378,7 +363,7 @@ class ProgramPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->setCellValue('B48', 'Peraturan perusahaan terkait ketenagakerjaan');
                 $sheet->mergeCells('B48:H48');
 
-                if ($this->peraturan == 'Ya') {
+                if ($this->programPemeriksaan->peraturan == 'Ya') {
                     $sheet->setCellValue('I48', '✔');
                     $sheet->getStyle('I48')->getFont()->setName('Arial Unicode MS');
                 } else {
@@ -400,7 +385,7 @@ class ProgramPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->setCellValue('B54', 'Daftar seluruh pekerja berdasarkan jenjang jabatan disertai dengan NIK Pekerja');
                 $sheet->mergeCells('B54:H54');
 
-                if ($this->pekerja == 'Ya') {
+                if ($this->programPemeriksaan->daftar_pekerja == 'Ya') {
                     $sheet->setCellValue('I54', '✔');
                     $sheet->getStyle('I54')->getFont()->setName('Arial Unicode MS');
                 } else {
@@ -412,7 +397,7 @@ class ProgramPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->setCellValue('B55', 'Struktur Organisasi');
                 $sheet->mergeCells('B55:H55');
 
-                if ($this->struktur == 'Ya') {
+                if ($this->programPemeriksaan->struktur_organisasi == 'Ya') {
                     $sheet->setCellValue('I55', '✔');
                     $sheet->getStyle('I55')->getFont()->setName('Arial Unicode MS');
                 } else {
@@ -424,7 +409,7 @@ class ProgramPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->setCellValue('B56', 'Daftar Gaji seluruh Pekerja');
                 $sheet->mergeCells('B56:H56');
 
-                if ($this->slipGajiList == 'Ya') {
+                if ($this->programPemeriksaan->daftar_slip_gaji == 'Ya') {
                     $sheet->setCellValue('I56', '✔');
                     $sheet->getStyle('I56')->getFont()->setName('Arial Unicode MS');
                 } else {
@@ -436,7 +421,7 @@ class ProgramPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->setCellValue('B57', 'Slip Gaji Pekerja');
                 $sheet->mergeCells('B57:H57');
 
-                if ($this->slipGaji == 'Ya') {
+                if ($this->programPemeriksaan->slip_gaji == 'Ya') {
                     $sheet->setCellValue('I57', '✔');
                     $sheet->getStyle('I57')->getFont()->setName('Arial Unicode MS');
                 } else {
@@ -448,7 +433,7 @@ class ProgramPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->setCellValue('B58', 'Absensi pekerja');
                 $sheet->mergeCells('B58:H58');
 
-                if ($this->absen == 'Ya') {
+                if ($this->programPemeriksaan->absensi == 'Ya') {
                     $sheet->setCellValue('I58', '✔');
                     $sheet->getStyle('I58')->getFont()->setName('Arial Unicode MS');
                 } else {

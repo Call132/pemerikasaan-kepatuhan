@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\KertasPemeriksaan;
 use App\Models\BadanUsaha;
+use App\Models\bapket;
 use App\Models\kertasKerja;
 use App\Models\perencanaan;
 use App\Models\SuratPerintahTugas;
@@ -128,37 +129,29 @@ class kertasPemeriksaanController extends Controller
             'sebabMenunggak' => 'required',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 400,
-                'message' => 'Validation failed',
-                'errors' => $validator->errors(),
-            ], 400);
-        }
+        $bapket = new bapket();
 
         $id = $request->input('spt_id');
         $bu_id = $request->input('bu_id');
         $badanUsaha = BadanUsaha::findOrFail($bu_id);
+        $bapket->badan_usaha_id = $request->input('bu_id');
         $spt = SuratPerintahTugas::findOrFail($id);
-        $noBapket = $request->input('no_bapket');
+        $bapket->spt_id = $request->input('spt_id');
+        $bapket->no_bapket = $request->input('no_bapket');
         $timPemeriksa = TimPemeriksa::latest()->first();
-        $nama = $request->input('nama');
-        $jabatan = $request->input('jabatan');
+        $bapket->nama_pemberi_kerja = $request->input('nama');
+        $bapket->jabatan = $request->input('jabatan');
         $tunggakanIuran = $request->input('tunggakanIuran');
-        $bulanMenunggak = $request->input('bulanMenunggak');
-        $sebabMenunggak = $request->input('sebabMenunggak');
+        $bapket->bulan_menunggak = $request->input('bulanMenunggak');
+        $bapket->sebab_menunggak = $request->input('sebabMenunggak');
+        $bapket->tgl_bapket = Carbon::now()->format('Y-m-d');
 
-        $pdf = Pdf::loadView('bapket-preview', compact('badanUsaha', 'timPemeriksa', 'spt', 'noBapket', 'nama', 'jabatan', 'tunggakanIuran', 'bulanMenunggak', 'sebabMenunggak'));
+        $bapket->save();
+        $pdf = Pdf::loadView('bapket-preview', compact('badanUsaha', 'timPemeriksa', 'bapket', 'spt'));
 
         $pdfFileName = 'Berita Acara Pemeriksaan ' . $badanUsaha->nama_badan_usaha . '.pdf';
 
-        $pdfContent = $pdf->output();
 
-        return response($pdfContent, 200)
-            ->header('Content-Type', 'application/pdf')
-            ->header('Content-Disposition', 'attachment; filename="' . $pdfFileName . '"')
-            ->header('Content-Length', strlen($pdfContent))
-            ->header('Connection', 'close')
-            ->header('Refresh', '0;url=/kertas-kerja');
+        return $pdf->download($pdfFileName);
     }
 }

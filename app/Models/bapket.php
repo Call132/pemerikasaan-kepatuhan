@@ -11,10 +11,12 @@ class bapket extends Model
     protected $table = 'bapket';
     protected $fillable = [
         'badan_usaha_id',
+        'spt_id',
         'no_bapket',
         'tgl_bapket',
         'nama_pemberi_kerja',
         'jabatan',
+        'bulan_menunggak',
         'sebab_menunggak',
     ];
     use HasFactory;

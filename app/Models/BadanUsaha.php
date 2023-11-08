@@ -11,7 +11,8 @@ class BadanUsaha extends Model
     protected $table = 'badan_usaha'; // Nama tabel di database
 
     protected $fillable = [
-        'tanggal_perencanaan',
+        'perencanaan_id',
+        'npwp',
         'nama_badan_usaha',
         'kode_badan_usaha',
         'alamat',
@@ -21,7 +22,11 @@ class BadanUsaha extends Model
         'jumlah_tunggakan',
         'jenis_pemeriksaan',
         'jadwal_pemeriksaan',
-        'tanggal_perencanaan',
+        'jumlah_bulan_menunggak',
+        'tanggal_bayar',
+        'jumlah_bayar',
+        'hasil_pemeriksaan',
+        
     ];
     public function perencanaan()
     {

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('kertas_kerja', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('badan_usaha_id');
-            $table->string('npwp');
             $table->string('uraian');
             $table->string('tanggapan_bu');
             $table->string('ref_pekerja');
@@ -22,7 +21,6 @@ return new class extends Migration
             $table->string('master_file');
             $table->string('ref_iuran');
             $table->string('total_pekerja');
-            $table->string('jumlah_bulan_menunggak');
             $table->foreign('badan_usaha_id')->references('id')->on('badan_usaha')->onDelete('cascade');
             $table->timestamps();
         });

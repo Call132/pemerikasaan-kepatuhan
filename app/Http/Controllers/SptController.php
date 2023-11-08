@@ -41,12 +41,8 @@ class SptController extends Controller
 
 
 
-    // Menyimpan SPT yang baru dibuat
     public function store(Request $request)
-
     {
-
-        // Validasi input dari form
         $validatedData = $request->validate([
             'nomor_spt' => 'required',
             'tanggal_spt' => 'required|date',
@@ -57,99 +53,64 @@ class SptController extends Controller
             'ext_pendamping_nama' => 'nullable',
             'jabatan' => 'nullable',
         ]);
+
         if (!$request->has('tanggal_spt')) {
-            $validatedData['tanggal_spt'] = now(); // Atur tanggal default jika tidak ada input 'tanggal_spt'
+            $validatedData['tanggal_spt'] = now();
         }
+        $perencanaan = perencanaan::where('status', 'approved')->latest()->first();
 
-        // Simpan data SPT ke dalam database
-        $spt = new SuratPerintahTugas($validatedData);
-        $spt->save();
-        //dd($spt);
-
-
-
-
-        // Simpan data petugas pemeriksa dan pendamping
-        $spt->timPemeriksa()->create([
-            'nama' => $request->input('petugas_pemeriksa_nama'),
-            'npp' => $request->input('petugas_pemeriksa_npp'),
-        ]);
-
-        $pendampingNama = $request->input('pendamping_nama');
-        $pendampingNPP = $request->input('pendamping_npp');
-
-        foreach ($pendampingNama as $key => $nama) {
-            if (!empty($nama)) {
-                $pendamping = new Pendamping([
-                    'nama' => $nama,
-                    'npp' => $pendampingNPP[$key],
-                ]);
-                $spt->pendamping()->save($pendamping);
-            }
-        }
-
-        $spt->extPendamping()->create([
-            'nama' => $request->input('ext_pendamping_nama'),
-            'jabatan' => $request->input('jabatan'),
-        ]);
-
-
-        $employee = employee_roles::where('posisi', 'Kepala Cabang')->pluck('nama')->first();
-
-
-
-
-        // Mengambil data perencanaan
-        $perencanaan = perencanaan::where('status', 'approved')->latest()
-            ->first();
-        $badanUsahaDiajukan = BadanUsaha::where('perencanaan_id', $perencanaan->id)->get();
-        
         if ($perencanaan) {
-            // Mengonversi tanggal ke format Indonesia
+            $badanUsahaDiajukan = BadanUsaha::where('perencanaan_id', $perencanaan->id)->get();
             $tanggalMulai = Carbon::parse($perencanaan->start_date)->translatedFormat('d F Y');
-            $tanggalAkhir = carbon::parse($perencanaan->end_date)->translatedFormat('d F Y');
+            $tanggalAkhir = Carbon::parse($perencanaan->end_date)->translatedFormat('d F Y');
+
+            $tanggalPemeriksaan = $tanggalMulai . " - " . $tanggalAkhir;
+            $dateNow = Carbon::now()->translatedFormat('d F Y', 'id');
+
+            $badanUsahaDiajukan->transform(function ($item) {
+                $item->jumlah_tunggakan = 'Rp ' . number_format(floatval($item->jumlah_tunggakan), 2, ',', '.');
+                return $item;
+            });
+
+            $spt = new SuratPerintahTugas();
+            $spt->nomor_spt = $request->input('nomor_spt');
+            $spt->tanggal_spt = $request->input('tanggal_spt');
+
+            $spt->save();
+
+            $spt->timPemeriksa()->create([
+                'nama' => $request->input('petugas_pemeriksa_nama'),
+                'npp' => $request->input('petugas_pemeriksa_npp'),
+            ]);
+
+            $pendampingNama = $request->input('pendamping_nama');
+            $pendampingNPP = $request->input('pendamping_npp');
+
+            foreach ($pendampingNama as $key => $nama) {
+                if (!empty($nama)) {
+                    $pendamping = new Pendamping([
+                        'nama' => $nama,
+                        'npp' => $pendampingNPP[$key],
+                    ]);
+                    $spt->pendamping()->save($pendamping);
+                }
+            }
+
+            $spt->extPendamping()->create([
+                'nama' => $request->input('ext_pendamping_nama'),
+                'jabatan' => $request->input('jabatan'),
+            ]);
+
+            $employee = employee_roles::where('posisi', 'Kepala Cabang')->pluck('nama')->first();
+
+            $pdf = FacadePdf::loadView('spt-preview', compact('spt', 'badanUsahaDiajukan', 'employee', 'tanggalPemeriksaan', 'dateNow'));
+
+            $pdfFileName = 'Surat Perintah Tugas ' . $spt->nomor_spt . '.pdf';
+
+            return $pdf->download($pdfFileName);
         } else {
-            // Handle the case where no 'approved' records were found
-            return response()->json(['error' => 'No approved records found'], 404);
-            // You might want to show an error message or take appropriate action.
+            return redirect()->back()->with('error', 'Perencanaan Belum Di Approve');
         }
-
-
-
-        // Mengganti teks dengan tanggal awal dan tanggal akhir
-        $tanggalPemeriksaan = $tanggalMulai . " - " . $tanggalAkhir;
-
-        $dateNow = Carbon::now()->translatedFormat('d F Y', 'id');
-
-        $badanUsahaDiajukan->transform(function ($item) {
-            $item->jumlah_tunggakan = 'Rp ' . number_format(floatval($item->jumlah_tunggakan), 2, ',', '.');
-            return $item;
-        });
-
-
-        
-        //return view('spt-preview', compact('badanUsahaDiajukan'))->with('success', 'SPT berhasil disimpan.');
-        // Generate the PDF
-
-        $pdf = FacadePdf::loadView('spt-preview', compact('spt', 'badanUsahaDiajukan', 'employee', 'tanggalPemeriksaan', 'dateNow'));
-
-
-
-        // Generate a unique filename for the PDF (you can customize this)
-        $pdfFileName = 'Surat Perintah Tugas ' . $spt->nomor_spt . '.pdf';
-
-        // Optionally, you can save the PDF to a directory on your server
-        $pdfFilePath = storage_path('/public/docs' . $pdfFileName);
-
-
-
-        // Download the PDF
-        return $pdf->download($pdfFileName);
-
-        // Pass the $spt variable to the view
-        return view('spt-preview', compact('spt', 'badanUsahaDiajukan'))->with('success', 'SPT berhasil disimpan.');
-
-        //return redirect()->route('pengiriman-surat')->with('success', 'SPT berhasil disimpan.');
     }
 
     // Menampilkan daftar BU

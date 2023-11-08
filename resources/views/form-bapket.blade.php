@@ -45,6 +45,7 @@
                                 @php
                                 $jumlah_tunggakan = number_format(floatval($badanUsaha->jumlah_tunggakan), 2, ',', '.');
                                 @endphp
+                           
                                 <input type="hidden" value="{{ $spt->id }}" name="spt_id">
                                 <input type="hidden" value="{{ $badanUsaha->id }}" name="bu_id">
                                 <div class="form-group">
@@ -93,7 +94,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="bulanMenunggak">Bulan Menunggak</label>
-                                    <input value="{{ $bulanMenunggak }}" class="form-control" type="text" name="bulanMenunggak" required
+                                    <input value="{{ $badanUsaha->jumlah_bulan_menunggak }}" class="form-control" type="number" name="bulanMenunggak" required
                                         id="bulanMenunggak">
                                 </div>
                                 <div class="form-group">

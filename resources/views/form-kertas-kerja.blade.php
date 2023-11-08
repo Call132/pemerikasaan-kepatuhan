@@ -66,7 +66,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="npwp">NPWP:</label>
-                                    <input type="text" class="form-control" id="npwp" name="npwp" required>
+                                    <input value="{{ $badanUsaha->npwp }}" type="text" class="form-control" id="npwp" name="npwp" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="tanggal_pemeriksaan">Bulan Pemeriksaan:</label>
@@ -128,13 +128,13 @@
 
                                 <div class="form-group">
                                     <label for="total_pekerja">Total Pekerja:</label>
-                                    <input type="text" class="form-control" id="total_pekerja" name="total_pekerja">
+                                    <input type="number" class="form-control" id="total_pekerja" name="total_pekerja">
                                 </div>
 
 
                                 <div class="form-group">
                                     <label for="jumlah_bulan_menunggak">Jumlah Bulan Menunggak:</label>
-                                    <input type="text" value="{{ $bulanMenunggak }}" class="form-control"
+                                    <input type="number"  class="form-control"
                                         id="jumlah_bulan_menunggak" name="jumlah_bulan_menunggak">
                                 </div>
                                 <button type="submit" class="btn btn-primary " onclick="submitForm()">Submit</button>

@@ -117,14 +117,7 @@ class BadanUsahaController extends Controller
 
         return view('edit-data-pemeriksaan', ['type_menu' => 'dashboard', 'data' => $data]);
     }
-    public function index()
-    {
-        // ...
-
-        return view('home')->with('type_menu', 'dashboard');
-
-        // ...
-    }
+   
     public function update(Request $request, $id)
     {
         // Validasi data yang dikirim melalui form

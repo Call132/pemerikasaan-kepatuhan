@@ -16,12 +16,14 @@ class bapket extends Model
         'tgl_bapket',
         'nama_pemberi_kerja',
         'jabatan',
-        'bulan_menunggak',
         'sebab_menunggak',
     ];
     use HasFactory;
 
     public function badanUsaha(){
         return $this->belongsTo(BadanUsaha::class, 'badan_usaha_id');
+    }
+    public function spt(){
+        return $this->belongsTo(SuratPerintahTugas::class, 'spt_id');
     }
 }

@@ -4,8 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+
 
 class SuratPerintahTugas extends Model
 {
@@ -19,6 +18,9 @@ class SuratPerintahTugas extends Model
 
 
     ];
+    public function perencanaan(){
+        return $this->belongsTo(perencanaan::class);
+    }
     public function timPemeriksa()
     {
         return $this->hasOne(TimPemeriksa::class, 'spt_id');
@@ -30,6 +32,9 @@ class SuratPerintahTugas extends Model
     public function extPendamping()
     {
         return $this->hasMany(extPendamping::class, 'surat_perintah_tugas_id');
+    }
+    public function bapket(){
+        return $this->hasMany(bapket::class, 'spt_id');
     }
 
     use HasFactory;

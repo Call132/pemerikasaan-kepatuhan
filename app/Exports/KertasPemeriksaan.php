@@ -555,7 +555,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->mergeCells('G4:I4');
                 $sheet->setCellValue('G5', $data->kode_badan_usaha);
                 $sheet->mergeCells('G5:I5');
-                $sheet->setCellValue('G6', $this->kertasKerja->npwp); // Gantilah dengan data yang sesuai
+                $sheet->setCellValue('G6', $this->badanUsaha->npwp); // Gantilah dengan data yang sesuai
                 $sheet->mergeCells('G6:I6');
                 $sheet->setCellValue('G7', $jadwal_pemeriksaan);
                 $sheet->mergeCells('G7:I7');
@@ -609,10 +609,10 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->setCellValue('C20', $this->kertasKerja->ref_iuran);
                 $sheet->mergeCells('C18:C19');
                 $sheet->setCellValue('D18', 'Total Pekerja');
-                $sheet->setCellValue('D20', $this->kertasKerja->total_pekerja);
+                $sheet->setCellValue('D20', $this->kertasKerja->total_pekerja . ' (orang)');
                 $sheet->mergeCells('D18:D19');
                 $sheet->setCellValue('E18', 'Jumlah Bulan Menunggak');
-                $sheet->setCellValue('E20', $this->kertasKerja->jumlah_bulan_menunggak);
+                $sheet->setCellValue('E20', $data->jumlah_bulan_menunggak . ' (bulan)');
                 $sheet->mergeCells('E18:E19');
                 $sheet->getStyle('E18')->getAlignment()->setWrapText(true); // Aktifkan wrap text
                 $sheet->setCellValue('F18', 'Total Tunggakan');

@@ -19,7 +19,6 @@ return new class extends Migration
             $table->date('tgl_bapket');
             $table->string('nama_pemberi_kerja');
             $table->string('jabatan');
-            $table->string('bulan_menunggak');
             $table->string('sebab_menunggak');
             $table->foreign('badan_usaha_id')->references('id')->on('badan_usaha')->onDelete('cascade');
             $table->foreign('spt_id')->references('id')->on('surat_perintah_tugas')->onDelete('cascade');

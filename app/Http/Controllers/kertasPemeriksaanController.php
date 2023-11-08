@@ -34,12 +34,9 @@ class kertasPemeriksaanController extends Controller
     {
         $badanUsaha = BadanUsaha::findOrFail($id);
         $jadwal_pemeriksaan = Carbon::parse($badanUsaha->jadwal_pemeriksaan)->isoFormat('MMMM', 'ID');
-        $lastPaymentDate = $badanUsaha->tanggal_terakhir_bayar;
-        $currentDate = Carbon::now()->format('Y-m-d');
 
-        $bulanMenunggak = (new DateTime($lastPaymentDate))->diff((new DateTime($currentDate))->modify('1 month'))->m;
 
-        return view('form-kertas-kerja', compact('badanUsaha', 'jadwal_pemeriksaan', 'bulanMenunggak'));
+        return view('form-kertas-kerja', compact('badanUsaha', 'jadwal_pemeriksaan',));
     }
     public function cari(Request $request)
     {
@@ -71,16 +68,16 @@ class kertasPemeriksaanController extends Controller
 
     public function store(Request $request)
     {
-        $validator = $request->validate([
+        $request->validate([
             'bu_id' => 'required',
             'npwp' => 'required',
             'uraian' => 'required',
             'tanggapan_bu' => 'required',
-            'ref_pekerja' => 'required',
+            'ref_pekerja' => 'nullable',
             'pemeriksa' => 'required',
             'master_file' => 'nullable',
-            'koreksi' => 'required',
-            'ref_iuran' => 'required',
+            'koreksi' => 'nullable',
+            'ref_iuran' => 'nullable',
             'total_pekerja' => 'required',
             'jumlah_bulan_menunggak' => 'required',
         ]);
@@ -88,7 +85,7 @@ class kertasPemeriksaanController extends Controller
         $id = $request->input('bu_id');
         $badanUsaha = BadanUsaha::findOrFail($id);
         $kertasKerja->badan_usaha_id = $request->input('bu_id');
-        $kertasKerja->npwp = $request->input('npwp');
+        $kertasKerja->badanUsaha->npwp = $request->input('npwp');
         $kertasKerja->uraian = $request->input('uraian');
         $kertasKerja->tanggapan_bu = $request->input('tanggapan_bu');
         $kertasKerja->ref_pekerja = $request->input('ref_pekerja');
@@ -97,7 +94,8 @@ class kertasPemeriksaanController extends Controller
         $kertasKerja->koreksi = $request->input('koreksi');
         $kertasKerja->ref_iuran = $request->input('ref_iuran');
         $kertasKerja->total_pekerja = $request->input('total_pekerja');
-        $kertasKerja->jumlah_bulan_menunggak = $request->input('jumlah_bulan_menunggak');
+        $kertasKerja->badanUsaha->jumlah_bulan_menunggak = $request->input('jumlah_bulan_menunggak');
+        $kertasKerja->badanUsaha->save();
         $kertasKerja->save();
 
         return Excel::download(new KertasPemeriksaan($badanUsaha, $pemeriksa, $kertasKerja), 'Kertas Kerja Pemeriksaan ' . $badanUsaha->nama_badan_usaha .  '.xlsx');
@@ -108,11 +106,8 @@ class kertasPemeriksaanController extends Controller
         $badanUsaha = BadanUsaha::findOrFail($id);
         $timPemeriksa = TimPemeriksa::latest()->first();
         $spt = SuratPerintahTugas::latest()->first();
-        $lastPaymentDate = $badanUsaha->tanggal_terakhir_bayar;
-        $currentDate = Carbon::now()->format('Y-m-d');
 
-        $bulanMenunggak = (new DateTime($lastPaymentDate))->diff((new DateTime($currentDate))->modify('1 month'))->m;
-        return view('form-bapket', compact('badanUsaha', 'timPemeriksa', 'spt', 'bulanMenunggak'));
+        return view('form-bapket', compact('badanUsaha', 'timPemeriksa', 'spt',));
     }
 
 
@@ -141,12 +136,13 @@ class kertasPemeriksaanController extends Controller
         $timPemeriksa = TimPemeriksa::latest()->first();
         $bapket->nama_pemberi_kerja = $request->input('nama');
         $bapket->jabatan = $request->input('jabatan');
-        $tunggakanIuran = $request->input('tunggakanIuran');
-        $bapket->bulan_menunggak = $request->input('bulanMenunggak');
+        $bapket->badanUsaha->jumlah_tunggakan = $request->input('tunggakanIuran');
+        $bapket->badanUsaha->jumlah_bulan_menunggak = $request->input('bulanMenunggak');
         $bapket->sebab_menunggak = $request->input('sebabMenunggak');
         $bapket->tgl_bapket = Carbon::now()->format('Y-m-d');
 
         $bapket->save();
+
         $pdf = Pdf::loadView('bapket-preview', compact('badanUsaha', 'timPemeriksa', 'bapket', 'spt'));
 
         $pdfFileName = 'Berita Acara Pemeriksaan ' . $badanUsaha->nama_badan_usaha . '.pdf';

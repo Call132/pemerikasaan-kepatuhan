@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('program_pemeriksaan', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('badan_usaha_id');
-            $table->string('npwp');
             $table->string('aspek_tenaga_kerja');
             $table->string('aspek_iuran');
             $table->string('peraturan');

@@ -22,7 +22,11 @@ return new class extends Migration
             $table->decimal('jumlah_tunggakan', 14, 2);
             $table->string('jenis_pemeriksaan');
             $table->date('jadwal_pemeriksaan');
-            $table->decimal('total', 14, 2)->nullable();
+            $table->integer('jumlah_bulan_menunggak')->nullable();
+            $table->date('tanggal_bayar')->nullable();
+            $table->decimal('jumlah_bayar', 14, 2)->nullable();
+            $table->string('hasil_pemeriksaan')->default('Belum Diperiksa');
+            $table->string('npwp')->nullable();
             $table->unsignedBigInteger('perencanaan_id');
             $table->foreign('perencanaan_id')
                 ->references('id')

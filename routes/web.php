@@ -17,6 +17,7 @@ use App\Http\Controllers\SPPLController;
 use App\Http\Controllers\BAPKetController;
 use App\Http\Controllers\laporanPemeriksaanController;
 use App\Http\Controllers\lhpsController;
+use App\Http\Controllers\monitoringController;
 use App\Models\BadanUsaha;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
@@ -56,6 +57,8 @@ Route::get('/register', function () {
     return view('register', ['type_menu' => 'auth']);
 })->middleware('guest');
 Route::post('/register', [AuthRegisterController::class, 'register'])->name('user.register');
+
+Route::get('/monitoring', [monitoringController::class, 'index'])->name('monitoring');
 
 Route::middleware(['auth', 'role:user'])->group(function () {
     //homepage

@@ -237,7 +237,7 @@ class ProgramPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->mergeCells('I4:L4');
                 $sheet->setCellValue('I5', $data->kode_badan_usaha);
                 $sheet->mergeCells('I5:L5');
-                $sheet->setCellValue('I6', $this->programPemeriksaan->npwp);
+                $sheet->setCellValue('I6', $this->programPemeriksaan->badanUsaha->npwp);
                 $sheet->mergeCells('I6:L6');
                 $sheet->setCellValue('I7', $jadwal_pemeriksaan);
                 $sheet->mergeCells('I7:L7');

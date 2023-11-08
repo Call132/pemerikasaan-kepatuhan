@@ -18,6 +18,9 @@ class perencanaan extends Model
         'status' => 'diajukan', // Nilai default untuk kolom status
     ];
 
+    public function spt(){
+        return $this->hasMany(SuratPerintahTugas::class);
+    }
     public function badanUsaha()
     {
         return $this->hasMany(BadanUsaha::class);

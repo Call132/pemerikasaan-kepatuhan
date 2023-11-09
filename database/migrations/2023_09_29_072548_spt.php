@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('surat_perintah_tugas', function (Blueprint $table) {
             $table->id();
-            $table->string('nomor_spt');
+            $table->string('nomor_spt')->unique();
             $table->date('tanggal_spt'); 
             $table->timestamps();
         });

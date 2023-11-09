@@ -19,5 +19,8 @@ class extPendamping extends Model
     {
         return $this->belongsTo(TimPemeriksa::class, 'tim_pemeriksa_id');
     }
+    public function spt(){
+        return $this->belongsTo(SuratPerintahTugas::class, 'spt_id');
+    }
     use HasFactory;
 }

@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BadanUsaha;
-use App\Models\employee_roles;
-use App\Models\sppk;
-use App\Models\SuratPerintahTugas;
-use App\Models\TimPemeriksa;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use App\Models\sppk;
+use App\Models\BadanUsaha;
+use App\Models\TimPemeriksa;
 use Illuminate\Http\Request;
+use App\Models\employee_roles;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\SuratPerintahTugas;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class SPPKController extends Controller
 {
@@ -18,52 +20,54 @@ class SPPKController extends Controller
 
     {
 
-        $timPemeriksa = TimPemeriksa::latest('id')->first();
-        $id = BadanUsaha::find($id);
-        //dd($this->id);
+        $spt = SuratPerintahTugas::latest()->first();
+        $timPemeriksa = $spt->timPemeriksa;
+        $badanUsaha = BadanUsaha::find($id);
 
-        return view('buat-sppk', compact('id', 'timPemeriksa'));
+
+        return view('buat-sppk', compact('badanUsaha', 'timPemeriksa'));
     }
 
     public function store(Request $request)
     {
-
-        $id = $request->input('badan_usaha_id');
-
-        $badanUsaha = BadanUsaha::find($id);
-
-        $spt = SuratPerintahTugas::latest('id')->first();
-        $employee = employee_roles::where('posisi', 'Kepala Cabang')->pluck('nama')->first();
-
-        $validate = $request->validate([
+        $request->validate([
             'nomor_sppk' => 'required',
             'waktu' => 'nullable',
-           
+            'tanggal_surat' => 'nullable',
+            'spt_id' => 'required',
         ]);
 
-        $timPemeriksa = $spt->timPemeriksa;
+        try {
+            $id = $request->input('badan_usaha_id');
+            $badanUsaha = BadanUsaha::find($id);
+            $employee = employee_roles::where('posisi', 'Kepala Cabang')->pluck('nama')->first();
 
-        $namaTimPemeriksa = $timPemeriksa->nama;
-        $nppTimPemeriksa = $timPemeriksa->npp;
-        $tanggal_surat = Carbon::now(); // Menggunakan Carbon untuk mendapatkan tanggal saat ini
+            $spt = SuratPerintahTugas::latest()->first();
+            $timPemeriksa = $spt->timPemeriksa;
+            $namaTimPemeriksa = $timPemeriksa->nama;
+            $nppTimPemeriksa = $timPemeriksa->npp;
+            $tanggal_surat = Carbon::now();
 
+            $sppk = new sppk();
+            $sppk->nomor_sppk = $request->input('nomor_sppk');
+            $sppk->waktu = $request->input('waktu');
+            $sppk->tanggal_surat = $tanggal_surat;
+            $sppk->surat_perintah_tugas_id = $request->input('spt_id');
 
-        $sppk = new sppk($validate);
-        $sppk->tanggal_surat = $tanggal_surat;
-        $sppk->spt_id = $spt->id;
-        $sppk->save();
+            $sppk->save();
 
+            $pdf = Pdf::loadView('sppk-preview', compact('sppk', 'badanUsaha', 'namaTimPemeriksa', 'nppTimPemeriksa', 'employee'));
+            $pdfFileName = 'Surat Perintah Pemeriksaan Kantor ' . $sppk->nomor_sppk . '.pdf';
 
-
-
-        $pdf = Pdf::loadView('sppk-preview', compact('sppk', 'badanUsaha', 'namaTimPemeriksa', 'nppTimPemeriksa', 'employee'));
-
-        // Generate a unique filename for the PDF (you can customize this)
-        $pdfFileName = 'Surat Perintah Pemeriksaan Kantor ' . $sppk->nomor_sppk . '.pdf';
-
-        // Download the PDF
-        return $pdf->download($pdfFileName);
-        // redirect ke hallaman lain
-        return redirect()->route('pengiriman-surat')->with('success', 'SPPK selesai dibuat');
+            Log::info('PDF generated: ' . $pdfFileName);
+            return $pdf->download($pdfFileName);
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->errorInfo[1] == 1062) {
+                return response()->json([
+                    'error' => 'Nomor SPPK sudah ada dalam basis data. Harap gunakan nomor SPPK yang berbeda.',
+                ], 400);
+            }
+            dd($e);
+        }
     }
 }

@@ -121,6 +121,7 @@
             width: 100%;
             height: 100%;
         }
+
         .page2 {
             page-break-before: always;
             /* Beri page break sebelum halaman kedua */
@@ -150,14 +151,18 @@
             </div>
             <div class="pendamping">
                 <p>Petugas Pendamping</p>
-                @foreach ($spt->pendamping as $pendamping)
-                    <p><span class="label">Nama</span>: {{ $pendamping->nama }}</p>
-                    <p><span class="label">NPP</span>: {{ $pendamping->npp }}</p>
+
+                
+                @foreach ($pendamping as $pendamping)
+                <p><span class="label">Nama</span>: {{ $pendamping->nama }}</p>
+                <p><span class="label">NPP</span>: {{ $pendamping->npp }}</p>
                 @endforeach
-                @foreach ($spt->extPendamping as $extPendamping)
-                    <p><span class="label">Nama</span>: {{ $extPendamping->nama }}</p>
-                    <p><span class="label">Jabatan</span>: {{ $extPendamping->jabatan }}</p>
-                @endforeach
+
+                
+                
+                <p><span class="label">Nama</span>: {{ $spt->extPendamping->nama }}</p>
+                <p><span class="label">Jabatan</span>: {{ $spt->extPendamping->jabatan }}</p>
+                
             </div>
 
             <div class="">
@@ -198,93 +203,95 @@
             <div class="card-body p-0">
                 <div class="table-responsive">
                     @php
-                        $totalTunggakan = 0;
+                    $totalTunggakan = 0;
                     @endphp
 
                     @if ($badanUsahaDiajukan->count() > 0)
-                        <table class="table">
-                            <thead>
+                    <table class="table">
+                        <thead>
 
-                                {{-- <tr>
-                                <th colspan="10" style="font-weight: bold; font-size: 14px; text-align: center; ">Hari, Tanggal Bulan Tahun - Hari, Tanggal Bulan Tahun</th>
+                            {{-- <tr>
+                                <th colspan="10" style="font-weight: bold; font-size: 14px; text-align: center; ">Hari,
+                                    Tanggal Bulan Tahun - Hari, Tanggal Bulan Tahun</th>
                             </tr> --}}
-                                <tr>
+                            <tr>
 
-                                    <th>No</th>
-                                    <th>Nama Badan Usaha</th>
-                                    <th>Kode Badan Usaha</th>
-                                    <th>Alamat</th>
-                                    <th>Kota/Kab</th>
-                                    <th>Jenis Ketidakpatuhan</th>
-                                    <th>Tanggal Terakhir Bayar</th>
-                                    <th>Jumlah Tunggakan</th>
-                                    <th>Jenis Pemeriksaan</th>
-                                    <th>Jadwal Pemeriksaan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                                <th>No</th>
+                                <th>Nama Badan Usaha</th>
+                                <th>Kode Badan Usaha</th>
+                                <th>Alamat</th>
+                                <th>Kota/Kab</th>
+                                <th>Jenis Ketidakpatuhan</th>
+                                <th>Tanggal Terakhir Bayar</th>
+                                <th>Jumlah Tunggakan</th>
+                                <th>Jenis Pemeriksaan</th>
+                                <th>Jadwal Pemeriksaan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                                @foreach ($badanUsahaDiajukan as $data)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $data->nama_badan_usaha }}</td>
-                                        <td>{{ $data->kode_badan_usaha }}</td>
-                                        <td>{{ $data->alamat }}</td>
-                                        <td>{{ $data->kota_kab }}</td>
-                                        <td>{{ $data->jenis_ketidakpatuhan }}</td>
-                                        <td>{{ $data->tanggal_terakhir_bayar }}</td>
-                                        <td>Rp{{ number_format(floatval(str_replace(['Rp ', '.'], '', $data->jumlah_tunggakan)), 2, ',', '.') }}
-                                        </td>
-                                        <td>{{ $data->jenis_pemeriksaan }}</td>
-                                        <td>{{ $data->jadwal_pemeriksaan }}</td>
-                                    </tr>
-                                    @php
-                                        // Menambahkan jumlah tunggakan ke total
-                                        $totalTunggakan += floatval(str_replace(['Rp ', '.'], '', $data->jumlah_tunggakan));
-                                    @endphp
-                                @endforeach
-                            </tbody>
-                            <tfoot>
-                                <tr class="totall">
-                                    <td colspan="7" class="totall text-center">Total</td>
-                                    <td colspan="3" class="">Rp
-                                        {{ number_format($totalTunggakan, 2, ',', '.') }}
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                        <div class="footer" style="clear: both;">
-                            <p>RL/ta/PP.01.02</p>
-                        </div>
+                            @foreach ($badanUsahaDiajukan as $data)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $data->nama_badan_usaha }}</td>
+                                <td>{{ $data->kode_badan_usaha }}</td>
+                                <td>{{ $data->alamat }}</td>
+                                <td>{{ $data->kota_kab }}</td>
+                                <td>{{ $data->jenis_ketidakpatuhan }}</td>
+                                <td>{{ $data->tanggal_terakhir_bayar }}</td>
+                                <td>Rp{{ number_format(floatval(str_replace(['Rp ', '.'], '', $data->jumlah_tunggakan)),
+                                    2, ',', '.') }}
+                                </td>
+                                <td>{{ $data->jenis_pemeriksaan }}</td>
+                                <td>{{ $data->jadwal_pemeriksaan }}</td>
+                            </tr>
+                            @php
+                            // Menambahkan jumlah tunggakan ke total
+                            $totalTunggakan += floatval(str_replace(['Rp ', '.'], '', $data->jumlah_tunggakan));
+                            @endphp
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr class="totall">
+                                <td colspan="7" class="totall text-center">Total</td>
+                                <td colspan="3" class="">Rp
+                                    {{ number_format($totalTunggakan, 2, ',', '.') }}
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div class="footer" style="clear: both;">
+                        <p>RL/ta/PP.01.02</p>
+                    </div>
                     @else
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
 
-                                <table class="table table-striped-columns mb-0 ">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Nama Badan Usaha</th>
-                                            <th>Kode Badan Usaha</th>
-                                            <th>Alamat</th>
-                                            <th>Kota/Kab</th>
-                                            <th>Jenis Ketidakpatuhan</th>
-                                            <th>Tanggal Terakhir Bayar</th>
-                                            <th>Jumlah Tunggakan</th>
-                                            <th>Jenis Pemeriksaan</th>
-                                            <th>Jadwal Pemeriksaan</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="11" class="text-center">Data Badan Usaha Belum
-                                                Ditambahkan</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <table class="table table-striped-columns mb-0 ">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama Badan Usaha</th>
+                                        <th>Kode Badan Usaha</th>
+                                        <th>Alamat</th>
+                                        <th>Kota/Kab</th>
+                                        <th>Jenis Ketidakpatuhan</th>
+                                        <th>Tanggal Terakhir Bayar</th>
+                                        <th>Jumlah Tunggakan</th>
+                                        <th>Jenis Pemeriksaan</th>
+                                        <th>Jadwal Pemeriksaan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="11" class="text-center">Data Badan Usaha Belum
+                                            Ditambahkan</td>
+                                    </tr>
+                                </tbody>
+                            </table>
 
-                            </div>
                         </div>
+                    </div>
                     @endif
                 </div>
             </div>

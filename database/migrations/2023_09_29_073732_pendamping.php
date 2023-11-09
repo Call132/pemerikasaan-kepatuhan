@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('npp');
             $table->unsignedBigInteger('surat_perintah_tugas_id')->nullable();
             $table->timestamps();
-
             // Foreign key
             $table->foreign('surat_perintah_tugas_id')->references('id')->on('surat_perintah_tugas')->onDelete('cascade');
         });

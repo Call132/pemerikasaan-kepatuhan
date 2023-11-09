@@ -24,6 +24,6 @@ class bapket extends Model
         return $this->belongsTo(BadanUsaha::class, 'badan_usaha_id');
     }
     public function spt(){
-        return $this->belongsTo(SuratPerintahTugas::class, 'spt_id');
+        return $this->belongsTo(SuratPerintahTugas::class);
     }
 }

@@ -74,18 +74,14 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     //Route::get('/settings/edit', 'SettingController@edit')->name('setting');
     //Route::put('/settings/update', 'SettingController@update')->name('settings.update');
 
-    Route::get('/spt', function () {
-        return view('buat-spt', ['type_menu' => 'spt']);
-    });
+
 
     //spt
     Route::get('/spt', function () {
         return view('buat-spt', ['type_menu' => 'spt']);
     });
     Route::get('/spt/preview', [SptController::class, 'index']);
-    //Route::get('/spt/preview', [SptController::class, 'store'])->name('spt.preview');
-    //Route::post('/spt/export-Pdf', [SptController::class, 'exportPdf'])->name('spt.exportPdf');
-    Route::post('/spt/save', [SptController::class, 'store'])->name('spt.create');
+    Route::post('/spt/save', [SptController::class, 'storeSpt'])->name('spt.store')->middleware('checkStoreSptCall');
 
     Route::get('/pengiriman-surat', [pengirimanController::class, 'dashboard'])->name('pengiriman-surat');
     Route::post('/pengiriman-surat', [pengirimanController::class, 'cari'])->name('pengiriman-surat.cari');
@@ -154,9 +150,6 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     });
     Route::get('/edit-data-pemeriksaan/{id}', [BadanUsahaController::class, 'edit'])->name('edit-data-pemeriksaan');
     Route::put('/update-data-pemeriksaan/{id}', [BadanUsahaController::class, 'update'])->name('update-data-pemeriksaan');
-
-
-
 
 
     // debugging

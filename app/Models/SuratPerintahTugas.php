@@ -14,27 +14,33 @@ class SuratPerintahTugas extends Model
     protected $fillable = [
         'nomor_spt',
         'tanggal_spt',
-        
+
 
 
     ];
-    public function perencanaan(){
+    public function perencanaan()
+    {
         return $this->belongsTo(perencanaan::class);
     }
     public function timPemeriksa()
     {
-        return $this->hasOne(TimPemeriksa::class, 'spt_id');
+        return $this->hasOne(TimPemeriksa::class);
     }
     public function pendamping()
     {
-        return $this->hasMany(Pendamping::class, 'surat_perintah_tugas_id');
+        return $this->hasMany(Pendamping::class);
     }
     public function extPendamping()
     {
-        return $this->hasMany(extPendamping::class, 'surat_perintah_tugas_id');
+        return $this->hasOne(extPendamping::class);
     }
-    public function bapket(){
-        return $this->hasMany(bapket::class, 'spt_id');
+    public function sppk()
+    {
+        return $this->hasMany(sppk::class);
+    }
+    public function bapket()
+    {
+        return $this->hasMany(bapket::class);
     }
 
     use HasFactory;

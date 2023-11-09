@@ -58,7 +58,7 @@
                         <div class="col-md-12">
                             <div class="panel panel-default">
 
-                                <form method="POST" action="{{ route('spt.create') }} " id="myForm">
+                                <form method="POST" action="{{ route('spt.store') }} " id="myForm">
                                     @csrf
 
                                     <div class="form-group">
@@ -114,7 +114,7 @@
                                         <input type="text" class="form-control" id="jabatan" name="jabatan" required>
                                     </div>
 
-                                    <button type="submit" class="btn btn-primary" onclick="submitForm()">Buat SPT</button>
+                                    <button type="submit" class="btn btn-primary" >Buat SPT</button>
                                 </form>
 
 
@@ -157,7 +157,7 @@
                 });
             });
     </script>
-    <script>
+    {{-- <script>
         function submitForm() {
             document.getElementById('myForm').addEventListener('submit', function() {
                 setTimeout(function() {
@@ -165,7 +165,7 @@
                 }, 3000); // Redirect after 1 second (adjust the delay as needed)
             });
         }
-    </script>
+    </script> --}}
 
     <!-- JS Libraies -->
     {{-- <script src="assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>

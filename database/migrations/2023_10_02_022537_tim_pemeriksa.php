@@ -16,10 +16,9 @@ return new class extends Migration
             $table->string('nama');
             $table->string('npp');
             // Kolom-kolom lainnya
-            $table->unsignedBigInteger('spt_id'); // Ini adalah kolom kunci asing untuk menghubungkan ke SuratPerintahTugas.
+            $table->unsignedBigInteger('surat_perintah_tugas_id'); // Ini adalah kolom kunci asing untuk menghubungkan ke SuratPerintahTugas.
             $table->timestamps();
-
-            $table->foreign('spt_id')->references('id')->on('surat_perintah_tugas')->onDelete('cascade');
+            $table->foreign('surat_perintah_tugas_id')->references('id')->on('surat_perintah_tugas')->onDelete('cascade');
         });
     }
 

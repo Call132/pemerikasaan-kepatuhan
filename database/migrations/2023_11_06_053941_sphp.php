@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('sphp', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('badan_usaha_id');
-            $table->string('no_sphp');
+            $table->string('no_sphp')->unique();
             $table->date('tgl_sphp');
             $table->text('p_a');
             $table->text('p_b');

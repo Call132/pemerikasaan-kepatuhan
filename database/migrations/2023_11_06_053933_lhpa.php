@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('lhpa', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('badan_usaha_id');
             $table->string('tgl_lhpa');
             $table->string('jumlah_bulan_menunggak');
             $table->string('jumlah_pekerja');
@@ -25,6 +24,7 @@ return new class extends Migration
             $table->string('this_year_pembayaran');
             $table->string('tindak_lanjut');
             $table->string('rekomendasi_pemeriksa');
+            $table->unsignedBigInteger('badan_usaha_id');
             $table->foreign('badan_usaha_id')->references('id')->on('badan_usaha')->onDelete('cascade');
             $table->timestamps();
         });

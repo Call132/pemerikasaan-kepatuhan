@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('sppl', function (Blueprint $table) {
             $table->id();
-            $table->string('nomor_sppl');
+            $table->string('nomor_sppl')->unique();
             $table->date('tanggal_surat');
             $table->string('nama');
             $table->string('noHp');
-            $table->unsignedBigInteger('spt_id');
-            $table->foreign('spt_id')->references('id')->on('surat_perintah_tugas')->onDelete('cascade');
+            $table->unsignedBigInteger('surat_perintah_tugas_id');
+            $table->foreign('surat_perintah_tugas_id')->references('id')->on('surat_perintah_tugas')->onDelete('cascade');
             $table->timestamps();
         });
     }

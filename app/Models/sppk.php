@@ -14,12 +14,13 @@ class sppk extends Model
         'nomor_sppk',
         'tanggal_surat',
         'waktu',
+        'surat_perintah_tugas_id',
         
     ];
 
     public function spt()
     {
-        return $this->belongsTo(Spt::class);
+        return $this->belongsTo(SuratPerintahTugas::class);
     }
     public function badanUsaha()
     {

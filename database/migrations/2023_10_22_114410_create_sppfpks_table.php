@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('sppfpk', function (Blueprint $table) {
             $table->id();
-            $table->string('nomor_sppfpk');
+            $table->string('nomor_sppfpk')->unique();
             $table->date('tanggal_surat');
             $table->time('waktu');
             $table->unsignedBigInteger('sppk_id');

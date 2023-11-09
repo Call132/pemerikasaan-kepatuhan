@@ -40,11 +40,12 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="panel panel-default">
-                            <form method="POST" action="{{ route('sppk.store') }}" id="myForm">
+                            <form method="POST" action="{{ route('sppk.store') }}" >
                                 @csrf
-
-
-                                <input type="hidden" name="badan_usaha_id" value="{{ $id->id }}">
+                                
+                                <input type="hidden" name="badan_usaha_id" value="{{ $badanUsaha->id }}">
+                                <input type="hidden" name="spt_id"
+                                    value="{{ $timPemeriksa->surat_perintah_tugas_id }}">
 
                                 <div class="form-group">
                                     <label for="nomor_sppk">Nomor:</label>
@@ -54,7 +55,8 @@
                                 <div class="form-group">
                                     <label for="hari_tanggal_pelaksanaan">Hari/Tanggal Pelaksanaan:</label>
                                     <input type="date" class="form-control" id="hari_tanggal_pelaksanaan"
-                                        name="hari_tanggal_pelaksanaan" disabled value="{{ $id->jadwal_pemeriksaan }}">
+                                        name="hari_tanggal_pelaksanaan" disabled
+                                        value="{{ $badanUsaha->jadwal_pemeriksaan }}">
                                 </div>
 
                                 <div class="form-group">
@@ -86,22 +88,22 @@
                                 <div class="form-group">
                                     <label for="pemberi_kerja_nama">Nama Pemberi Kerja:</label>
                                     <input type="text" class="form-control" id="pemberi_kerja_nama"
-                                        name="pemberi_kerja_nama" disabled value="{{ $id->nama_badan_usaha }}">
+                                        name="pemberi_kerja_nama" disabled value="{{ $badanUsaha->nama_badan_usaha }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="kode_entitas">Kode Entitas:</label>
                                     <input type="text" class="form-control" id="kode_entitas" name="kode_entitas"
-                                        disabled value="{{ $id->kode_badan_usaha }}">
+                                        disabled value="{{ $badanUsaha->kode_badan_usaha }}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="alamat">Alamat:</label>
-                                    <input type="text" value="{{ $id->alamat }}" class="form-control" id="alamat"
-                                        name="alamat" disabled>
+                                    <input type="text" value="{{ $badanUsaha->alamat }}" class="form-control"
+                                        id="alamat" name="alamat" disabled>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary" onclick="submitForm()">Buat SPPK</button>
+                                <button type="submit" class="btn btn-primary">Buat SPPK</button>
                             </form>
                         </div>
                     </div>

@@ -114,7 +114,7 @@
                                         <input type="text" class="form-control" id="jabatan" name="jabatan" required>
                                     </div>
 
-                                    <button type="submit" class="btn btn-primary" >Buat SPT</button>
+                                    <button type="submit" onclick="submitForm()" class="btn btn-primary" >Buat SPT</button>
                                 </form>
 
 
@@ -157,15 +157,15 @@
                 });
             });
     </script>
-    {{-- <script>
+    <script>
         function submitForm() {
             document.getElementById('myForm').addEventListener('submit', function() {
                 setTimeout(function() {
-                    window.location.href = '/';
+                    window.location.href = '/pengiriman-surat';
                 }, 3000); // Redirect after 1 second (adjust the delay as needed)
             });
         }
-    </script> --}}
+    </script>
 
     <!-- JS Libraies -->
     {{-- <script src="assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>

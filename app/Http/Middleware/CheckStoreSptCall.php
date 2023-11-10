@@ -18,10 +18,11 @@ class CheckStoreSptCall
     {
         if (!$this->called) {
             $this->called = true;
+
             return $next($request);
         }
 
         // Jika storeSpt sudah dipanggil sebelumnya, kembalikan respons yang sesuai.
-        return response()->json(['error' => 'Metode storeSpt sudah dipanggil.'], 400);
+        return response()->json(['error' => 'Metode storeSpk sudah dipanggil.'], 400);
     }
 }

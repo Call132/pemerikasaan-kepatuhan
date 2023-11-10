@@ -68,37 +68,46 @@ class kertasPemeriksaanController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'bu_id' => 'required',
-            'npwp' => 'required',
-            'uraian' => 'required',
-            'tanggapan_bu' => 'required',
-            'ref_pekerja' => 'nullable',
-            'pemeriksa' => 'required',
-            'master_file' => 'nullable',
-            'koreksi' => 'nullable',
-            'ref_iuran' => 'nullable',
-            'total_pekerja' => 'required',
-            'jumlah_bulan_menunggak' => 'required',
-        ]);
-        $kertasKerja = new kertasKerja();
-        $id = $request->input('bu_id');
-        $badanUsaha = BadanUsaha::findOrFail($id);
-        $kertasKerja->badan_usaha_id = $request->input('bu_id');
-        $kertasKerja->badanUsaha->npwp = $request->input('npwp');
-        $kertasKerja->uraian = $request->input('uraian');
-        $kertasKerja->tanggapan_bu = $request->input('tanggapan_bu');
-        $kertasKerja->ref_pekerja = $request->input('ref_pekerja');
-        $pemeriksa = $request->input('pemeriksa');
-        $kertasKerja->master_file = $request->input('master_file');
-        $kertasKerja->koreksi = $request->input('koreksi');
-        $kertasKerja->ref_iuran = $request->input('ref_iuran');
-        $kertasKerja->total_pekerja = $request->input('total_pekerja');
-        $kertasKerja->badanUsaha->jumlah_bulan_menunggak = $request->input('jumlah_bulan_menunggak');
-        $kertasKerja->badanUsaha->save();
-        $kertasKerja->save();
+        try {
+            $request->validate([
+                'bu_id' => 'required',
+                'npwp' => 'required',
+                'uraian' => 'required',
+                'tanggapan_bu' => 'required',
+                'ref_pekerja' => 'nullable',
+                'pemeriksa' => 'required',
+                'master_file' => 'nullable',
+                'koreksi' => 'nullable',
+                'ref_iuran' => 'nullable',
+                'total_pekerja' => 'required',
+                'jumlah_bulan_menunggak' => 'required',
+            ]);
+            $kertasKerja = new kertasKerja();
+            $id = $request->input('bu_id');
+            $badanUsaha = BadanUsaha::findOrFail($id);
+            $kertasKerja->badan_usaha_id = $request->input('bu_id');
+            $kertasKerja->badanUsaha->npwp = $request->input('npwp');
+            $kertasKerja->uraian = $request->input('uraian');
+            $kertasKerja->tanggapan_bu = $request->input('tanggapan_bu');
+            $kertasKerja->ref_pekerja = $request->input('ref_pekerja');
+            $pemeriksa = $request->input('pemeriksa');
+            $kertasKerja->master_file = $request->input('master_file');
+            $kertasKerja->koreksi = $request->input('koreksi');
+            $kertasKerja->ref_iuran = $request->input('ref_iuran');
+            $kertasKerja->total_pekerja = $request->input('total_pekerja');
+            $kertasKerja->badanUsaha->jumlah_bulan_menunggak = $request->input('jumlah_bulan_menunggak');
+            $kertasKerja->badanUsaha->save();
+            $kertasKerja->save();
+            $excelFileName = 'Kertas Kerja Pemeriksaan ' . $badanUsaha->nama_badan_usaha . '.xlsx';
+           
+            Excel::store(new KertasPemeriksaan($badanUsaha, $pemeriksa, $kertasKerja),'public/kertas-kerja/' . $excelFileName);
+            $excelPath = 'storage/kertas-kerja/' . $excelFileName;
 
-        return Excel::download(new KertasPemeriksaan($badanUsaha, $pemeriksa, $kertasKerja), 'Kertas Kerja Pemeriksaan ' . $badanUsaha->nama_badan_usaha .  '.xlsx');
+
+            return redirect($excelPath)->with('success', 'Kertas Kerja Pemeriksaan Berhasil Dibuat');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Data Tidak Valid');
+        }
     }
 
     public function formBapket($id)
@@ -113,41 +122,47 @@ class kertasPemeriksaanController extends Controller
 
     public function storeBapket(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'spt_id' => 'required',
-            'bu_id' => 'required',
-            'no_bapket' => 'required',
-            'nama' => 'required',
-            'jabatan' => 'required',
-            'tunggakanIuran' => 'required',
-            'bulanMenunggak' => 'required',
-            'sebabMenunggak' => 'required',
-        ]);
+        try {
+            $validator = $request->validate([
+                'bu_id' => 'required',
+                'no_bapket' => 'required|unique:bapket',
+                'nama_pemberi_kerja' => 'required',
+                'jabatan' => 'required',
+                'tunggakanIuran' => 'nullable',
+                'bulanMenunggak' => 'required',
+                'sebabMenunggak' => 'required',
+            ]);
 
-        $bapket = new bapket();
+            $bapket = new bapket($validator);
 
-        $id = $request->input('spt_id');
-        $bu_id = $request->input('bu_id');
-        $badanUsaha = BadanUsaha::findOrFail($bu_id);
-        $bapket->badan_usaha_id = $request->input('bu_id');
-        $spt = SuratPerintahTugas::findOrFail($id);
-        $bapket->spt_id = $request->input('spt_id');
-        $bapket->no_bapket = $request->input('no_bapket');
-        $timPemeriksa = TimPemeriksa::latest()->first();
-        $bapket->nama_pemberi_kerja = $request->input('nama');
-        $bapket->jabatan = $request->input('jabatan');
-        $bapket->badanUsaha->jumlah_tunggakan = $request->input('tunggakanIuran');
-        $bapket->badanUsaha->jumlah_bulan_menunggak = $request->input('bulanMenunggak');
-        $bapket->sebab_menunggak = $request->input('sebabMenunggak');
-        $bapket->tgl_bapket = Carbon::now()->format('Y-m-d');
-
-        $bapket->save();
-
-        $pdf = Pdf::loadView('bapket-preview', compact('badanUsaha', 'timPemeriksa', 'bapket', 'spt'));
-
-        $pdfFileName = 'Berita Acara Pemeriksaan ' . $badanUsaha->nama_badan_usaha . '.pdf';
+            $id = $request->input('spt_id');
+            $bu_id = $request->input('bu_id');
+            $badanUsaha = BadanUsaha::findOrFail($bu_id);
+            $spt = SuratPerintahTugas::findOrFail($id);
+            $bapket->surat_perintah_tugas_id = $id;
+            $bapket->badan_usaha_id = $bu_id;
+            $timPemeriksa = $spt->timPemeriksa;
+            $bapket->nama_pemberi_kerja = $request->input('nama_pemberi_kerja');
+            $bapket->jabatan = $request->input('jabatan');
+            $badanUsaha->jumlah_tunggakan = ($request->input('tunggakanIuran'));
+            $badanUsaha->jumlah_bulan_menunggak = $request->input('bulanMenunggak');
+            $bapket->sebab_menunggak = $request->input('sebabMenunggak');
+            $bapket->tgl_bapket = Carbon::now()->format('Y-m-d');
 
 
-        return $pdf->download($pdfFileName);
+            $badanUsaha->save();
+            $bapket->save();
+
+            $pdf = Pdf::loadView('bapket-preview', compact('badanUsaha', 'timPemeriksa', 'bapket', 'spt'));
+
+            $pdfFileName = 'Berita Acara Pemeriksaan ' . $badanUsaha->nama_badan_usaha . '.pdf';
+            $pdf->save(storage_path('app/public/bapket/' . $pdfFileName));
+            $pdfPath = 'storage/bapket/' . $pdfFileName;
+
+
+            return redirect($pdfPath)->with('success', 'Berita Acara Pemeriksaan Berhasil Dibuat');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Data Tidak Valid');
+        }
     }
 }

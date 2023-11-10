@@ -18,7 +18,7 @@ class sppl extends Model
 
     public function spt()
     {
-        return $this->belongsTo(Spt::class);
+        return $this->belongsTo(SuratPerintahTugas::class);
     }
     public function badanUsaha()
     {

@@ -43,7 +43,7 @@ class SptController extends Controller
     public function storeSpt(Request $request)
     {
         $validatedData = $request->validate([
-            'nomor_spt' => 'required',
+            'nomor_spt' => 'required|unique:surat_perintah_tugas',
             'tanggal_spt' => 'required|date',
             'petugas_pemeriksa_nama' => 'nullable',
             'petugas_pemeriksa_npp' => 'nullable',
@@ -77,6 +77,7 @@ class SptController extends Controller
         // Cari SPT dengan nomor yang sama
         $spt = SuratPerintahTugas::where('nomor_spt', $request->input('nomor_spt'))->first();
 
+
         // Jika SPT tidak ada, buat yang baru
         if (!$spt) {
             $spt = new SuratPerintahTugas([
@@ -87,16 +88,11 @@ class SptController extends Controller
             $spt->save();
         }
 
-        // Simpan tim pemeriksa
         $petugasPemeriksa = $spt->timPemeriksa()->create([
             'nama' => $request->input('petugas_pemeriksa_nama'),
             'npp' => $request->input('petugas_pemeriksa_npp'),
         ]);
 
-
-        // $spt->timPemeriksa()->save($petugasPemeriksa);
-
-        // Simpan anggota pendamping
         $pendampingNama = $request->input('pendamping_nama');
         $pendampingNPP = $request->input('pendamping_npp');
 
@@ -111,28 +107,19 @@ class SptController extends Controller
             }
         }
 
-        
-
-        // $spt->pendamping()->createMany($pendamping);
-
-        // Simpan anggota eksternal pendamping
         $extPendamping = $spt->extPendamping()->create([
             'nama' => $request->input('ext_pendamping_nama'),
             'jabatan' => $request->input('jabatan'),
         ]);
-        // $spt->extPendamping()->save($extPendamping);
-
         $employee = employee_roles::where('posisi', 'Kepala Cabang')->pluck('nama')->first();
 
-        $pdf = Pdf::loadView('spt-preview', compact('spt', 'badanUsahaDiajukan','pendamping' ,'employee', 'tanggalPemeriksaan', 'dateNow'));
+        $pdf = Pdf::loadView('spt-preview', compact('spt', 'badanUsahaDiajukan', 'pendamping', 'employee', 'tanggalPemeriksaan', 'dateNow'));
 
         $pdfFileName = 'Surat Perintah Tugas ' . $spt->nomor_spt . '.pdf';
+        $pdf->save(storage_path('app/public/spt/' . $pdfFileName));
+        $pdfPath = 'storage/spt/' . $pdfFileName;
 
-
-        Log::info('Surat Perintah Tugas ' . $spt->nomor_spt . ' telah dicetak');
-
-
-        return $pdf->download($pdfFileName);
+        return redirect($pdfPath)->with('success', 'Surat Perintah Tugas Berhasil Dibuat');
     }
 
 
@@ -158,6 +145,6 @@ class SptController extends Controller
     }
     public function preview()
     {
-        return view('spt-preview'); // Sesuaikan dengan nama tampilan Anda
+        return view('spt-preview');
     }
 }

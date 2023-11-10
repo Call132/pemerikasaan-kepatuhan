@@ -555,7 +555,8 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->mergeCells('G4:I4');
                 $sheet->setCellValue('G5', $data->kode_badan_usaha);
                 $sheet->mergeCells('G5:I5');
-                $sheet->setCellValue('G6', $this->badanUsaha->npwp); // Gantilah dengan data yang sesuai
+                
+                $sheet->setCellValue('G6', $data->npwp); // Gantilah dengan data yang sesuai
                 $sheet->mergeCells('G6:I6');
                 $sheet->setCellValue('G7', $jadwal_pemeriksaan);
                 $sheet->mergeCells('G7:I7');

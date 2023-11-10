@@ -151,7 +151,7 @@
                     {{ \Carbon\Carbon::parse($badanUsaha->jadwal_pemeriksaan)->locale('id')->isoFormat('dddd, D MMMM Y') }}
                 </p>
                 <p><span class="label">Waktu</span>:
-                    {{ \Carbon\Carbon::parse($sppk->waktu)->locale('id')->format('H:i') }} WITA</p>
+                    {{ $sppk->waktu }} WITA</p>
 
                 <p><span class="label">Tempat</span>: Kantor BPJS Kesehatan Cabang Gorontalo</p>
                 <p><span class="label">Agenda</span>: Pemeriksaan Kepatuhan</p>

@@ -34,6 +34,12 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
+                        @elseif (session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session('error') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         @endif
                     </div>
                     </p>
@@ -92,7 +98,7 @@
                                         id="alamat" name="alamat" disabled required>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary" onclick="submitForm()">Buat SPPK</button>
+                                <button type="submit" class="btn btn-primary" onclick="submitForm()">Buat SPPL</button>
                             </form>
                         </div>
                     </div>
@@ -116,7 +122,7 @@
             document.getElementById('myForm').addEventListener('submit', function() {
                 setTimeout(function() {
                     window.location.href = '/pengiriman-surat';
-                }, 3000); // Redirect after 1 second (adjust the delay as needed)
+                }, 5000); // Redirect after 1 second (adjust the delay as needed)
             });
         }
     </script>

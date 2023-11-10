@@ -81,13 +81,13 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         return view('buat-spt', ['type_menu' => 'spt']);
     });
     Route::get('/spt/preview', [SptController::class, 'index']);
-    Route::post('/spt/save', [SptController::class, 'storeSpt'])->name('spt.store')->middleware('checkStoreSptCall');
+    Route::post('/spt/save', [SptController::class, 'storeSpt'])->name('spt.store');
 
     Route::get('/pengiriman-surat', [pengirimanController::class, 'dashboard'])->name('pengiriman-surat');
     Route::post('/pengiriman-surat', [pengirimanController::class, 'cari'])->name('pengiriman-surat.cari');
 
     Route::get('/sppk/{id}', [SPPKController::class, 'create'])->name('sppk');
-    Route::post('/sppk/save', [SPPKController::class, 'store'])->name('sppk.store');
+    Route::post('/sppk/save', [SPPKController::class, 'store'])->name('sppk.store')->middleware('checkStoreSptCall');
 
     Route::get('/sppl/{id}', [SPPLController::class, 'create'])->name('sppl');
     Route::post('/sppl/save', [SPPLController::class, 'store'])->name('sppl.store');

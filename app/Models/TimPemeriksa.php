@@ -19,6 +19,7 @@ class TimPemeriksa extends Model
     {
         return $this->hasMany(SuratPerintahTugas::class);
     }
+    
 
 
     use HasFactory;

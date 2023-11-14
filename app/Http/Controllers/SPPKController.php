@@ -62,14 +62,14 @@ class SPPKController extends Controller
 
 
             $pdf = Pdf::loadView('sppk-preview', compact('sppk', 'badanUsaha', 'namaTimPemeriksa', 'nppTimPemeriksa', 'employee'));
-            $pdfFileName = 'Surat Perintah Pemeriksaan Kantor ' . $sppk->nomor_sppk . '.pdf';
-            $pdf->save(storage_path('app/public/sppk/' . $pdfFileName));
-            $pdfPath = 'storage/sppk/' . $pdfFileName;
-
+            $pdfFileName = 'Surat Perintah Pemeriksaan Kantor ' . str_replace('/', '_', $sppk->nomor_sppk) . '.pdf';
+            $pdf->save(storage_path('app/public/pdf/' . $pdfFileName));
+            $pdfPath = 'storage/pdf/' . $pdfFileName;
 
 
             return redirect($pdfPath)->with('success', 'Surat Perintah Pemeriksaan Kantor Berhasil');
         } catch (\Exception $e) {
+            return dd($e);
             return redirect()->back()->with('error', 'Nomor Surat Perintah Pemeriksaan Kantor sudah ada');
         }
     }

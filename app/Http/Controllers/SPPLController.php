@@ -44,9 +44,9 @@ class SPPLController extends Controller
 
 
             $pdf = Pdf::loadView('sppl-preview', compact('sppl', 'badanUsaha', 'employee'));
-            $pdfFileName = 'Surat Perintah Pemeriksaan Lapangan ' . $sppl->nomor_sppl . '.pdf';
-            $pdf->save(storage_path('app/public/sppl/' . $pdfFileName));
-            $pdfPath = 'storage/sppl/' . $pdfFileName;
+            $pdfFileName = 'Surat Perintah Pemeriksaan Lapangan ' . str_replace('/', '_', $sppl->nomor_sppl) . '.pdf';
+            $pdf->save(storage_path('app/public/pdf/' . $pdfFileName));
+            $pdfPath = 'storage/pdf/' . $pdfFileName;
             return redirect($pdfPath)->with('success', 'Surat Perintah Pemeriksaan Lapangan Berhasil');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Nomor Surat Perintah Pemeriksaan Lapangan sudah ada');

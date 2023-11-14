@@ -57,8 +57,13 @@ class programPemeriksaanController extends Controller
 
         $programPemeriksaan->badanUsaha->save();
         $programPemeriksaan->save();
+        $excelFileName = 'Program Realisasi Pemeriksaan ' .  $badanUsaha->npwp . '.xlsx';
+        Excel::store(new ProgramPemeriksaan($badanUsaha, $programPemeriksaan), 'public/excel/'. $excelFileName);
+        $path = 'storage/excel/' . $excelFileName;
 
-        return Excel::download(new ProgramPemeriksaan($badanUsaha, $programPemeriksaan), 'Program Realisasi Pemeriksaan ' . $badanUsaha->nama_badan_usaha  . '.xlsx');
+
+
+        return redirect($path)->with('success', 'Program Pemeriksaan Berhasil dibuat');
     }
 
 

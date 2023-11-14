@@ -89,8 +89,6 @@ iv class="row">
                             </option>
                             <option value="lapangan" {{ old('kategori')=='lapangan' ? 'selected' : '' }}>Lapangan
                             </option>
-                            <option value="final" {{ old('kategori')=='final' ? 'selected' : '' }}>
-                                Final</option>
                             <!-- Tambahkan opsi kategori lain sesuai kebutuhan -->
                         </select>
                         <button type="submit">Cari <i class="fa-solid fa-magnifying-glass"></i></button>

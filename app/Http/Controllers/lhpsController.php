@@ -4,15 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Exports\lhps;
 use App\Models\BadanUsaha;
+use App\Models\dokumentasiPemeriksaan;
 use App\Models\kertasKerja;
 use App\Models\lhps as ModelsLhps;
 use App\Models\perencanaan;
 use App\Models\SuratPerintahTugas;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 
 class lhpsController extends Controller
 {
@@ -62,8 +65,9 @@ class lhpsController extends Controller
 
     public function store(Request $request)
     {
+
         try {
-            $request->validate([
+            $validate = $request->validate([
                 'spt_id' => 'required',
                 'jumlah_tunggakan' => 'required',
                 'bulan_menunggak' => 'required',
@@ -74,7 +78,12 @@ class lhpsController extends Controller
                 'thisYearNominal' => 'nullable',
                 'tanggapan_bu' => 'required',
                 'rekomendasi_pemeriksa' => 'required',
+                'image*' => 'image|file|max:2048',
             ]);
+
+            if ($request->file('image')) {
+                $validate['image'] = $request->file('image')->store('public/image');
+            }
             $id = $request->input('bu_id');
             $badanUsaha = BadanUsaha::findOrFail($id);
             $lhps = new ModelsLhps();
@@ -90,6 +99,8 @@ class lhpsController extends Controller
             $lhps->this_year_nominal = $request->input('thisYearNominal');
             $lhps->tanggapan_bu = $request->input('tanggapan_bu');
             $lhps->rekomendasi_pemeriksa = $request->input('rekomendasi_pemeriksa');
+            $lhps->image = $validate['image'];
+
 
             if (empty($lhps->last_year_bulan)) {
                 $lhps->last_year_bulan = 0;
@@ -107,11 +118,39 @@ class lhpsController extends Controller
             $lhps->save();
 
             $excelFileName = 'Laporan Hasil Pemeriksaan Sementara' . $badanUsaha->nama_badan_usaha . '.xlsx';
-            Excel::store(new lhps($badanUsaha, $spt, $lhps), 'public/lhps/' . $excelFileName);
-            $excelPath = 'storage/lhps/' . $excelFileName;
+            Excel::store(new lhps($badanUsaha, $spt, $lhps), 'public/excel/' . $excelFileName);
+            $excelPath = 'storage/excel/' . $excelFileName;
             return redirect($excelPath)->with('success', 'Laporan Hasil Pemeriksaan Sementara Berhasil Dibuat');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Data Tidak Valid');
         }
     }
+    public function dokumentasi($id)
+    {
+
+        try {
+            $badanUsaha = BadanUsaha::findOrFail($id);
+            $lhps = ModelsLhps::findOrFail($id, 'badan_usaha_id')->latest()->first();
+            $spt = SuratPerintahTugas::latest()->first();
+            $timPemeriksa = $spt->timPemeriksa;
+            $pendamping = $spt->pendamping;
+            $extPendamping = $spt->extPendamping;
+            if (empty($lhps)) {
+                return redirect()->back()->with('error', 'Laporan Hasil Pemeriksaan Sementara Belum Dibuat');
+            }
+            return view('dokumentasi-preview', compact('badanUsaha', 'spt', 'lhps', 'timPemeriksa', 'pendamping', 'extPendamping'));
+            $pdf = Pdf::loadView('dokumentasi-preview', compact('badanUsaha', 'spt', 'lhps', 'timPemeriksa', 'pendamping', 'extPendamping'));
+            $pdf->setPaper('A4', 'landscape');
+            $pdfFileName = 'Dokumentasi Laporan Hasil Pemeriksaan Sementara ' . $badanUsaha->nama_badan_usaha . '-' . $lhps->tgl_lhps .'.pdf';
+            $pdf->save(storage_path('app/public/pdf/' . $pdfFileName));
+
+            $pdfPath = 'storage/pdf/' . $pdfFileName;
+            
+            return redirect($pdfPath)->with('success', 'Dokumentasi Laporan Hasil Pemeriksaan Sementara Berhasil Dibuat');
+        } catch (\Exception $e) {
+            return dd($e);
+        }
+    }
+
+   
 }

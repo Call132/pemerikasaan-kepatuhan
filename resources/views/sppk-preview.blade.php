@@ -177,7 +177,7 @@
     <div class="signature-container" style="text-align: right;">
         <div class="signature">
             <p style="margin-right: 65px;">Kepala Cabang</p>
-            <br><br><br>
+            <br><p style="margin-right: 110px;">$$</p><br>
             <p style="margin-right: 55px;">{{ $employee }}</p>
         </div>
         <div class="footer">

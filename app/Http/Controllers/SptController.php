@@ -16,7 +16,9 @@ use Carbon\Carbon as carbon;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use PhpParser\Node\Stmt\TryCatch;
+use Throwable;
 
 class SptController extends Controller
 {
@@ -42,84 +44,88 @@ class SptController extends Controller
 
     public function storeSpt(Request $request)
     {
-        $validatedData = $request->validate([
-            'nomor_spt' => 'required|unique:surat_perintah_tugas',
-            'tanggal_spt' => 'required|date',
-            'petugas_pemeriksa_nama' => 'nullable',
-            'petugas_pemeriksa_npp' => 'nullable',
-            'pendamping_nama.*' => 'nullable',
-            'pendamping_npp.*' => 'nullable',
-            'ext_pendamping_nama' => 'nullable',
-            'jabatan' => 'nullable',
-        ]);
-
-        if (!$request->has('tanggal_spt')) {
-            $validatedData['tanggal_spt'] = now();
-        }
-
-        $perencanaan = perencanaan::where('status', 'approved')->latest()->first();
-
-        if (!$perencanaan) {
-            return redirect()->back()->with('error', 'Perencanaan Belum Di Approve');
-        }
-
-        $badanUsahaDiajukan = BadanUsaha::where('perencanaan_id', $perencanaan->id)->get();
-        $tanggalMulai = Carbon::parse($perencanaan->start_date)->translatedFormat('d F Y');
-        $tanggalAkhir = Carbon::parse($perencanaan->end_date)->translatedFormat('d F Y');
-        $tanggalPemeriksaan = $tanggalMulai . " - " . $tanggalAkhir;
-        $dateNow = Carbon::now()->translatedFormat('d F Y', 'id');
-
-        $badanUsahaDiajukan->transform(function ($item) {
-            $item->jumlah_tunggakan = 'Rp ' . number_format(floatval($item->jumlah_tunggakan), 2, ',', '.');
-            return $item;
-        });
-
-        // Cari SPT dengan nomor yang sama
-        $spt = SuratPerintahTugas::where('nomor_spt', $request->input('nomor_spt'))->first();
-
-
-        // Jika SPT tidak ada, buat yang baru
-        if (!$spt) {
-            $spt = new SuratPerintahTugas([
-                'nomor_spt' => $request->input('nomor_spt'),
-                'tanggal_spt' => $request->input('tanggal_spt'),
+        try {
+            $validatedData = $request->validate([
+                'nomor_spt' => 'required|unique:surat_perintah_tugas',
+                'tanggal_spt' => 'required|date',
+                'petugas_pemeriksa_nama' => 'nullable',
+                'petugas_pemeriksa_npp' => 'nullable',
+                'pendamping_nama.*' => 'nullable',
+                'pendamping_npp.*' => 'nullable',
+                'ext_pendamping_nama' => 'nullable',
+                'jabatan' => 'nullable',
             ]);
 
-            $spt->save();
-        }
-
-        $petugasPemeriksa = $spt->timPemeriksa()->create([
-            'nama' => $request->input('petugas_pemeriksa_nama'),
-            'npp' => $request->input('petugas_pemeriksa_npp'),
-        ]);
-
-        $pendampingNama = $request->input('pendamping_nama');
-        $pendampingNPP = $request->input('pendamping_npp');
-
-        $pendamping = [];
-
-        foreach ($pendampingNama as $key => $nama) {
-            if (!empty($nama)) {
-                $pendamping[] = $spt->pendamping()->create([
-                    'nama' => $nama,
-                    'npp' => $pendampingNPP[$key],
-                ]);
+            if (!$request->has('tanggal_spt')) {
+                $validatedData['tanggal_spt'] = now();
             }
+
+            $perencanaan = perencanaan::where('status', 'approved')->latest()->first();
+
+            if (!$perencanaan) {
+                return redirect()->back()->with('error', 'Perencanaan Belum Di Approve');
+            }
+
+            $badanUsahaDiajukan = BadanUsaha::where('perencanaan_id', $perencanaan->id)->get();
+            $tanggalMulai = Carbon::parse($perencanaan->start_date)->translatedFormat('d F Y');
+            $tanggalAkhir = Carbon::parse($perencanaan->end_date)->translatedFormat('d F Y');
+            $tanggalPemeriksaan = $tanggalMulai . " - " . $tanggalAkhir;
+            $dateNow = Carbon::now()->translatedFormat('d F Y', 'id');
+
+            $badanUsahaDiajukan->transform(function ($item) {
+                $item->jumlah_tunggakan = 'Rp ' . number_format(floatval($item->jumlah_tunggakan), 2, ',', '.');
+                return $item;
+            });
+
+            // Cari SPT dengan nomor yang sama
+            $spt = SuratPerintahTugas::where('nomor_spt', $request->input('nomor_spt'))->first();
+
+            if (!$spt) {
+                $spt = new SuratPerintahTugas([
+                    'nomor_spt' => $request->input('nomor_spt'),
+                    'tanggal_spt' => $request->input('tanggal_spt'),
+                ]);
+
+                $spt->save();
+            }
+
+            $petugasPemeriksa = $spt->timPemeriksa()->create([
+                'nama' => $request->input('petugas_pemeriksa_nama'),
+                'npp' => $request->input('petugas_pemeriksa_npp'),
+            ]);
+
+            $pendampingNama = $request->input('pendamping_nama');
+            $pendampingNPP = $request->input('pendamping_npp');
+
+            $pendamping = [];
+
+            foreach ($pendampingNama as $key => $nama) {
+                if (!empty($nama)) {
+                    $pendamping[] = $spt->pendamping()->create([
+                        'nama' => $nama,
+                        'npp' => $pendampingNPP[$key],
+                    ]);
+                }
+            }
+
+            $extPendamping = $spt->extPendamping()->create([
+                'nama' => $request->input('ext_pendamping_nama'),
+                'jabatan' => $request->input('jabatan'),
+            ]);
+            $employee = employee_roles::where('posisi', 'Kepala Cabang')->pluck('nama')->first();
+
+            $pdf = Pdf::loadView('spt-preview', compact('spt', 'badanUsahaDiajukan', 'pendamping', 'employee', 'tanggalPemeriksaan', 'dateNow'));
+
+            $pdfFileName = 'Surat Perintah Tugas ' . str_replace('/', '-', $spt->nomor_spt) . '_' . $spt->created_at->format('Ymd_His') . '.pdf';
+
+            // Simpan file PDF ke direktori storage/app/public/spt
+            $pdf->save(storage_path('app/public/pdf/' . $pdfFileName));
+
+            $pdfPath = 'storage/pdf/' . $pdfFileName;
+            return redirect($pdfPath)->with('success', 'Surat Perintah Tugas Berhasil Dibuat');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat membuat surat perintah tugas: ' . $e->getMessage());
         }
-
-        $extPendamping = $spt->extPendamping()->create([
-            'nama' => $request->input('ext_pendamping_nama'),
-            'jabatan' => $request->input('jabatan'),
-        ]);
-        $employee = employee_roles::where('posisi', 'Kepala Cabang')->pluck('nama')->first();
-
-        $pdf = Pdf::loadView('spt-preview', compact('spt', 'badanUsahaDiajukan', 'pendamping', 'employee', 'tanggalPemeriksaan', 'dateNow'));
-
-        $pdfFileName = 'Surat Perintah Tugas ' . $spt->nomor_spt . '.pdf';
-        $pdf->save(storage_path('app/public/spt/' . $pdfFileName));
-        $pdfPath = 'storage/spt/' . $pdfFileName;
-
-        return redirect($pdfPath)->with('success', 'Surat Perintah Tugas Berhasil Dibuat');
     }
 
 

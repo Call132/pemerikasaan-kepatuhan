@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\BadanUsaha;
 use App\Models\perencanaan;
 use App\Models\User;
 use App\Notifications\perencanaanApproved;
@@ -21,29 +22,18 @@ class AdminController extends Controller
     public function index()
     {
 
-        $latestPerencanaan = Perencanaan::where('status', 'diajukan')->get();
+        try {
+            $latestPerencanaan = Perencanaan::where('status', 'diajukan')->latest()->first();
 
-        $badanUsahaDiajukan = DB::table('perencanaan')
-            ->join('badan_usaha', 'perencanaan.id', '=', 'badan_usaha.perencanaan_id')
-            ->where('perencanaan.status', 'diajukan')
-            ->select('badan_usaha.*', 'perencanaan.start_date')
-            ->get();
+            
+            $badanUsaha = BadanUsaha::where( 'perencanaan_id' , $latestPerencanaan->id)->get();
 
-        // Transform the data as needed
-        $badanUsahaDiajukan->transform(function ($item) {
-            $item->jumlah_tunggakan = 'Rp ' . number_format(floatval($item->jumlah_tunggakan), 2, ',', '.');
-            return $item;
-        });
-
-
-        return view('admin.dashboard-admin', [
-            'type_menu' => 'dashboard',
-            'badanUsahaDiajukan' => $badanUsahaDiajukan,
-            'latestPerencanaan' => $latestPerencanaan,
-
-
-        ]);
+            return view('admin.dashboard-admin', compact('latestPerencanaan', 'badanUsaha'));
+        } catch (\Exception $e) {
+            return dd($e);
+        }
     }
+   
     public function approve($id)
     {
         $data = perencanaan::findOrFail($id);

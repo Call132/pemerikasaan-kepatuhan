@@ -100,8 +100,8 @@ class kertasPemeriksaanController extends Controller
             $kertasKerja->save();
             $excelFileName = 'Kertas Kerja Pemeriksaan ' . $badanUsaha->nama_badan_usaha . '.xlsx';
            
-            Excel::store(new KertasPemeriksaan($badanUsaha, $pemeriksa, $kertasKerja),'public/kertas-kerja/' . $excelFileName);
-            $excelPath = 'storage/kertas-kerja/' . $excelFileName;
+            Excel::store(new KertasPemeriksaan($badanUsaha, $pemeriksa, $kertasKerja),'public/excel/' . $excelFileName);
+            $excelPath = 'storage/excel/' . $excelFileName;
 
 
             return redirect($excelPath)->with('success', 'Kertas Kerja Pemeriksaan Berhasil Dibuat');
@@ -156,8 +156,8 @@ class kertasPemeriksaanController extends Controller
             $pdf = Pdf::loadView('bapket-preview', compact('badanUsaha', 'timPemeriksa', 'bapket', 'spt'));
 
             $pdfFileName = 'Berita Acara Pemeriksaan ' . $badanUsaha->nama_badan_usaha . '.pdf';
-            $pdf->save(storage_path('app/public/bapket/' . $pdfFileName));
-            $pdfPath = 'storage/bapket/' . $pdfFileName;
+            $pdf->save(storage_path('app/public/pdf/' . $pdfFileName));
+            $pdfPath = 'storage/pdf/' . $pdfFileName;
 
 
             return redirect($pdfPath)->with('success', 'Berita Acara Pemeriksaan Berhasil Dibuat');

@@ -42,6 +42,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard-admin', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::post('/admin/approve/{id}', [AdminController::class, 'approve'])->name('admin.approve');
     Route::post('/admin/reject/{id}', [AdminController::class, 'reject'])->name('admin.reject');
+    Route::get('/get-detil-badan-usaha/{id}', [AdminController::class, 'getDetilBadanUsaha']);
 });
 
 
@@ -59,6 +60,8 @@ Route::get('/register', function () {
 Route::post('/register', [AuthRegisterController::class, 'register'])->name('user.register');
 
 Route::get('/monitoring', [monitoringController::class, 'index'])->name('monitoring');
+Route::post('/monitoring', [monitoringController::class, 'cari'])->name('monitoring.cari');
+Route::post('/monitoring/download/{id}', [monitoringController::class, 'export'])->name('monitoring.export');
 
 Route::middleware(['auth', 'role:user'])->group(function () {
     //homepage
@@ -117,12 +120,15 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/lhps', [lhpsController::class, 'index'])->name('lhps');
     Route::post('/lhps', [lhpsController::class, 'cari'])->name('lhps.cari');
     Route::get('/lhps/form/{id}', [lhpsController::class, 'form'])->name('lhps.form');
+    Route::get('/lhps/dokumentasi/{id}', [lhpsController::class, 'dokumentasi'])->name('dokumentasi.download');
+    Route::post('/lhps/dokumentasi', [lhpsController::class, 'storeDokumentasi'])->name('dokumentasi.store');
     Route::post('/lhps/download', [lhpsController::class, 'store'])->name('lhps.store');
 
     Route::get('/sphp', [laporanPemeriksaanController::class, 'sphp']);
     Route::post('/sphp', [laporanPemeriksaanController::class, 'cariSphp'])->name('sphp.cari');
     Route::get('/sphp/form/{id}', [laporanPemeriksaanController::class, 'formSphp'])->name('sphp.form');
     Route::post('/sphp/download', [laporanPemeriksaanController::class, 'storeSphp'])->name('sphp.store');
+
 
     Route::get('/lhpa', [laporanPemeriksaanController::class, 'lhpa']);
     Route::post('/lhpa', [laporanPemeriksaanController::class, 'cariLhpa'])->name('lhpa.cari');

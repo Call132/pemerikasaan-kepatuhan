@@ -6,6 +6,7 @@ use App\Exports\BadanUsahaExport;
 use App\Models\BadanUsaha;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+
 use App\Http\Controllers\HomeController;
 use App\Models\perencanaan;
 
@@ -17,18 +18,25 @@ class BadanUsahaController extends Controller
     }
     public function exportToExcel(Request $request)
     {
-        $tanggalPerencanaan = $request->input('start_date'); // Mengambil Tanggal Awal dari permintaan
-        $endDate = $request->input('end_date'); // Mengambil Tanggal Akhir dari permintaan
+        try {
+            $tanggalPerencanaan = $request->input('start_date'); // Mengambil Tanggal Awal dari permintaan
+            $endDate = $request->input('end_date'); // Mengambil Tanggal Akhir dari permintaan
 
-        // Check if perencanaan is approved
-        $latestPerencanaan = Perencanaan::where('status', 'approved')->latest()->first();
+            // Check if perencanaan is approved
+            $latestPerencanaan = Perencanaan::where('status', 'approved')->latest()->first();
 
-        if (!$latestPerencanaan) {
-            return redirect()->intended('/')->with('error', 'Perencanaan belum diapprove.');
+            if (!$latestPerencanaan) {
+                return redirect()->intended('/')->with('error', 'Perencanaan belum diapprove.');
+            }
+
+            $excelFileName = 'perencanaan ' . $latestPerencanaan->start_date . ' - ' . $latestPerencanaan->end_date . '.xlsx';
+            Excel::store(new BadanUsahaExport($tanggalPerencanaan, $endDate), 'public/excel/' . $excelFileName);
+            $pdfPath = 'storage/excel/' . $excelFileName;
+
+            return redirect($pdfPath)->with('success', 'Perencanaan exported successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['error' =>  'perencanaan gagal dibuat : ' . $e->getMessage()]);
         }
-
-        // If approved, proceed with Excel export
-        return Excel::download(new BadanUsahaExport($tanggalPerencanaan, $endDate), 'PERENCANAAN PEMERIKSAAN.xlsx');
     }
 
     public function create($perencanaan_id)
@@ -117,7 +125,7 @@ class BadanUsahaController extends Controller
 
         return view('edit-data-pemeriksaan', ['type_menu' => 'dashboard', 'data' => $data]);
     }
-   
+
     public function update(Request $request, $id)
     {
         // Validasi data yang dikirim melalui form

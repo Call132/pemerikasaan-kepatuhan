@@ -86,13 +86,13 @@ class laporanPemeriksaanController extends Controller
 
             $pdf = Pdf::loadView('sphp-preview', compact('sphp', 'badanUsaha', 'spt', 'employee'));
 
-            $pdfFileName = 'Surat Pemberitahuan Hasil Pemeriksaan' . $badanUsaha->nama_badan_usaha . '.pdf';
-            $pdf->save(storage_path('app/public/sphp/' . $pdfFileName));
-            $pdfPath = 'storage/sphp/' . $pdfFileName;
+            $pdfFileName = 'Surat Pemberitahuan Hasil Pemeriksaan ' . $badanUsaha->nama_badan_usaha . '_' . str_replace('/', '_', $sphp->no_sphp) . '.pdf';
+            $pdf->save(storage_path('app/public/pdf/' . $pdfFileName));
+            $pdfPath = 'storage/pdf/' . $pdfFileName;
 
             return redirect($pdfPath)->with('success', 'Surat Pemberitahuan Hasil Pemeriksaan Berhasil Dibuat');
         } catch (\Throwable $e) {
-            return dd($e);
+            return redirect()->back()->with('error', 'Nomor Surat Pemberitahuan Hasil Pemeriksaan sudah ada');
         }
     }
 
@@ -183,7 +183,7 @@ class laporanPemeriksaanController extends Controller
 
             $badanUsaha->hasil_pemeriksaan = $request->input('rekomendasi_pemeriksa');
             $badanUsaha->save();
-           
+
 
             $lhpa->tindak_lanjut = $request->input('tindak_lanjut');
             $lhpa->rekomendasi_pemeriksa = $request->input('rekomendasi_pemeriksa');
@@ -206,15 +206,15 @@ class laporanPemeriksaanController extends Controller
             if (empty($lhpa->this_year_pembayaran)) {
                 $lhpa->this_year_pembayaran = 0;
             }
-            
+
             $lhpa->save();
 
             $excelFileName = 'Laporan Hasil Pemeriksaan Akhir ' . $badanUsaha->nama_badan_usaha . '.xlsx';
-            Excel::store(new lhpa($badanUsaha, $spt, $lhpa), 'public/lhpa/' . $excelFileName);
-            $pdfPath = 'storage/lhpa/' . $excelFileName;
+            Excel::store(new lhpa($badanUsaha, $spt, $lhpa), 'public/excel/' . $excelFileName);
+            $pdfPath = 'storage/excel/' . $excelFileName;
             return redirect($pdfPath)->with('success', 'Laporan Hasil Pemeriksaan Akhir Berhasil Dibuat');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Data Tidak Valid');
+            return redirect()->back()->with('error', 'Data Gagal Disimpan');
         }
     }
 }

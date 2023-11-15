@@ -42,11 +42,10 @@
                                 <div class="card-header text-center">
                                     <h5>Formulir Catatan Hasil Pemeriksaan</h5>
                                 </div>
-                                @php
-                                $jumlah_tunggakan = number_format(floatval($badanUsaha->jumlah_tunggakan), 2, ',', '.');
-                                @endphp
+                                
                            
                                 <input type="hidden" value="{{ $spt->id }}" name="spt_id">
+                               
                                 <input type="hidden" value="{{ $badanUsaha->id }}" name="bu_id">
                                 <div class="form-group">
                                     <label for="TimPemeriksa">Tim Pemeriksa</label>
@@ -63,7 +62,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="Nama">Nama</label>
-                                    <input class="form-control" type="text" name="nama" id="nama" required>
+                                    <input class="form-control" type="text" name="nama_pemberi_kerja" id="nama" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="Jabatan">Jabatan</label>
@@ -89,7 +88,7 @@
 
                                 <div class="form-group">
                                     <label for="tunggakanIuran">Tunggakan Iuran</label>
-                                    <input value="{{ $jumlah_tunggakan }}" class="form-control" type="text"
+                                    <input value="{{ $badanUsaha->jumlah_tunggakan }}" class="form-control" type="text"
                                         name="tunggakanIuran" required id="tunggakanIuran" >
                                 </div>
                                 <div class="form-group">

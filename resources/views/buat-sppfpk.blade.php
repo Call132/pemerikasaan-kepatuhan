@@ -17,7 +17,6 @@
     <section class="section">
         <div class="section-header">
             <h1>Surat Pemberitahuan Panggilan Final Pemeriksaan Kantor</h1>
-            <a href="{{ route('sppfpk.preview') }}" class="btn btn-success" style="margin-left: 600px;">Preview</a>
         </div>
 
     </section>
@@ -45,7 +44,7 @@
                                 @csrf
                                 <input type="hidden" name="badan_usaha_id" value="{{ $badanUsaha->id }}">
                                 <input type="hidden" name="sppk_id" value="{{ $sppk->id }}">
-                                
+
 
                                 <div class="form-group">
                                     <label for="nomor_sppfpk">Nomor:</label>
@@ -121,7 +120,7 @@
         document.getElementById('myForm').addEventListener('submit', function() {
             setTimeout(function() {
                 window.location.href = '/pengiriman-surat';
-            }, 3000); // Redirect after 1 second (adjust the delay as needed)
+            }, 5000); // Redirect after 1 second (adjust the delay as needed)
         });
     }
     </script>

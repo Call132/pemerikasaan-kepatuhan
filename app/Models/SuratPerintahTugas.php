@@ -38,6 +38,10 @@ class SuratPerintahTugas extends Model
     {
         return $this->hasMany(sppk::class);
     }
+    public function sppl()
+    {
+        return $this->hasMany(sppl::class);
+    }
     public function bapket()
     {
         return $this->hasMany(bapket::class);

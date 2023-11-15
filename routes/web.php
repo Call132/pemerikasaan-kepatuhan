@@ -74,6 +74,12 @@ Route::get('/profile-admin', [ProfileadminController::class, 'index'])->name('pr
 Route::post('/profile-admin/update', [ProfileadminController::class, 'update'])->name('profileadmin.update');
 
 Route::get('/monitoring', [monitoringController::class, 'index'])->name('monitoring');
+Route::post('/monitoring', [monitoringController::class, 'cari'])->name('monitoring.cari');
+Route::post('/monitoring/download/{id}', [monitoringController::class, 'export'])->name('monitoring.export');
+
+Route::get('/arsip', [monitoringController::class, 'arsip'])->name('monitoring.arsip');
+Route::match(['get', 'post'], '/cari', [monitoringController::class, 'cariArsip'])->name('arsip.cari');
+
 
 Route::middleware(['auth', 'role:user'])->group(function () {
     //homepage
@@ -96,13 +102,13 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         return view('buat-spt', ['type_menu' => 'spt']);
     });
     Route::get('/spt/preview', [SptController::class, 'index']);
-    Route::post('/spt/save', [SptController::class, 'storeSpt'])->name('spt.store')->middleware('checkStoreSptCall');
+    Route::post('/spt/save', [SptController::class, 'storeSpt'])->name('spt.store');
 
     Route::get('/pengiriman-surat', [pengirimanController::class, 'dashboard'])->name('pengiriman-surat');
     Route::post('/pengiriman-surat', [pengirimanController::class, 'cari'])->name('pengiriman-surat.cari');
 
     Route::get('/sppk/{id}', [SPPKController::class, 'create'])->name('sppk');
-    Route::post('/sppk/save', [SPPKController::class, 'store'])->name('sppk.store');
+    Route::post('/sppk/save', [SPPKController::class, 'store'])->name('sppk.store')->middleware('checkStoreSptCall');
 
     Route::get('/sppl/{id}', [SPPLController::class, 'create'])->name('sppl');
     Route::post('/sppl/save', [SPPLController::class, 'store'])->name('sppl.store');
@@ -132,12 +138,15 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/lhps', [lhpsController::class, 'index'])->name('lhps');
     Route::post('/lhps', [lhpsController::class, 'cari'])->name('lhps.cari');
     Route::get('/lhps/form/{id}', [lhpsController::class, 'form'])->name('lhps.form');
+    Route::get('/lhps/dokumentasi/{id}', [lhpsController::class, 'dokumentasi'])->name('dokumentasi.download');
+    Route::post('/lhps/dokumentasi', [lhpsController::class, 'storeDokumentasi'])->name('dokumentasi.store');
     Route::post('/lhps/download', [lhpsController::class, 'store'])->name('lhps.store');
 
     Route::get('/sphp', [laporanPemeriksaanController::class, 'sphp']);
     Route::post('/sphp', [laporanPemeriksaanController::class, 'cariSphp'])->name('sphp.cari');
     Route::get('/sphp/form/{id}', [laporanPemeriksaanController::class, 'formSphp'])->name('sphp.form');
     Route::post('/sphp/download', [laporanPemeriksaanController::class, 'storeSphp'])->name('sphp.store');
+
 
     Route::get('/lhpa', [laporanPemeriksaanController::class, 'lhpa']);
     Route::post('/lhpa', [laporanPemeriksaanController::class, 'cariLhpa'])->name('lhpa.cari');

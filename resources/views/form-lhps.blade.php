@@ -37,12 +37,11 @@
                     <div class="col-md-12">
                         <div class="panel panel-default">
                             <form id="myForm" method="post"
-                                action="{{ route('lhps.store', ['id' => $badanUsaha->id]) }}">
+                                action="{{ route('lhps.store', ['id' => $badanUsaha->id]) }}" enctype="multipart/form-data">
                                 @csrf
                                 @php
                                 $jumlah_tunggakan = floatval($badanUsaha->jumlah_tunggakan);
                                 @endphp
-
                                 <input type="hidden" value="{{ $badanUsaha->id }}" name="bu_id">
                                 <input type="hidden" value="{{ $spt->id }}" name="spt_id">
 
@@ -57,12 +56,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah bulan menunggak">Jumlah Bulan Menunggak</label>
-                                    <input value="{{ $bulanMenunggak }}" class="form-control" type="text"
+                                    <input value="{{ $badanUsaha->jumlah_bulan_menunggak }}" class="form-control" type="text"
                                         name="bulan_menunggak" id="bulan_menunggak">
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah Pekerja">Jumlah Pekerja Terdaftar</label>
-                                    <input class="form-control" type="text" name="jumlah_pekerja" id="jumlah_pekerja">
+                                    <input class="form-control" value="{{ $kertasKerja->total_pekerja }}" type="text" name="jumlah_pekerja" id="jumlah_pekerja">
                                 </div>
 
                                 <div class="card-header">
@@ -94,7 +93,7 @@
                                 <hr>
                                 <div class="form-group">
                                     <label for="tanggapan bu">Tanggapan Badan Usaha</label>
-                                    <input type="text" name="tanggapan_bu" id="tanggapan_bu" class="form-control"
+                                    <input type="text" value="{{ $kertasKerja->tanggapan_bu }}" name="tanggapan_bu" id="tanggapan_bu" class="form-control"
                                         required>
                                 </div>
                                 <div class="form-group">
@@ -102,8 +101,11 @@
                                     <input type="text" name="rekomendasi_pemeriksa" id="rekomendasi_pemeriksa"
                                         class="form-control" required>
                                 </div>
-
-                                <button type="submit" class="btn btn-primary " onclick="submitForm()">Submit</button>
+                                <div class="form-group mb-3">
+                                    <label for="formFileMultiple" class="form-label">Dokumentasi Pemeriksaan</label>
+                                    <input class="form-control" type="file" id="formFileMultiple" name="image" multiple>
+                                  </div>
+                                <button type="submit" class="btn btn-primary "onclick="submitForm()" >Submit</button>
                             </form>
                         </div>
                     </div>

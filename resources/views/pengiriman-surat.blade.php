@@ -70,7 +70,7 @@
                                 <option value="">Pilih Periode Pemeriksaan</option>
                                 @foreach ($perencanaan as $data)
                                 <option value="{{ $data->start_date }}">
-                                    {{ $data->start_date }}
+                                    {{ \Carbon\Carbon::parse($data->start_date)->isoFormat('D MMMM Y') }}
                                 </option>
                                 @endforeach
                             </select>

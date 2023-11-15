@@ -3,6 +3,7 @@
         line-height: 1;
         margin-bottom: 10px;
     }
+    
     .sidebar-brand-sm img {
         max-width: 100%;
         height: auto;
@@ -19,8 +20,9 @@
         <ul class="sidebar-menu">
             <li class="menu-header fa">Dashboard</li>
             <li class="nav-item dropdown">
-                <a href="{{ url('/') }}" class="nav-link has-dropdown" style="line-height: 1;"><i
-                        class="fas fa-fire"></i><span>Perencanaan Pemeriksaan</span></a>
+                <a href="{{ url('/') }}" class="nav-link has-dropdown" style="line-height: 1;">
+                    <i class="fas fa-tachometer-alt"></i><span>Perencanaan Pemeriksaan</span>
+                </a>
                 <ul class="dropdown-menu">
                     <li class='{{ Request::is(' perencanaan') ? 'active' : '' }}'>
                         <a class="nav-link" href="{{ url('perencanaan') }}">Buat Perencanaan</a>
@@ -37,11 +39,12 @@
                 </ul>
             </li>
             <li class="nav-item ">
-                <a href="{{ url('/kertas-kerja') }}" class="nav-link" style="line-height: 1;"><i
-                        class="fas fa-fire"></i><span>Pelaksanaan Pemeriksaan</span></a>
+                <a href="{{ url('/kertas-kerja') }}" class="nav-link" style="line-height: 1;">
+                    <i class="fa-solid fa-file-pen"></i><span>Pelaksanaan Pemeriksaan</span>
+                </a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link has-dropdown" style="line-height: 1;"><i class="fas fa-fire"></i>
+                <a class="nav-link has-dropdown" style="line-height: 1;"><i class="fa-solid fa-file-lines"></i>
                     <span>Laporan Pemeriksaan</span></a>
                 <ul class="dropdown-menu">
                     <li class='{{ Request::is(' ') ? ' active' : '' }}'>
@@ -57,7 +60,15 @@
             </li>
             <li class="nav-item ">
                 <a href="{{ url('/monitoring') }}" class="nav-link" style="line-height: 1;"><i
-                        class="fas fa-fire"></i><span> Monitoring</span></a>
+                        class="fa-solid fa-chart-simple"></i><span> Monitoring</span>
+                </a>
             </li>
+            <li class="nav-item ">
+                <a href="{{ url('/arsip') }}" class="nav-link" style="line-height: 1;"><i
+                        class="fa-solid fa-box-archive"></i><span>
+                        Arsip</span>
+                </a>
+            </li>
+        </ul>
     </aside>
 </div>

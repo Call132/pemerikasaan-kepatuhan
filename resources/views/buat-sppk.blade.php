@@ -33,6 +33,13 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
+                        @elseif (session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session('error') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                         @endif
                     </div>
                     </p>
@@ -40,12 +47,12 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="panel panel-default">
-                            <form method="POST" action="{{ route('sppk.store') }}" >
+                            <form method="POST" action="{{ route('sppk.store') }}" id="myForm">
                                 @csrf
-                                
+
                                 <input type="hidden" name="badan_usaha_id" value="{{ $badanUsaha->id }}">
-                                <input type="hidden" name="spt_id"
-                                    value="{{ $timPemeriksa->surat_perintah_tugas_id }}">
+                                <input type="hidden" name="spt_id" value="{{ $timPemeriksa->surat_perintah_tugas_id }}">
+                                
 
                                 <div class="form-group">
                                     <label for="nomor_sppk">Nomor:</label>
@@ -81,8 +88,6 @@
                                     <input type="text" class="form-control" id="petugas_pemeriksa_npp"
                                         name="petugas_pemeriksa_npp" value="{{ $timPemeriksa->npp }}" disabled>
                                 </div>
-
-
                                 <!-- Informasi Pemberi Kerja -->
                                 <h3 class="text-center">Informasi Pemberi Kerja</h3>
                                 <div class="form-group">
@@ -102,8 +107,7 @@
                                     <input type="text" value="{{ $badanUsaha->alamat }}" class="form-control"
                                         id="alamat" name="alamat" disabled>
                                 </div>
-
-                                <button type="submit" class="btn btn-primary">Buat SPPK</button>
+                                <button type="submit" onclick="submitForm()" class="btn btn-primary">Buat SPPK</button>
                             </form>
                         </div>
                     </div>

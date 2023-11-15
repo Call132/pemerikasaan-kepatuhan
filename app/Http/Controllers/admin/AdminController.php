@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\BadanUsaha;
 use App\Models\perencanaan;
 use App\Models\User;
 use App\Models\BadanUsaha;
@@ -22,18 +23,18 @@ class AdminController extends Controller
     public function index()
 {
 
+        try {
+            $latestPerencanaan = Perencanaan::where('status', 'diajukan')->latest()->first();
 
-    $latestPerencanaan = Perencanaan::where('status', 'diajukan')->latest()->first();
-  
-    
-    
-        // Gantilah $badanUsaha dengan array untuk menyimpan hasil dari setiap iterasi
-        $badanUsaha = BadanUsaha::where('perencanaan_id', $latestPerencanaan->id)->get();
-        
-    
+            
+            $badanUsaha = BadanUsaha::where( 'perencanaan_id' , $latestPerencanaan->id)->get();
 
-    return view('admin.dashboard-admin', compact('latestPerencanaan', 'badanUsaha'));
-}
+            return view('admin.dashboard-admin', compact('latestPerencanaan', 'badanUsaha'));
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
+        }
+    }
+   
     public function approve($id)
     {
         $data = perencanaan::findOrFail($id);

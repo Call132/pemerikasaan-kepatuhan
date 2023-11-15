@@ -1,6 +1,6 @@
 @extends('layout.main')
 
-@section('title', 'Laporan Hasil Pemeriksaan Akhir')
+@section('title', 'Laporan Monitoring')
 
 @push('style')
 <!-- CSS Libraries -->
@@ -11,17 +11,13 @@
         margin: 10px;
     }
 
-    form {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+    
 
     select,
     input[type="text"] {
         width: 200px;
         padding: 8px;
-        margin: 5px;
+        margin: 10px;
         border: 1px solid #ccc;
         border-radius: 4px;
     }
@@ -39,6 +35,7 @@
         background-color: #0056b3;
     }
 </style>
+
 @endpush
 
 @section('main')
@@ -51,67 +48,27 @@
         </section>
         <div class="card">
             <div class="card-body">
-
-                <div class="table-responsive">
-                    @php
-                    $totalTunggakan = 0;
-                    @endphp
-                    <table class="table table-striped-columns mb-0 ">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Tanggal Pemeriksaan</th>
-                                <th>Nama Badan Usaha</th>
-                                <th>Kode Badan Usaha</th>
-                                <th>Alamat</th>
-                                <th>Tanggal Terakhir Bayar</th>
-                                <th>Jumlah Bulan Menunggak</th>
-                                <th>Jumlah Tunggakan</th>
-                                <th>Tanggal Bayar</th>
-                                <th>Jumlah Bayar</th>
-                                <th>Hasil Pemeriksaan</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-
-                            @foreach ($badanUsaha as $data)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $data->jadwal_pemeriksaan }}</td>
-                                <td>{{ $data->nama_badan_usaha }}</td>
-                                <td>{{ $data->kode_badan_usaha }}</td>
-                                <td>{{ $data->alamat }}</td>
-                                <td>{{ $data->tanggal_terakhir_bayar }}</td>
-                                <td>jumlah bulan</td>
-                                <td>Rp{{ number_format($data->jumlah_tunggakan, 2, ',', '.') }}</td>
-                                <td>tanggal bayar</td>
-                                <td>jumlah bayar</td>
-                                <td>hasil</td>
-
-                            </tr>
-                            @php
-                            // Menambahkan jumlah tunggakan ke total
-                            $totalTunggakan +=  $data->jumlah_tunggakan;
-                            @endphp
+                <form method="POST" action="{{ route('monitoring.cari') }}">
+                    @csrf
+                    
+                    <div class="form-group">
+                        <select name="periode_pemeriksaan" id="periode_pemeriksaan">
+                            <option value="">Periode Pemeriksaan</option>
+                            @foreach ($perencanaan as $data)
+                            <option value="{{ \Carbon\Carbon::parse($data->start_date)->isoFormat('YYYY-MM-DD') }}" {{
+                                old('periode_pemeriksaan')===$data->start_date ? 'selected' : '' }}>
+                                {{ \Carbon\Carbon::parse($data->start_date)->isoFormat('D MMMM Y') }}
+                            </option>
                             @endforeach
-                        </tbody>
-                        <tfoot>
-                            <tr class="totall">
-                                <td colspan="7" class="totall text-center">Total</td>
-                                <td colspan="2" style="border: 1px black solid">
-                                    Rp {{ number_format($totalTunggakan, 2, ',', '.') }}
-                                </td>
-                                <td colspan="2" style="border: #111 1px solid">total bayar</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-
-
+                        </select>
+                        <button type="submit">Cari <i class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+                </form>
+                @if (request()->has('periode_pemeriksaan'))
+                    @include('monitoring-data')
+                @endif
             </div>
         </div>
-
     </div>
 </div>
 

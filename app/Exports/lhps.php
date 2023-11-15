@@ -23,24 +23,21 @@ class lhps implements FromCollection, WithEvents, WithStyles
 
     public function __construct(
         $badanUsaha,
-        $lhps,
         $spt,
+        $lhps,
     ) {
         $this->badanUsaha = $badanUsaha;
         $this->spt = $spt;
         $this->lhps = $lhps;
-
-        
-
-     
     }
     /**
      * @return \Illuminate\Support\Collection
      */
     public function collection()
     {
-        
+
         $data = BadanUsaha::where('id', $this->lhps->badan_usaha_id)->get();
+
 
         $data = collect([]);
 
@@ -249,7 +246,7 @@ class lhps implements FromCollection, WithEvents, WithStyles
                 $sheet->setCellValue('A12', 'Keterangan');
                 $oneYearAgo = Carbon::now()->subYear();
                 $sheet->setCellValue('C12', 'TMT Desember ' . $oneYearAgo->format('Y'));
-                $sheet->setCellValue('D12', 'Tahun '.Carbon::now()->format('Y').'  (sd. Bulan Pemeriksaan dilakukan)');
+                $sheet->setCellValue('D12', 'Tahun ' . Carbon::now()->format('Y') . '  (sd. Bulan Pemeriksaan dilakukan)');
                 $sheet->setCellValue('F12', 'Total');
                 $sheet->setCellValue('G12', 'Pembilang');
 

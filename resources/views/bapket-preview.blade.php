@@ -198,7 +198,7 @@
                         <span class="label">Tunggakan Iuran</span>: Rp. {{ number_format($badanUsaha->jumlah_tunggakan, 2, ',', '.') }}
                     </p>
                     <p>
-                        <span class="label">Bulan Menunggak</span>: {{ $bapket->bulan_menunggak }}
+                        <span class="label">Bulan Menunggak</span>: {{ $badanUsaha->jumlah_bulan_menunggak }}
                     </p>
                     <p>
                         <span class="label">Sebab menunggak</span>: {{ $bapket->sebab_menunggak }}

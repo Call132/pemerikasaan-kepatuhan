@@ -75,7 +75,7 @@
 
 
                                     <!-- Informasi Petugas Pemeriksa -->
-                                    <h3 class="text-center text-black">Informasi Petugas Pemeriksa</h3>
+                                    <h4 class="text-center text-black">Informasi Petugas Pemeriksa</h4>
                                     <div class="form-group">
                                         <label for="petugas_pemeriksa_nama">Nama Petugas Pemeriksa:</label>
                                         <input type="text" class="form-control" id="petugas_pemeriksa_nama"
@@ -88,7 +88,7 @@
                                     </div>
 
                                     <!-- Informasi Pendamping -->
-                                    <h3 class="text-center">Informasi Pendamping</h3>
+                                    <h4 class="text-center">Informasi Pendamping</h4>
                                     <div class="pendamping">
                                         <div class="form-group">
                                             <label for="pendamping_nama">Nama Pendamping :</label>
@@ -103,6 +103,7 @@
                                     <button type="button" class="btn btn-success mb-2" id="tambah_pendamping">Tambah
                                         Pendamping</button>
 
+                                    <h4 class="text-center">Informasi Pendamping Eksternal</h4>
 
                                     <!-- Jabatan -->
                                     <div class="form-group">
@@ -114,7 +115,8 @@
                                         <input type="text" class="form-control" id="jabatan" name="jabatan" required>
                                     </div>
 
-                                    <button type="submit" class="btn btn-primary" >Buat SPT</button>
+                                    <button type="submit" onclick="submitForm()" class="btn btn-primary">Buat
+                                        SPT</button>
                                 </form>
 
 
@@ -157,15 +159,15 @@
                 });
             });
     </script>
-    {{-- <script>
+    <script>
         function submitForm() {
             document.getElementById('myForm').addEventListener('submit', function() {
                 setTimeout(function() {
-                    window.location.href = '/';
+                    window.location.href = '/pengiriman-surat';
                 }, 3000); // Redirect after 1 second (adjust the delay as needed)
             });
         }
-    </script> --}}
+    </script>
 
     <!-- JS Libraies -->
     {{-- <script src="assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>

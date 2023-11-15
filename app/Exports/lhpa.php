@@ -297,8 +297,8 @@ class lhpa implements FromCollection, WithStyles, WithEvents
                 $sheet->setCellvalue('A17', 'TINDAK LANJUT HASIL PEMERIKSAAN :');
                 $sheet->setCellvalue('A18', 'Dibayar Seluruhnya');
                 if ($this->lhpa->tindak_lanjut == 'seluruhnya') {
-                    $sheet->setCellvalue('C20', '✔');
-                    $sheet->getStyle('C20')->getFont()->setName('Arial Unicode MS');
+                    $sheet->setCellvalue('A20', '✔');
+                    $sheet->getStyle('A20')->getFont()->setName('Arial Unicode MS');
                 }
                 $sheet->setCellvalue('C18', 'Dibayar Sebagian');
                 $sheet->setCellvalue('C19', 'Relaksasi');

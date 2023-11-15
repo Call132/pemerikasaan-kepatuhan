@@ -23,7 +23,7 @@
                 <div class="col-md-100">
                     <div class="col-md-100">
                         @if (session('error'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             {{ session('error') }}
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
@@ -42,8 +42,6 @@
                                 @php
                                 $jumlah_tunggakan = floatval($badanUsaha->jumlah_tunggakan);
                                 @endphp
-
-
                                 <div class="card-header">
                                     <h5>Identifikasi Tunggakan Iuran</h5>
                                 </div>
@@ -57,12 +55,13 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah bulan menunggak">Jumlah Bulan Menunggak</label>
-                                    <input value="{{ $bulanMenunggak }}" class="form-control" type="text"
-                                        name="bulan_menunggak" id="bulan_menunggak">
+                                    <input value="{{ $badanUsaha->jumlah_bulan_menunggak }}" class="form-control"
+                                        type="text" name="bulan_menunggak" id="bulan_menunggak">
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah Pekerja">Jumlah Pekerja Terdaftar</label>
-                                    <input class="form-control" type="text" name="jumlah_pekerja" id="jumlah_pekerja">
+                                    <input value="{{ $lhps->jumlah_pekerja }}" class="form-control" type="text"
+                                        name="jumlah_pekerja" id="jumlah_pekerja">
                                 </div>
                                 <div class="card-header">
                                     <h5>Identifikasi Rincian Tunggakan</h5>
@@ -71,27 +70,32 @@
                                 <label for="tmtLastYear" id="tmtLastYearLabel">TMT Desember tahun sebelumnya</label>
                                 <div class="form-group">
                                     <label for="tmtLastYearBulan">Bulan Menunggak</label>
-                                    <input type="text" name="tmtLastYearBulan" class="form-control">
+                                    <input value="{{ $lhps->last_year_bulan }}" type="text" name="tmtLastYearBulan"
+                                        class="form-control">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="tmtLastYearNominal">Nominal Tunggakan</label>
-                                    <input type="number" name="tmtLastYearNominal" class="form-control">
+                                    <input value="{{ $lhps->last_year_nominal }}" type="number"
+                                        name="tmtLastYearNominal" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="tmtLastyearPembayaran">Nominal Pembayaran</label>
-                                    <input type="number" class="form-control" name="tmtLastyearPembayaran" id="tmtLastyearPembayaran">
+                                    <input type="number" class="form-control" name="tmtLastyearPembayaran"
+                                        id="tmtLastyearPembayaran">
                                 </div>
 
                                 <label for="tmtLastYear" id="thisYear">TMT Desember tahun tahun sekarang</label>
                                 <div class="form-group">
                                     <label for="tmtLastYearBulan">Bulan Menunggak</label>
-                                    <input type="text" name="thisYearBulan" class="form-control">
+                                    <input value="{{ $lhps->this_year_bulan }}" type="text" name="thisYearBulan"
+                                        class="form-control">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="tmtLastYearNominal">Nominal Tunggakan</label>
-                                    <input type="number" name="thisYearNominal" class="form-control">
+                                    <input value="{{ $lhps->this_year_nominal }}" type="number" name="thisYearNominal"
+                                        class="form-control">
                                 </div>
 
                                 <div class="form-group">
@@ -125,6 +129,10 @@
                                             <span>Tidak Dibayarkan</span>
                                         </label>
                                     </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Tanggal Bayar</label>
+                                    <input type="date" class="form-control" name="tanggal_bayar" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="rekomendasi Pemeriksa">Rekomendasi Pemeriksa</label>

@@ -15,7 +15,7 @@ class sppk extends Model
         'tanggal_surat',
         'waktu',
         'surat_perintah_tugas_id',
-        
+        'badan_usaha_id',   
     ];
 
     public function spt()

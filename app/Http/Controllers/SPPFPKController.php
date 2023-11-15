@@ -11,57 +11,59 @@ use App\Models\TimPemeriksa;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SPPFPKController extends Controller
 {
     public function create($id)
     {
         $badanUsaha = BadanUsaha::find($id);
-        $timPemeriksa = TimPemeriksa::latest('id')->first();
-        $sppk = sppk::latest('id')->first();
+        $sppk = sppk::where('badan_usaha_id', $id)->first();
+        $spt = SuratPerintahTugas::latest('id')->first();
+        $timPemeriksa = TimPemeriksa::where('surat_perintah_tugas_id', $spt->id)->first();
 
 
         return view('buat-sppfpk', compact('badanUsaha', 'timPemeriksa', 'sppk'));
     }
     public function store(Request $request)
     {
-        $request->validate([
-            'nomor_sppfpk' => 'required',
-            'hari_tanggal_pelaksanaan' => 'required|date',
-            'waktu' => 'required',
-        ]);
-
         $badanUsahaId = $request->input('badan_usaha_id');
-        $sppkId = $request->input('sppk_id');
-        $badanUsaha = BadanUsaha::find($badanUsahaId);
-        $sppk = sppk::find($sppkId);
+        $sppk = sppk::findOrFail($request->input('sppk_id'));
+        $spt = $sppk->surat_perintah_tugas_id;
         $employee = employee_roles::where('posisi', 'Kepala Cabang')->pluck('nama')->first();
+        $timPemeriksa = TimPemeriksa::where('surat_perintah_tugas_id', $spt)->first();
+        $badanUsaha = BadanUsaha::find($sppk->badan_usaha_id);
 
-        if (!$badanUsaha) {
-            return redirect()->back()->with('error', 'Badan Usaha tidak ditemukan.');
+
+        try {
+            $validate = $request->validate([
+                'nomor_sppfpk' => 'required|unique:sppfpk',
+                'waktu' => 'required',
+                'sppk_id' => 'required',
+                'badan_usaha_id' => 'required',
+                'hari_tanggal_pelaksanaan' => 'required',
+            ]);
+            $badanUsaha->jadwal_pemeriksaan = $request->input('hari_tanggal_pelaksanaan');
+            $badanUsaha->save();
+            $namaTimPemeriksa = $timPemeriksa->nama;
+            $nppTimPemeriksa = $timPemeriksa->npp;
+
+            $sppfpk = new Sppfpk($validate);
+            $sppfpk->nomor_sppfpk = $request->input('nomor_sppfpk');
+            $sppfpk->sppk_id = $request->input('sppk_id');
+            $sppfpk->badan_usaha_id = $request->input('badan_usaha_id');
+            $sppfpk->waktu = $request->input('waktu');
+            $sppfpk->tanggal_surat = Carbon::now();
+
+            $sppfpk->save();
+
+            $pdf = Pdf::loadView('sppfpk-preview', compact('sppfpk', 'sppk', 'badanUsaha', 'employee', 'namaTimPemeriksa', 'nppTimPemeriksa'));
+            $pdfFileName = 'Surat Perintah Pemeriksaan Final Kantor ' . str_replace('/', '_', $sppfpk->nomor_sppfpk) . '.pdf';
+            $pdf->save(storage_path('app/public/pdf/' . $pdfFileName));
+            $pdfPath = 'storage/pdf/' . $pdfFileName;
+            return redirect($pdfPath)->with('success', 'Surat Perintah Pemeriksaan Final Kantor Berhasil Dibuat');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Nomor Surat Perintah Pemeriksaan Final Kantor Sudah Ada');
         }
-
-        $sppfpk = new Sppfpk();
-        $sppfpk->nomor_sppfpk = $request->nomor_sppfpk;
-        $badanUsaha->jadwal_pemeriksaan = $request->hari_tanggal_pelaksanaan;
-
-        $badanUsaha->save();
-        $sppfpk->waktu = $request->waktu;
-
-        $spt = SuratPerintahTugas::latest('id')->first();
-        $timPemeriksa = $spt->timPemeriksa;
-        $sppfpk->sppk_id = $sppkId;
-        $namaTimPemeriksa = $timPemeriksa->nama;
-        $nppTimPemeriksa = $timPemeriksa->npp;
-        $tanggalSurat = Carbon::now();
-        $sppfpk->tanggal_surat = Carbon::now();
-        $sppfpk->save();
-        
-
-        $pdf = Pdf::loadView('sppfpk-preview', compact('sppfpk','sppk' ,'badanUsaha', 'employee', 'namaTimPemeriksa', 'nppTimPemeriksa', 'tanggalSurat'));
-        $pdfFileName = 'Surat Perintah Pemeriksaan Kantor ' . $sppfpk->nomor_sppfpk . '.pdf';
-        return $pdf->download($pdfFileName);
-
-        return redirect()->route('sppfpk.index')->with('success', 'SPPFPK berhasil dibuat!');
     }
 }

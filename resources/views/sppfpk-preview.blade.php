@@ -123,7 +123,7 @@
 <body>
     <div class="content page1" style="font-size: 16px;">
         <p>
-        <div class="right-aligned-text">Gorontalo, {{ \Carbon\Carbon::parse($sppfpk->tanggal_pemeriksaan)->locale('id')->isoFormat('D MMMM Y')}}</div>
+        <div class="right-aligned-text">Gorontalo, {{ \Carbon\Carbon::parse($sppfpk->tanggal_surat)->locale('id')->isoFormat('D MMMM Y')}}</div>
         <span class="label1">Nomor</span> : {{ $sppfpk->nomor_sppfpk }} <br>
         <span class="label1">Lampiran</span> : Satu Berkas <br>
         <span class="label1">Hal</span> : Panggilan Pemeriksaan Final
@@ -180,7 +180,6 @@
         <div class="footer">
             <p>RL/ta/PP.01.02</p>
         </div>
-        <div class="page-break"></div>
 
         <div class="content page2" style="font-size: 16px;">
             <div class="section">

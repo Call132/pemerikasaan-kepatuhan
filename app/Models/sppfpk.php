@@ -13,6 +13,9 @@ class sppfpk extends Model
         'nomor_sppfpk',
         'tanggal_surat',
         'waktu',
+        'sppk_id',
+        'badan_usaha_id',
+
     ];
 
     // Definisikan relasi ke Badan Usaha jika diperlukan

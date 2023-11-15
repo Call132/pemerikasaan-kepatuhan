@@ -89,8 +89,6 @@ iv class="row">
                             </option>
                             <option value="lapangan" {{ old('kategori')=='lapangan' ? 'selected' : '' }}>Lapangan
                             </option>
-                            <option value="final" {{ old('kategori')=='final' ? 'selected' : '' }}>
-                                Final</option>
                             <!-- Tambahkan opsi kategori lain sesuai kebutuhan -->
                         </select>
                         <button type="submit">Cari <i class="fa-solid fa-magnifying-glass"></i></button>
@@ -118,21 +116,14 @@ iv class="row">
                             <td>{{ $bu->jenis_pemeriksaan }}</td>
 
                             <td>
-
-                                @if ($bu->jenis_pemeriksaan == 'Lapangan' && request('kategori') != 'final')
+                                @if ($bu->jenis_pemeriksaan == 'Lapangan')
                                 <a href="{{ route('sphp.form', ['id' => $bu->id]) }}">
                                     <i class="fa-solid fa-file-export }}"></i> SPHP</a>
-                                @elseif ($bu->jenis_pemeriksaan == 'Kantor' && request('kategori') == 'final')
-                                <a href="{{ route('sphp.form', ['id' => $bu->id]) }}">
-                                    <i class="fa-solid fa-file-export"></i>SPHP
-                                </a>
+
                                 @elseif ($bu->jenis_pemeriksaan == 'Kantor')
                                 <a href="{{ route('sphp.form', ['id' => $bu->id]) }}">
                                     <i class="fa-solid fa-file-export"></i>SPHP
                                 </a>
-
-
-
                                 @endif
                             </td>
                         </tr>

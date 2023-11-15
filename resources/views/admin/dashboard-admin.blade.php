@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('layout.main-admin')
 
 @section('title', 'Dashboard')
 
@@ -44,30 +44,33 @@
                             </tr>
                         </thead>
                         <tbody class="table-light">
+                            
+                        
                             @if ($latestPerencanaan->count() > 0)
 
-                                {{-- @dd($latestPerencanaan, $badanUsahaDiajukan) --}}
-                                @foreach ($latestPerencanaan as $data)
-                                    {{-- @dd($data) --}}
+                                
+                                
+                                 
 
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $data->start_date }}</td>
+                                        <td>1</td>
+                                        <td>{{ $latestPerencanaan->start_date }}</td>
                                         <td>
-                                            <a href="#" class=" lihat-detail" data-toggle="modal"
-                                                data-target="#modalDetilPerencanaan"
-                                                data-perencanaan-id="{{ $data->id }}">
-                                                lihat detail
-                                            </a>
+                                        <a href="#" class="lihat-detail" data-toggle="modal"
+                                        data-target="#modalDetilPerencanaan"
+                                        data-perencanaan-id="{{ $latestPerencanaan->id }}">
+                                        Lihat Detail
+                                        </a>
+
 
                                         </td>
                                         <td class="button-cell">
-                                            <form method="POST" action="{{ route('admin.approve', $data->id) }}">
+                                            <form method="POST" action="{{ route('admin.approve', $latestPerencanaan->id) }}">
                                                 @csrf
                                                 <button type="submit" class="btn btn-primary">Setujui</button>
                                             </form>
 
-                                            <form method="POST" action="{{ route('admin.reject', $data->id) }}">
+                                            <form method="POST" action="{{ route('admin.reject', $latestPerencanaan->id) }}">
                                                 @csrf
                                                 <button type="submit" class="btn btn-danger">Tolak</button>
                                             </form>
@@ -77,7 +80,7 @@
                                             <textarea name="note" class="form-control" id="note" rows="3"></textarea>
                                         </td>
                                     </tr>
-                                @endforeach
+                               
                             @else
                                 <div class="table-responsive mx-auto">
                                     <table class="table table-striped">
@@ -107,7 +110,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    @if ($badanUsahaDiajukan->count() > 0)
+                   
+                    @if ($badanUsaha->count() > 0)
                         @php
                             $totalTunggakan = 0;
                         @endphp
@@ -129,7 +133,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($badanUsahaDiajukan as $data)
+                                    @foreach ($badanUsaha as $data)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $data->nama_badan_usaha }}</td>
@@ -159,6 +163,8 @@
                                 </tfoot>
                             </table>
                         </div>
+                        @else
+                        <p>Tidak ada data</p>
 
                     @endif
                 </div>
@@ -206,16 +212,17 @@
     <script>
         $(document).ready(function() {
             $('.lihat-detail').on('click', function() {
-                var perencanaanId = $(this).data('perencanaan');
-                $.ajax({
-                    url: '/get-detil-badan-usaha/' + perencanaanId,
-                    method: 'GET',
-                    success: function(data) {
-                        $('#detilBadanUsaha').html(data);
-                        $('#modalDetilPerencanaan').modal('show');
-                    },
-                });
-            });
+    var perencanaanId = $(this).data('perencanaan-id');
+    $.ajax({
+        url: '/get-detil-badan-usaha/' + perencanaanId,
+        method: 'GET',
+        success: function(data) {
+            $('#detilBadanUsaha').html(data);
+            $('#modalDetilPerencanaan').modal('show');
+        },
+    });
+});
+
         });
     </script>
 

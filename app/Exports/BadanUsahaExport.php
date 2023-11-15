@@ -27,6 +27,7 @@ class BadanUsahaExport implements FromCollection, WithHeadings, ShouldAutoSize, 
     {
         $this->startDate = $startDate;
         $this->endDate = $endDate;
+        
     }
     public function collection()
     {

@@ -62,12 +62,20 @@ class SptController extends Controller
         if (!$perencanaan) {
             return redirect()->back()->with('error', 'Perencanaan Belum Di Approve');
         }
-
+        
         $badanUsahaDiajukan = BadanUsaha::where('perencanaan_id', $perencanaan->id)->get();
-        $tanggalMulai = Carbon::parse($perencanaan->start_date)->translatedFormat('d F Y');
-        $tanggalAkhir = Carbon::parse($perencanaan->end_date)->translatedFormat('d F Y');
-        $tanggalPemeriksaan = $tanggalMulai . " - " . $tanggalAkhir;
-        $dateNow = Carbon::now()->translatedFormat('d F Y', 'id');
+
+// Ambil tanggal pemeriksaan badan usaha pertama dan terakhir
+$tanggalPemeriksaanPertama = $badanUsahaDiajukan->min('jadwal_pemeriksaan');
+$tanggalPemeriksaanTerakhir = $badanUsahaDiajukan->max('jadwal_pemeriksaan');
+
+// Gunakan tanggal pemeriksaan badan usaha pertama dan terakhir untuk menentukan rentang
+$tanggalMulai = Carbon::parse($tanggalPemeriksaanPertama)->translatedFormat('d F Y');
+$tanggalAkhir = Carbon::parse($tanggalPemeriksaanTerakhir)->translatedFormat('d F Y');
+$tanggalPemeriksaan = $tanggalMulai . " - " . $tanggalAkhir;
+
+$dateNow = Carbon::now()->translatedFormat('d F Y', 'id');
+
 
         $badanUsahaDiajukan->transform(function ($item) {
             $item->jumlah_tunggakan = 'Rp ' . number_format(floatval($item->jumlah_tunggakan), 2, ',', '.');

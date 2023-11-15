@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\perencanaan;
 use App\Models\User;
+use App\Models\BadanUsaha;
 use App\Notifications\perencanaanApproved;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -19,31 +20,20 @@ class AdminController extends Controller
         $this->middleware('can:approve post')->only('approve'); // Hanya pengguna dengan izin approve post yang dapat mengakses metode 'approve'
     }
     public function index()
-    {
-
-        $latestPerencanaan = Perencanaan::where('status', 'diajukan')->get();
-
-        $badanUsahaDiajukan = DB::table('perencanaan')
-            ->join('badan_usaha', 'perencanaan.id', '=', 'badan_usaha.perencanaan_id')
-            ->where('perencanaan.status', 'diajukan')
-            ->select('badan_usaha.*', 'perencanaan.start_date')
-            ->get();
-
-        // Transform the data as needed
-        $badanUsahaDiajukan->transform(function ($item) {
-            $item->jumlah_tunggakan = 'Rp ' . number_format(floatval($item->jumlah_tunggakan), 2, ',', '.');
-            return $item;
-        });
+{
 
 
-        return view('admin.dashboard-admin', [
-            'type_menu' => 'dashboard',
-            'badanUsahaDiajukan' => $badanUsahaDiajukan,
-            'latestPerencanaan' => $latestPerencanaan,
+    $latestPerencanaan = Perencanaan::where('status', 'diajukan')->latest()->first();
+  
+    
+    
+        // Gantilah $badanUsaha dengan array untuk menyimpan hasil dari setiap iterasi
+        $badanUsaha = BadanUsaha::where('perencanaan_id', $latestPerencanaan->id)->get();
+        
+    
 
-
-        ]);
-    }
+    return view('admin.dashboard-admin', compact('latestPerencanaan', 'badanUsaha'));
+}
     public function approve($id)
     {
         $data = perencanaan::findOrFail($id);
@@ -78,4 +68,17 @@ class AdminController extends Controller
 
         return redirect()->route('admin.dashboard')->with('error', 'Perencanaan ditolak.');
     }
+    public function getDetilBadanUsaha($perencanaanId)
+{
+    $badanUsahaDiajukan = BadanUsaha::where('perencanaan_id', $perencanaanId)->get();
+
+    // Transform the data as needed
+    $badanUsahaDiajukan->transform(function ($item) {
+        $item->jumlah_tunggakan = 'Rp ' . number_format(floatval($item->jumlah_tunggakan), 2, ',', '.');
+        return $item;
+    });
+
+    return view('admin.dashboard-admin', ['badanUsahaDiajukan' => $badanUsahaDiajukan]);
+}
+
 }

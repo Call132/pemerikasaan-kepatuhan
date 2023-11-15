@@ -31,14 +31,15 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Call',
             'email' => 'farizala817@gmail.com',
-            'phone' => '1234567890', // Ganti dengan nomor telepon yang sesuai
-            'password' => bcrypt('12345678'), // Ganti dengan email admin yang sesuai
+            'phone' => '1234567890',
+            'password' => bcrypt('12345678'),
         ])->assignRole($adminRole);
+        
         User::factory()->create([
             'name' => 'farizal',
             'email' => 'frzlhmd@gmail.com',
-            'phone' => '1234567890', // Ganti dengan nomor telepon yang sesuai
-            'password' => bcrypt('12345678'), // Ganti dengan email admin yang sesuai
+            'phone' => '1234567890',
+            'password' => bcrypt('12345678'),
         ])->assignRole($userRole);
         //BadanUsaha::factory(15)->create();
 

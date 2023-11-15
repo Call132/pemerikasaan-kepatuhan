@@ -35,8 +35,8 @@
 
 <body>
     <div class="header">
-        <p class="label" >Nama Badan Usaha </p>: {{ $badanUsaha->nama_badan_usaha}} <br>
-        <p class="label" >Hari/Tanggal </p>: {{
+        <p class="label">Nama Badan Usaha </p>: {{ $badanUsaha->nama_badan_usaha}} <br>
+        <p class="label">Hari/Tanggal </p>: {{
         \Carbon\Carbon::parse($lhps->tgl_lhps)->isoFormat('dddd, D MMMM Y') }}
         <br>
         <p class="label">Tim Pemeriksa </p>: {{ $timPemeriksa->nama }} <br>
@@ -45,9 +45,22 @@
         @endforeach
         <p class="label" style="min-width: 182px; margin-bottom: 10px;"> </p> {{ $extPendamping->nama }}
     </div>
+
+    @php
+    $storedPathInDatabase = $lhps->image;
+
+   
+    $correctImagePath =  $storedPathInDatabase;
+    @endphp
+    @dd(Storage::url($correctImagePath))
+
     <div class="content" style="max-height: 350px; max-width: 600px;  overflow:hidden;">
-        <img src="{{ asset('storage/' . substr($lhps->image, 7)) }}" alt="{{ 'Dokumentasi ' .  $lhps->image }}"
-            class="img-fluid mt-3" width="500" height="300">
+        @if (Storage::exists($lhps->image))
+        <img loading="lazy" src="{{ Storage::url($correctImagePath) }}" alt="test" class="img-fluid mt-3" width="500"
+            height="300">
+        @else
+        Image not found
+        @endif
     </div>
 </body>
 

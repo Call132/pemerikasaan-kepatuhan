@@ -50,6 +50,7 @@
             <div class="card-body">
                 <form method="POST" action="{{ route('monitoring.cari') }}">
                     @csrf
+                    
                     <div class="form-group">
                         <select name="periode_pemeriksaan" id="periode_pemeriksaan">
                             <option value="">Periode Pemeriksaan</option>
@@ -65,7 +66,6 @@
                 </form>
                 @if (request()->has('periode_pemeriksaan'))
                     @include('monitoring-data')
-                    
                 @endif
             </div>
         </div>

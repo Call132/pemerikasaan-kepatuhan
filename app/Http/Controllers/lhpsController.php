@@ -82,7 +82,8 @@ class lhpsController extends Controller
             ]);
 
             if ($request->file('image')) {
-                $validate['image'] = $request->file('image')->store('public/image');
+                $imagePath = $request->file('image')->store('public/image');
+                $validate['image'] = 'public/image' . base64_encode(Storage::get($imagePath));
             }
             $id = $request->input('bu_id');
             $badanUsaha = BadanUsaha::findOrFail($id);
@@ -122,7 +123,7 @@ class lhpsController extends Controller
             $excelPath = 'storage/excel/' . $excelFileName;
             return redirect($excelPath)->with('success', 'Laporan Hasil Pemeriksaan Sementara Berhasil Dibuat');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Data Tidak Valid');
+            return dd($e);
         }
     }
     public function dokumentasi($id)
@@ -138,19 +139,17 @@ class lhpsController extends Controller
             if (empty($lhps)) {
                 return redirect()->back()->with('error', 'Laporan Hasil Pemeriksaan Sementara Belum Dibuat');
             }
-            return view('dokumentasi-preview', compact('badanUsaha', 'spt', 'lhps', 'timPemeriksa', 'pendamping', 'extPendamping'));
+
             $pdf = Pdf::loadView('dokumentasi-preview', compact('badanUsaha', 'spt', 'lhps', 'timPemeriksa', 'pendamping', 'extPendamping'));
             $pdf->setPaper('A4', 'landscape');
-            $pdfFileName = 'Dokumentasi Laporan Hasil Pemeriksaan Sementara ' . $badanUsaha->nama_badan_usaha . '-' . $lhps->tgl_lhps .'.pdf';
+            $pdfFileName = 'Dokumentasi Laporan Hasil Pemeriksaan Sementara ' . $badanUsaha->nama_badan_usaha . '-' . $lhps->tgl_lhps . '.pdf';
             $pdf->save(storage_path('app/public/pdf/' . $pdfFileName));
 
             $pdfPath = 'storage/pdf/' . $pdfFileName;
-            
+
             return redirect($pdfPath)->with('success', 'Dokumentasi Laporan Hasil Pemeriksaan Sementara Berhasil Dibuat');
         } catch (\Exception $e) {
             return dd($e);
         }
     }
-
-   
 }

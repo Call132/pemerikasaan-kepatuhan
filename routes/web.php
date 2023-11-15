@@ -63,6 +63,10 @@ Route::get('/monitoring', [monitoringController::class, 'index'])->name('monitor
 Route::post('/monitoring', [monitoringController::class, 'cari'])->name('monitoring.cari');
 Route::post('/monitoring/download/{id}', [monitoringController::class, 'export'])->name('monitoring.export');
 
+Route::get('/arsip', [monitoringController::class, 'arsip'])->name('monitoring.arsip');
+Route::match(['get', 'post'], '/cari', [monitoringController::class, 'cariArsip'])->name('arsip.cari');
+
+
 Route::middleware(['auth', 'role:user'])->group(function () {
     //homepage
     Route::get('/', [HomeController::class, 'index']); // Gunakan Controller dan metodenya

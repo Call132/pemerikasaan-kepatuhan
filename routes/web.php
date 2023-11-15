@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\admin\AdminController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\admin\ProfileadminController;
+use App\Http\Controllers\admin\ManajemenUserController;
 use App\Http\Controllers\Auth\AuthRegisterController;
 use App\Http\Controllers\Auth\AuthLoginController;
 use App\Http\Controllers\BadanUsahaController;
@@ -40,9 +43,14 @@ use Maatwebsite\Excel\Facades\Excel;
 //admin
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard-admin', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/get-detil-badan-usaha/{perencanaanId}', [AdminController::class, 'getDetilBadanUsaha']);
     Route::post('/admin/approve/{id}', [AdminController::class, 'approve'])->name('admin.approve');
     Route::post('/admin/reject/{id}', [AdminController::class, 'reject'])->name('admin.reject');
-    Route::get('/get-detil-badan-usaha/{id}', [AdminController::class, 'getDetilBadanUsaha']);
+
+    Route::get('/admin/manajemen-user', [ManajemenUserController::class, 'index'])->name('manajemen-user');
+    Route::get('/user/{id}/edit', [ManajemenUserController::class, 'edit'])->name('user.edit');
+    Route::put('/user/{id}', [ManajemenUserController::class, 'update'])->name('user.update');
+    Route::delete('/user/{id}', [ManajemenUserController::class, 'destroy'])->name('user.destroy');
 });
 
 
@@ -58,6 +66,12 @@ Route::get('/register', function () {
     return view('register', ['type_menu' => 'auth']);
 })->middleware('guest');
 Route::post('/register', [AuthRegisterController::class, 'register'])->name('user.register');
+
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+Route::get('/profile-admin', [ProfileadminController::class, 'index'])->name('profileadmin');
+Route::post('/profile-admin/update', [ProfileadminController::class, 'update'])->name('profileadmin.update');
 
 Route::get('/monitoring', [monitoringController::class, 'index'])->name('monitoring');
 Route::post('/monitoring', [monitoringController::class, 'cari'])->name('monitoring.cari');

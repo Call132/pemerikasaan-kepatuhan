@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\BadanUsaha;
 use App\Models\perencanaan;
 use App\Models\User;
+use App\Models\BadanUsaha;
 use App\Notifications\perencanaanApproved;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class AdminController extends Controller
         $this->middleware('can:approve post')->only('approve'); // Hanya pengguna dengan izin approve post yang dapat mengakses metode 'approve'
     }
     public function index()
-    {
+{
 
         try {
             $latestPerencanaan = Perencanaan::where('status', 'diajukan')->latest()->first();
@@ -68,4 +69,17 @@ class AdminController extends Controller
 
         return redirect()->route('admin.dashboard')->with('error', 'Perencanaan ditolak.');
     }
+    public function getDetilBadanUsaha($perencanaanId)
+{
+    $badanUsahaDiajukan = BadanUsaha::where('perencanaan_id', $perencanaanId)->get();
+
+    // Transform the data as needed
+    $badanUsahaDiajukan->transform(function ($item) {
+        $item->jumlah_tunggakan = 'Rp ' . number_format(floatval($item->jumlah_tunggakan), 2, ',', '.');
+        return $item;
+    });
+
+    return view('admin.dashboard-admin', ['badanUsahaDiajukan' => $badanUsahaDiajukan]);
+}
+
 }

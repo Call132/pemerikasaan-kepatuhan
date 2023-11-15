@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('layout.main-admin')
 
 @section('title', 'Dashboard')
 
@@ -201,16 +201,17 @@
 <script>
     $(document).ready(function() {
             $('.lihat-detail').on('click', function() {
-                var perencanaanId = $(this).data('perencanaan');
-                $.ajax({
-                    url: '/get-detil-badan-usaha/' + perencanaanId,
-                    method: 'GET',
-                    success: function(data) {
-                        $('#detilBadanUsaha').html(data);
-                        $('#modalDetilPerencanaan').modal('show');
-                    },
-                });
-            });
+    var perencanaanId = $(this).data('perencanaan-id');
+    $.ajax({
+        url: '/get-detil-badan-usaha/' + perencanaanId,
+        method: 'GET',
+        success: function(data) {
+            $('#detilBadanUsaha').html(data);
+            $('#modalDetilPerencanaan').modal('show');
+        },
+    });
+});
+
         });
 </script>
 

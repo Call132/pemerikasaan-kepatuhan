@@ -4,15 +4,19 @@
         margin-bottom: 10px;
     }
     
+    .sidebar-brand-sm img {
+        max-width: 100%;
+        height: auto;
+    }
 </style>
 <div class="main-sidebar sidebar-style-2">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="/">Hmmm</a>
+            <a href="/">SISTERS</a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
-            <a href="/">Yaa</a>
-        </div>
+    <a href="/"><img src="{{ asset('img/logo.png') }}" alt="Logo"></a>
+</div>
         <ul class="sidebar-menu">
             <li class="menu-header fa">Dashboard</li>
             <li class="nav-item dropdown">
@@ -39,7 +43,6 @@
                     <i class="fa-solid fa-file-pen"></i><span>Pelaksanaan Pemeriksaan</span>
                 </a>
             </li>
-
             <li class="nav-item dropdown">
                 <a class="nav-link has-dropdown" style="line-height: 1;"><i class="fa-solid fa-file-lines"></i>
                     <span>Laporan Pemeriksaan</span></a>

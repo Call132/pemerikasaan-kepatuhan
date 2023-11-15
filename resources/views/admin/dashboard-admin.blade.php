@@ -45,12 +45,6 @@
                     </thead>
                     <tbody class="table-light">
                         @if ($latestPerencanaan->count() > 0)
-
-                        {{-- @dd($latestPerencanaan, $badanUsahaDiajukan) --}}
-
-
-
-
                         <tr>
                             <td>1</td>
                             <td>{{ $latestPerencanaan->start_date }}</td>

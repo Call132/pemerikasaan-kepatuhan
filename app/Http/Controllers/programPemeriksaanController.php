@@ -28,7 +28,8 @@ class programPemeriksaanController extends Controller
 
     public function store(Request $request)
     {
-        $validator = $request->validate([
+        try{
+            $validator = $request->validate([
             'bu_id' => 'required',
             'npwp' => 'required',
             'aspek_tenaga_kerja' => 'required',
@@ -64,6 +65,9 @@ class programPemeriksaanController extends Controller
 
 
         return redirect($path)->with('success', 'Program Pemeriksaan Berhasil dibuat');
+        }catch (\Exception $e){
+            return redirect()->back()->with('error', 'Data Tidak Valid');
+        }
     }
 
 

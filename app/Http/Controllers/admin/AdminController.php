@@ -30,7 +30,7 @@ class AdminController extends Controller
 
             return view('admin.dashboard-admin', compact('latestPerencanaan', 'badanUsaha'));
         } catch (\Exception $e) {
-            return dd($e);
+            return redirect()->back()->with('error', 'Terjadi kesalahan');
         }
     }
    

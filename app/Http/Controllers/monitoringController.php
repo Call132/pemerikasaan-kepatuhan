@@ -82,7 +82,7 @@ class monitoringController extends Controller
 
             return view('arsip', compact('filteredFiles', 'searchTerm'));
         } catch (\Exception $e) {
-            return dd($e);
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mencari file.');
         }
     }
     private function filterFilesByName($files, $searchTerm)

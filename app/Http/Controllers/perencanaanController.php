@@ -30,46 +30,46 @@ class perencanaanController extends Controller
     // Menyimpan badan usaha baru ke dalam database
     public function store(Request $request)
     {
-        $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
-            'nama_tim_pemeriksa' => 'required|string',
-            'nama_kepala_bagian' => 'required|string',
-            'nama_kepala_cabang' => 'required|string',
-        ]);
+        try {
+            $request->validate([
+                'start_date' => 'required|date',
+                'end_date' => 'required|date',
+                'nama_tim_pemeriksa' => 'required|string',
+                'nama_kepala_bagian' => 'required|string',
+                'nama_kepala_cabang' => 'required|string',
+            ]);
 
-        $perencanaan = new Perencanaan();
-        $perencanaan->status = 'diajukan';
-        $perencanaan->start_date = $request->input('start_date');
-        $perencanaan->end_date = $request->input('end_date');
-        // Simpan data perencanaan ke dalam tabel 'perencanaan'
-        $perencanaan->save();
+            $perencanaan = new Perencanaan();
+            $perencanaan->status = 'diajukan';
+            $perencanaan->start_date = $request->input('start_date');
+            $perencanaan->end_date = $request->input('end_date');
+            // Simpan data perencanaan ke dalam tabel 'perencanaan'
+            $perencanaan->save();
 
-        $adminRole = Role::where('name', 'admin')->first();
+            $adminRole = Role::where('name', 'admin')->first();
 
-        // Cari pengguna dengan peran "admin"
-        $admins = $adminRole->users;
+            // Cari pengguna dengan peran "admin"
+            $admins = $adminRole->users;
 
-        // Mengirim notifikasi kepada admin
-        dispatch(new SendNotificationJob($admins, new perencanaanNotify()))->onConnection('sync');
-
-
-
-
-        // Update atau buat data 'Tim Pemeriksa' jika belum ada
-        employee_roles::updateOrCreate(['posisi' => 'Tim Pemeriksa'], ['nama' => $request->input('nama_tim_pemeriksa', 'Default Tim Pemeriksa')]);
-
-        // Update atau buat data 'Kepala Bagian' jika belum ada
-        employee_roles::updateOrCreate(['posisi' => 'Kepala Bagian'], ['nama' => $request->input('nama_kepala_bagian', 'Default Kepala Bagian')]);
-
-        // Update atau buat data 'Kepala Cabang' jika belum ada
-        employee_roles::updateOrCreate(['posisi' => 'Kepala Cabang'], ['nama' => $request->input('nama_kepala_cabang', 'Default Kepala Cabang')]);
-
-        return redirect()->route('data-pemeriksaan.create', ['perencanaan_id' => $perencanaan->id])->with('succes', 'Perencanaan berhasil dibuat');
+            // Mengirim notifikasi kepada admin
+            dispatch(new SendNotificationJob($admins, new perencanaanNotify()))->onConnection('sync');
 
 
 
-        return redirect()->route('data-pemeriksaan', ['perencanaan_id' => $perencanaan->id]);
+
+            // Update atau buat data 'Tim Pemeriksa' jika belum ada
+            employee_roles::updateOrCreate(['posisi' => 'Tim Pemeriksa'], ['nama' => $request->input('nama_tim_pemeriksa', 'Default Tim Pemeriksa')]);
+
+            // Update atau buat data 'Kepala Bagian' jika belum ada
+            employee_roles::updateOrCreate(['posisi' => 'Kepala Bagian'], ['nama' => $request->input('nama_kepala_bagian', 'Default Kepala Bagian')]);
+
+            // Update atau buat data 'Kepala Cabang' jika belum ada
+            employee_roles::updateOrCreate(['posisi' => 'Kepala Cabang'], ['nama' => $request->input('nama_kepala_cabang', 'Default Kepala Cabang')]);
+
+            return redirect()->route('data-pemeriksaan.create', ['perencanaan_id' => $perencanaan->id])->with('succes', 'Perencanaan berhasil dibuat');
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['error' =>  'perencanaan gagal dibuat : ' . $e->getMessage()]);
+        }
     }
 
     // Menampilkan detail badan usaha

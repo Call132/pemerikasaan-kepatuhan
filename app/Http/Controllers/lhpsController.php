@@ -123,7 +123,7 @@ class lhpsController extends Controller
             $excelPath = 'storage/excel/' . $excelFileName;
             return redirect($excelPath)->with('success', 'Laporan Hasil Pemeriksaan Sementara Berhasil Dibuat');
         } catch (\Exception $e) {
-            return dd($e);
+            return redirect()->back()->with('error', 'Laporan Hasil Pemeriksaan Sementara Gagal Dibuat');
         }
     }
     public function dokumentasi($id)

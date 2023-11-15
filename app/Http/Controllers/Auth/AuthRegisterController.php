@@ -35,11 +35,6 @@ class AuthRegisterController extends Controller
 
         // Atur peran pengguna, misalnya 'user entry'
         $user->assignRole('user');
-
-        // Anda juga dapat menambahkan izin jika diperlukan
-        // $user->givePermissionTo('permission_name');
-
-        // Redirect ke halaman login dengan pesan sukses
         return redirect()->route('user.login')->with('success', 'Registration successful. Please login.');
     }
 

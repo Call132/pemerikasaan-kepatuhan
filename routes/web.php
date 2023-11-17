@@ -41,7 +41,7 @@ use Maatwebsite\Excel\Facades\Excel;
 });*/
 
 //admin
-Route::middleware(['auth', 'role:admin'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/dashboard-admin', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/get-detil-badan-usaha/{perencanaanId}', [AdminController::class, 'getDetilBadanUsaha']);
     Route::post('/admin/approve/{id}', [AdminController::class, 'approve'])->name('admin.approve');
@@ -58,13 +58,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 //login and register
 Route::get('/login', function () {
     return view('login', ['type_menu' => 'auth']);
-})->name('login')->middleware('guest');
+})->name('login');
 Route::post('/login', [AuthLoginController::class, 'login'])->name('user.login');
 Route::post('/logout', [AuthLoginController::class, 'logout'])->middleware('auth')->name('logout');
 
 Route::get('/register', function () {
     return view('register', ['type_menu' => 'auth']);
-})->middleware('guest');
+});
 Route::post('/register', [AuthRegisterController::class, 'register'])->name('user.register');
 
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
@@ -73,20 +73,21 @@ Route::post('/profile/update', [ProfileController::class, 'update'])->name('prof
 Route::get('/profile-admin', [ProfileadminController::class, 'index'])->name('profileadmin');
 Route::post('/profile-admin/update', [ProfileadminController::class, 'update'])->name('profileadmin.update');
 
-Route::get('/monitoring', [monitoringController::class, 'index'])->name('monitoring');
-Route::post('/monitoring', [monitoringController::class, 'cari'])->name('monitoring.cari');
-Route::post('/monitoring/download/{id}', [monitoringController::class, 'export'])->name('monitoring.export');
-
-Route::get('/arsip', [monitoringController::class, 'arsip'])->name('monitoring.arsip');
-Route::match(['get', 'post'], '/cari', [monitoringController::class, 'cariArsip'])->name('arsip.cari');
 
 
-Route::middleware(['auth', 'role:user'])->group(function () {
+
+Route::middleware(['auth', 'verified', 'role:user|admin'])->group(function () {
     //homepage
-    Route::get('/', [HomeController::class, 'index']); // Gunakan Controller dan metodenya
+    Route::get('/', [HomeController::class, 'index'])->name('home'); // Gunakan Controller dan metodenya
 
     Route::post('/tambah-data-bu', [BadanUsahaController::class, 'saveData']);
     Route::post('/export-perencanaan-pemeriksaan', [BadanUsahaController::class, 'exportToExcel']);
+    Route::get('/monitoring', [monitoringController::class, 'index'])->name('monitoring');
+    Route::post('/monitoring', [monitoringController::class, 'cari'])->name('monitoring.cari');
+    Route::post('/monitoring/download/{id}', [monitoringController::class, 'export'])->name('monitoring.export');
+
+    Route::get('/arsip', [monitoringController::class, 'arsip'])->name('monitoring.arsip');
+    Route::match(['get', 'post'], '/cari', [monitoringController::class, 'cariArsip'])->name('arsip.cari');
 
     //setting
     /*Route::get('setting', function () {

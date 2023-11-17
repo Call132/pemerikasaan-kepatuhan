@@ -14,6 +14,8 @@
             <div class="section-header">
                 <h1>Dashboard</h1>
             </div>
+            {{ session('debug') }}
+
             
             @if (session('error'))
                 <div class="alert alert-danger">
@@ -69,8 +71,6 @@
                                             Excel <i class="fa-solid fa-file-export"></i></button>
                                     </div>
                                 </form>
-
-
                             </div>
                             @if ($badanUsaha->count() > 0)
 
@@ -91,7 +91,7 @@
                                                     <th>Jenis Pemeriksaan</th>
                                                     <th>Jadwal Pemeriksaan</th>
                                                     <th><a
-                                                            href="{{ route('data-pemeriksaan.create', ['perencanaan_id' => $latestPerencanaanId]) }}"class="btn btn-primary m-auto">Add</a>
+                                                            href="{{ route('data-pemeriksaan.create', ['perencanaan_id' => $latestPerencanaanId]) }}"class="btn btn-primary m-auto"><i class="fa-solid fa-plus"></i></a>
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -115,7 +115,7 @@
                                                         <td>
                                                             <div class="btn-group " role="group">
                                                                 <a href="{{ route('edit-data-pemeriksaan', ['id' => $data->id]) }}"
-                                                                    class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></a>
+                                                                    class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
                                                                 <form
                                                                     action="{{ route('delete.badanusaha', ['id' => $data->id]) }}"
                                                                     method="post">

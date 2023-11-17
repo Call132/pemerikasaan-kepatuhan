@@ -17,10 +17,7 @@ class AuthRegisterController extends Controller
 
     protected $redirectTo = RouteServiceProvider::login;
 
-    public function __construct()
-    {
-        $this->middleware('guest');
-    }
+
 
     public function showRegistrationForm()
     {
@@ -33,7 +30,6 @@ class AuthRegisterController extends Controller
 
         $user = $this->create($request->all());
 
-        // Atur peran pengguna, misalnya 'user entry'
         $user->assignRole('user');
         return redirect()->route('user.login')->with('success', 'Registration successful. Please login.');
     }

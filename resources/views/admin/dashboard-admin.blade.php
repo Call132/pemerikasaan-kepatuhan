@@ -1,4 +1,4 @@
-@extends('layout.main-admin')
+@extends('layout.main')
 
 @section('title', 'Dashboard')
 
@@ -44,7 +44,7 @@
                         </tr>
                     </thead>
                     <tbody class="table-light">
-                        @if ($latestPerencanaan->count() > 0)
+                        @if ($latestPerencanaan !== null)
                         <tr>
                             <td>1</td>
                             <td>{{ $latestPerencanaan->start_date }}</td>
@@ -103,7 +103,7 @@
             </div>
             <div class="modal-body">
 
-                @if ($badanUsaha->count() > 0)
+                @if ($badanUsaha !== null)
                 @php
                 $totalTunggakan = 0;
                 @endphp

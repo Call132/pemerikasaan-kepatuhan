@@ -13,35 +13,33 @@ class AuthLoginController extends Controller
 {
     public function login(Request $request)
     {
-        try{
+        try {
             $credentials = $request->validate([
                 'email' => ['required', 'email'],
                 'password' => ['required'],
             ]);
-    
-            if (Auth::attempt($credentials)) {
-                // Cek apakah pengguna adalah admin
-                if (Auth::user()->hasRole('admin')) {
-                    return redirect('/dashboard-admin');
-                } else {
-                    // Jika bukan admin, arahkan ke dashboard biasa
-                    return redirect('/');
-                }
+            $request->session()->regenerate();
+
+            Auth::attempt($credentials);
+            // Cek apakah pengguna adalah admin
+            if (Auth::user()->hasRole('admin')) {
+
+                return redirect()->route('admin.dashboard');
             }
-    
-    
-            // Otentikasi gagal, tampilkan pesan kesalahan atau alihkan ke halaman masuk dengan pesan.
-            return redirect('login')->with('error', 'Email atau kata sandi salah.');
-        }catch(\Exception $e){
+            if (Auth::user()->hasRole('user')) {
+                return redirect()->route('home');
+            }
+            return redirect('/login')->with('error', 'Email atau kata sandi salah.');
+        } catch (\Exception $e) {
             return dd($e);
         }
     }
 
     public function logout(Request $request)
     {
-        
+
         $request->session()->invalidate();
-        
+
         $request->session()->regenerateToken();
         Session::flush();
         Auth::logout();

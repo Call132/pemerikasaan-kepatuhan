@@ -1,4 +1,4 @@
-@extends('layout.main-admin')
+@extends('layout.main')
 @section('title', 'Profil Pengguna')
 
 @push('style')

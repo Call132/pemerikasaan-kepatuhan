@@ -1,7 +1,7 @@
 <!-- edit-user.blade.php -->
 @extends('layout.main')
 
-@section('title', 'Edit Pengguna')
+@section('title', 'Tambah Pengguna')
 
 @section('main')
 <div class="main-content">
@@ -32,21 +32,20 @@
 
     <div class="card">
         <div class="card-header">
-            <h4>Form Edit User</h4>
+            <h4>Form Tambah User</h4>
         </div>
 
         <div class="card-body">
             <!-- Form Edit User -->
-            <form action="{{ route('user.update', $user->id) }}" method="post" id="updateProfileForm">
+            <form action="{{ route('user.store') }}" method="post" id="updateProfileForm">
                 @csrf
-                @method('PUT')
+                
 
                 <!-- Input Nama -->
                 <div class="form-group row">
                     <label for="name" class="col-sm-3 col-form-label">Nama Pengguna</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="name" name="name" value="{{ $user->name }}"
-                            required>
+                        <input type="text" class="form-control" id="name" name="name" required>
                     </div>
                 </div>
 
@@ -54,8 +53,7 @@
                 <div class="form-group row">
                     <label for="email" class="col-sm-3 col-form-label">Email</label>
                     <div class="col-sm-9">
-                        <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}"
-                            required>
+                        <input type="email" class="form-control" id="email" name="email" required>
                     </div>
                 </div>
 
@@ -63,7 +61,15 @@
                 <div class="form-group row">
                     <label for="phone" class="col-sm-3 col-form-label">Phone</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="phone" name="phone" value="{{ $user->phone }}">
+                        <input type="text" class="form-control" id="phone" name="phone">
+                    </div>
+                </div>
+
+                <!-- Input Password -->
+                <div class="form-group row">
+                    <label for="password" class="col-sm-3 col-form-label">Password</label>
+                    <div class="col-sm-9">
+                        <input type="password" class="form-control" id="password" name="password">
                     </div>
                 </div>
 
@@ -72,15 +78,15 @@
                     <label for="role" class="col-sm-3 col-form-label">Role</label>
                     <div class="col-sm-9">
                         <select class="form-control" id="role" name="role" required>
-                            <option value="admin" @if ($user->role_name == 'admin') selected @endif>Admin</option>
-                            <option value="user" @if ($user->role_name == 'user') selected @endif>User</option>
+                           <option value="admin">admin</option>
+                           <option value="user">user</option>
                         </select>
                     </div>
                 </div>
 
                 <!-- Tombol Simpan -->
                 <div class="card-footer text-right">
-                    <button type="submit" class="btn btn-primary">Simpan perubahan</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
         </div>

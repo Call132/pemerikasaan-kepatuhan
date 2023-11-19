@@ -19,10 +19,8 @@ class RolePermissionSeeder extends Seeder
     {
         Permission::create(['name' => 'approve-perencanaan']);
         Permission::create(['name' => 'add-user']);
-
         Permission::create(['name' => 'create-perencanaan']);
         Permission::create(['name' => 'edit-perencanaan']);
-
 
         Role::create(['name' => 'admin']);
         Role::create(['name' => 'user']);

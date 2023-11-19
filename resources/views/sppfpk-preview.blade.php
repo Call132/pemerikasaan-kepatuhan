@@ -123,7 +123,8 @@
 <body>
     <div class="content page1" style="font-size: 16px;">
         <p>
-        <div class="right-aligned-text">Gorontalo, {{ \Carbon\Carbon::parse($sppfpk->tanggal_surat)->locale('id')->isoFormat('D MMMM Y')}}</div>
+        <div class="right-aligned-text">Gorontalo, {{
+            \Carbon\Carbon::parse($sppfpk->tanggal_surat)->locale('id')->isoFormat('D MMMM Y')}}</div>
         <span class="label1">Nomor</span> : {{ $sppfpk->nomor_sppfpk }} <br>
         <span class="label1">Lampiran</span> : Satu Berkas <br>
         <span class="label1">Hal</span> : Panggilan Pemeriksaan Final
@@ -138,9 +139,10 @@
             Penyelenggara Jaminan Sosial, BPJS Kesehatan berwenang melakukan pemeriksaan atas kepatuhan Pemberi Kerja
             pada Program Jaminan Kesehatan dalam hal kewajiban <strong>Pembayaran Iuran</strong>.
         </p>
-     
+
         <p class="indent-text" style="font-size: 16px; margin-bottom: 1.0em;">
-            BPJS Kesehatan Cabang Gorontalo telah mengirimkan surat Nomor: {{ $sppk->nomor_sppk }} tanggal {{ \Carbon\Carbon::parse($sppk->tanggal_pemeriksaan)->locale('id')->isoFormat('D MMMM Y') }}
+            BPJS Kesehatan Cabang Gorontalo telah mengirimkan surat Nomor: {{ $sppk->nomor_sppk }} tanggal {{
+            \Carbon\Carbon::parse($sppk->tanggal_pemeriksaan)->locale('id')->isoFormat('D MMMM Y') }}
             tentang Panggilan Pemeriksaan, Bapak/Ibu sebagai Pimpinan perusahaan ataupun yang mewakili belum memenuhi
             panggilan pemeriksaan sesuai waktu yang telah ditentukan. Maka bersama surat ini kami sampaikan Panggilan
             Pemeriksaan Final pada:
@@ -148,13 +150,13 @@
 
         <div class="section">
             <div class="form-group" style="font-size: 16px;">
-                <p><span class="label">Hari/Tanggal</span>: {{ \Carbon\Carbon::parse($badanUsaha->jadwal_pemeriksaan)->locale('id')->isoFormat('D MMMM Y') }} </p>
+                <p><span class="label">Hari/Tanggal</span>: {{
+                    \Carbon\Carbon::parse($badanUsaha->jadwal_pemeriksaan)->locale('id')->isoFormat('D MMMM Y') }} </p>
                 <p><span class="label">Waktu</span>: {{ $sppfpk->waktu }} Wita</p>
                 <p><span class="label">Tempat</span>: Kantor BPJS Kesehatan Cabang Gorontalo</p>
                 <p><span class="label">Agenda</span>: Pemeriksaan Kepatuhan</p>
             </div>
         </div>
-        <br>
         <div class="section">
             <div class="form-group" style="font-size: 16px;">
                 <p>Bertemu dengan Petugas Pemeriksa</p>
@@ -170,11 +172,12 @@
             Demikian untuk menjadi perhatian Bapak/Ibu, atas kerjasamanya diucapkan terimakasih.
         </p>
     </div>
-    <br>
     <div class="signature-container" style="text-align: right;">
         <div class="signature">
             <p style="margin-right: 65px;">Kepala Cabang</p>
-            <br><br><br>
+            <br>
+            <p style="margin-right: 110px;">$$</p>
+            <br>
             <p style="margin-right: 55px;">{{ $employee }}</p>
         </div>
         <div class="footer">

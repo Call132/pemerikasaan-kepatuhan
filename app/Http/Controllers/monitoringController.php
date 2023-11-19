@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Exports\monitoring;
 use App\Models\BadanUsaha;
 use App\Models\perencanaan;
+use App\Models\surat;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
@@ -48,9 +50,19 @@ class monitoringController extends Controller
             $badanUsaha = badanUsaha::where('perencanaan_id', $id)->first();
 
 
-            $excelFileName = 'Laporan Monitoring ' . $perencanaan->start_date . '.xlsx';
+            $excelFileName = 'Laporan Monitoring ' . Carbon::parse($perencanaan->start_date)->isoFormat('MMMM Y') . '.xlsx';
             Excel::store(new monitoring($badanUsaha, $perencanaan), 'public/excel/' . $excelFileName);
             $path = 'storage/excel/' . $excelFileName;
+
+
+            $surat = new surat();
+            $surat->badan_usaha_id = $badanUsaha->id;
+            $surat->perencanaan_id = $badanUsaha->perencanaan_id;
+            $surat->tanggal_surat   = Carbon::now();
+            $surat->jenis_surat = 'Laporan Hasil Pemeriksaan Sementara';
+            $surat->nomor_surat = $excelFileName;
+            $surat->file_path = $path;
+            $surat->save();
 
             return redirect($path)->with('success', 'Laporan Monitoring Berhasil dibuat');
         } catch (\Exception $e) {
@@ -60,68 +72,30 @@ class monitoringController extends Controller
 
     public function arsip()
     {
-        $files = Storage::allFiles('public');
 
-        return view('arsip', compact('files'));
+        $surat = Surat::paginate(10);
+
+
+        return view('arsip', compact('surat'));
     }
     public function cariArsip(Request $request)
     {
         try {
-           
+
 
             $searchTerm = $request->input('search');
-            $files = Storage::allFiles('public');
+            $surat = surat::where('file_path', 'like', "%$searchTerm%")->orderBy('created_at', 'desc')->paginate(10);
+
             if ($searchTerm == 'semua') {
-                $filteredFiles = $files;
-            } else {
-                $filteredFiles = $this->filterFilesByName($files, $searchTerm);
+                $surat = surat::orderBy('created_at', 'desc')->paginate(10);
             }
-            if (empty($filteredFiles)) {
+            if ($surat->isEmpty()) {
                 return redirect()->back()->with('error', 'Tidak ada file yang sesuai dengan pencarian.');
             }
 
-            return view('arsip', compact('filteredFiles', 'searchTerm'));
+            return view('arsip', compact('surat', 'searchTerm'));
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat mencari file.');
         }
-    }
-    private function filterFilesByName($files, $searchTerm)
-    {
-        return array_filter($files, function ($file) use ($searchTerm) {
-            return stripos($file, $searchTerm) !== false;
-        });
-    }
-
-    private function filterFilesByFile(array $files, $searchTerm)
-    {
-        // Filter files based on search term
-        $filteredFiles = collect(array_filter($files, function ($file) use ($searchTerm) {
-            $gitIgnoreContents = '';
-            $gitIgnorePath = base_path('.gitignore');
-            if (file_exists($gitIgnorePath)) {
-                $gitIgnoreContents = file_get_contents($gitIgnorePath);
-            }
-
-            // Periksa apakah file seharusnya diabaikan
-            $shouldBeIgnored = false;
-            if ($gitIgnoreContents !== '') {
-                $ignorePatterns = preg_split("/\r\n|\n|\r/", $gitIgnoreContents);
-                foreach ($ignorePatterns as $pattern) {
-                    // Periksa apakah file cocok dengan pola di .gitignore
-                    if (Str::is($pattern, $file)) {
-                        $shouldBeIgnored = true;
-                        break;
-                    }
-                }
-            }
-
-            // Hanya termasuk file yang tidak seharusnya diabaikan dan sesuai dengan kriteria pencarian
-            return !$shouldBeIgnored && strpos($file, $searchTerm) !== false;
-        }));
-
-        // Mengonversi hasil array ke dalam instance Collection
-        $filteredFiles = new Collection($filteredFiles);
-
-        return $filteredFiles;
     }
 }

@@ -15,9 +15,14 @@ class sppk extends Model
         'tanggal_surat',
         'waktu',
         'surat_perintah_tugas_id',
-        'badan_usaha_id',   
+        'badan_usaha_id',
     ];
 
+
+    public function perencanaan()
+    {
+        return $this->belongsTo(perencanaan::class, 'perencanaan_id');
+    }
     public function spt()
     {
         return $this->belongsTo(SuratPerintahTugas::class);

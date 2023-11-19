@@ -63,7 +63,7 @@
                     <form method="POST" action="{{ route('pengiriman-surat.cari') }}">
                         @csrf
                         <div class="form-group">
-                            
+
 
                             {{-- @dd($perencanaan) --}}
                             <select name="periode_pemeriksaan" id="periode_pemeriksaan">
@@ -85,7 +85,7 @@
                                 </option>
                                 <option value="final" {{ old('kategori')=='final' ? 'selected' : '' }}>
                                     Final</option>
-                                <!-- Tambahkan opsi kategori lain sesuai kebutuhan -->
+
                             </select>
                             <button type="submit">Cari <i class="fa-solid fa-magnifying-glass"></i></button>
 
@@ -111,12 +111,14 @@
                                 <td>{{ $bu->nama_badan_usaha }}</td>
                                 <td>{{ $bu->jenis_pemeriksaan }}</td>
                                 <td>
-                                    @if ($bu->jenis_pemeriksaan == 'Lapangan' && request('kategori') != 'final')
-                                    <a href="{{ route('sppl', ['id' => $bu->id]) }}">
+                                    @if ($bu->jenis_pemeriksaan == 'Kantor' && request('kategori') == 'final')
+                                    <a href="{{ route('sppfpk', ['id' => $bu->id]) }}">
                                         <i class="fa-solid fa-file-export"></i>
                                     </a>
-                                    @elseif ($bu->jenis_pemeriksaan == 'Kantor' && request('kategori') == 'final')
-                                    <a href="{{ route('sppfpk', ['id' => $bu->id]) }}">
+                                    
+                                    @elseif ($bu->jenis_pemeriksaan == 'Lapangan')
+                                   
+                                    <a href="{{ route('sppl', ['id' => $bu->id]) }}">
                                         <i class="fa-solid fa-file-export"></i>
                                     </a>
                                     @elseif ($bu->jenis_pemeriksaan == 'Kantor')
@@ -135,9 +137,6 @@
                     @elseif (!request()->has('periode_pemeriksaan'))
                     <p>Tidak ada hasil yang sesuai dengan kategori.</p>
                     @endif
-
-
-
                 </div>
             </div>
         </div>

@@ -9,6 +9,8 @@ use Maatwebsite\Excel\Facades\Excel;
 
 use App\Http\Controllers\HomeController;
 use App\Models\perencanaan;
+use App\Models\surat;
+use Carbon\Carbon;
 
 class BadanUsahaController extends Controller
 {
@@ -29,9 +31,18 @@ class BadanUsahaController extends Controller
                 return redirect()->intended('/')->with('error', 'Perencanaan belum diapprove.');
             }
 
-            $excelFileName = 'perencanaan ' . $latestPerencanaan->start_date . ' - ' . $latestPerencanaan->end_date . '.xlsx';
+            $excelFileName = 'Perencanaan Pemeriksaan ' . Carbon::parse($latestPerencanaan->start_date)->isoFormat('MMMM YYYY') . ' - ' . Carbon::parse($latestPerencanaan->end_date)->isoFormat('MMMM YYYY') . '.xlsx';
             Excel::store(new BadanUsahaExport($tanggalPerencanaan, $endDate), 'public/excel/' . $excelFileName);
             $pdfPath = 'storage/excel/' . $excelFileName;
+
+            $surat = new surat();
+            $surat->nomor_surat = $excelFileName;
+            $surat->perencanaan_id = $latestPerencanaan->id;
+            $surat->badan_usaha_id = $latestPerencanaan->id;
+            $surat->jenis_surat = 'Perencanaan';
+            $surat->tanggal_surat = \carbon\Carbon::now();
+            $surat->file_path = $pdfPath;
+            $surat->save();
 
             return redirect($pdfPath)->with('success', 'Perencanaan exported successfully.');
         } catch (\Exception $e) {

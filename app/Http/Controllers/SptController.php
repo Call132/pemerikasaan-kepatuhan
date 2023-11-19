@@ -7,6 +7,7 @@ use App\Models\employee_roles;
 use App\Models\extPendamping;
 use App\Models\Pendamping;
 use App\Models\perencanaan;
+use App\Models\surat;
 use App\Models\SuratPerintahTugas;
 use App\Models\TimPemeriksa;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -62,22 +63,22 @@ class SptController extends Controller
 
             $perencanaan = perencanaan::where('status', 'approved')->latest()->first();
 
-        if (!$perencanaan) {
-            return redirect()->back()->with('error', 'Perencanaan Belum Di Approve');
-        }
-        
-        $badanUsahaDiajukan = BadanUsaha::where('perencanaan_id', $perencanaan->id)->get();
+            if (!$perencanaan) {
+                return redirect()->back()->with('error', 'Perencanaan Belum Di Approve');
+            }
 
-// Ambil tanggal pemeriksaan badan usaha pertama dan terakhir
-$tanggalPemeriksaanPertama = $badanUsahaDiajukan->min('jadwal_pemeriksaan');
-$tanggalPemeriksaanTerakhir = $badanUsahaDiajukan->max('jadwal_pemeriksaan');
+            $badanUsahaDiajukan = BadanUsaha::where('perencanaan_id', $perencanaan->id)->get();
 
-// Gunakan tanggal pemeriksaan badan usaha pertama dan terakhir untuk menentukan rentang
-$tanggalMulai = Carbon::parse($tanggalPemeriksaanPertama)->translatedFormat('d F Y');
-$tanggalAkhir = Carbon::parse($tanggalPemeriksaanTerakhir)->translatedFormat('d F Y');
-$tanggalPemeriksaan = $tanggalMulai . " - " . $tanggalAkhir;
+            // Ambil tanggal pemeriksaan badan usaha pertama dan terakhir
+            $tanggalPemeriksaanPertama = $badanUsahaDiajukan->min('jadwal_pemeriksaan');
+            $tanggalPemeriksaanTerakhir = $badanUsahaDiajukan->max('jadwal_pemeriksaan');
 
-$dateNow = Carbon::now()->translatedFormat('d F Y', 'id');
+            // Gunakan tanggal pemeriksaan badan usaha pertama dan terakhir untuk menentukan rentang
+            $tanggalMulai = Carbon::parse($tanggalPemeriksaanPertama)->translatedFormat('d F Y');
+            $tanggalAkhir = Carbon::parse($tanggalPemeriksaanTerakhir)->translatedFormat('d F Y');
+            $tanggalPemeriksaan = $tanggalMulai . " - " . $tanggalAkhir;
+
+            $dateNow = Carbon::now()->translatedFormat('d F Y', 'id');
 
 
             $badanUsahaDiajukan->transform(function ($item) {
@@ -124,12 +125,22 @@ $dateNow = Carbon::now()->translatedFormat('d F Y', 'id');
 
             $pdf = Pdf::loadView('spt-preview', compact('spt', 'badanUsahaDiajukan', 'pendamping', 'employee', 'tanggalPemeriksaan', 'dateNow'));
 
-            $pdfFileName = 'Surat Perintah Tugas ' . str_replace('/', '-', $spt->nomor_spt) . '_' . $spt->created_at->format('Ymd_His') . '.pdf';
+            $pdfFileName = 'Surat Perintah Tugas ' . str_replace('/', ' ', $spt->nomor_spt) . '  ' . Carbon::parse($spt->tanggal_spt)->isoFormat('MMMM Y') . '.pdf';
 
             // Simpan file PDF ke direktori storage/app/public/spt
             $pdf->save(storage_path('app/public/pdf/' . $pdfFileName));
 
+
             $pdfPath = 'storage/pdf/' . $pdfFileName;
+            $surat = new surat();
+            $surat->perencanaan_id = $perencanaan->id;
+            $surat->jenis_surat = 'Surat Perintah Tugas';
+            $surat->nomor_surat = $request->input('nomor_spt');
+            $surat->badan_usaha_id = $badanUsahaDiajukan->first()->id;
+            $surat->tanggal_surat = $request->input('tanggal_spt');
+            $surat->file_path = $pdfPath; 
+        
+            $surat->save();
             return redirect($pdfPath)->with('success', 'Surat Perintah Tugas Berhasil Dibuat');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat membuat surat perintah tugas: ' . $e->getMessage());

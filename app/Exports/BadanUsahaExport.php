@@ -37,6 +37,7 @@ class BadanUsahaExport implements FromCollection, WithHeadings, ShouldAutoSize, 
             unset($item['created_at']);
             unset($item['updated_at']);
             unset($item['perencanaan_id']);
+            unset($item['hasil_pemeriksaan']);
 
             return $item;
         });

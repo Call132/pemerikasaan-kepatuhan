@@ -10,6 +10,7 @@ use App\Models\lhpa as ModelsLhpa;
 use App\Models\lhps;
 use App\Models\perencanaan;
 use App\Models\sphp;
+use App\Models\surat;
 use App\Models\SuratPerintahTugas;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -89,6 +90,14 @@ class laporanPemeriksaanController extends Controller
             $pdfFileName = 'Surat Pemberitahuan Hasil Pemeriksaan ' . $badanUsaha->nama_badan_usaha . '_' . str_replace('/', '_', $sphp->no_sphp) . '.pdf';
             $pdf->save(storage_path('app/public/pdf/' . $pdfFileName));
             $pdfPath = 'storage/pdf/' . $pdfFileName;
+            $surat = new surat();
+            $surat->badan_usaha_id = $badanUsaha->id;
+            $surat->perencanaan_id = $badanUsaha->perencanaan_id;
+            $surat->tanggal_surat   = $sphp->tgl_sphp;
+            $surat->jenis_surat = 'Laporan Hasil Pemeriksaan Sementara';
+            $surat->nomor_surat = $sphp->no_sphp;
+            $surat->file_path = $pdfPath;
+            $surat->save();
 
             return redirect($pdfPath)->with('success', 'Surat Pemberitahuan Hasil Pemeriksaan Berhasil Dibuat');
         } catch (\Throwable $e) {
@@ -209,9 +218,17 @@ class laporanPemeriksaanController extends Controller
 
             $lhpa->save();
 
-            $excelFileName = 'Laporan Hasil Pemeriksaan Akhir ' . $badanUsaha->nama_badan_usaha . '.xlsx';
+            $excelFileName = 'Laporan Hasil Pemeriksaan Akhir ' . $badanUsaha->nama_badan_usaha . ' ' . Carbon::parse($lhpa->tgl_lhpa)->isoFormat('MMMM Y') . '.xlsx';
             Excel::store(new lhpa($badanUsaha, $spt, $lhpa), 'public/excel/' . $excelFileName);
             $pdfPath = 'storage/excel/' . $excelFileName;
+            $surat = new surat();
+            $surat->badan_usaha_id = $badanUsaha->id;
+            $surat->perencanaan_id = $badanUsaha->perencanaan_id;
+            $surat->tanggal_surat   = $lhpa->tgl_lhpa;
+            $surat->jenis_surat = 'Laporan Hasil Pemeriksaan Sementara';
+            $surat->nomor_surat = $excelFileName;
+            $surat->file_path = $pdfPath;
+            $surat->save();
             return redirect($pdfPath)->with('success', 'Laporan Hasil Pemeriksaan Akhir Berhasil Dibuat');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Data Gagal Disimpan');

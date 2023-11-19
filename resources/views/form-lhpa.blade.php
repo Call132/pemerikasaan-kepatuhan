@@ -58,6 +58,7 @@
                                     <input value="{{ $badanUsaha->jumlah_bulan_menunggak }}" class="form-control"
                                         type="text" name="bulan_menunggak" id="bulan_menunggak">
                                 </div>
+                                
                                 <div class="form-group">
                                     <label for="jumlah Pekerja">Jumlah Pekerja Terdaftar</label>
                                     <input value="{{ $lhps->jumlah_pekerja }}" class="form-control" type="text"

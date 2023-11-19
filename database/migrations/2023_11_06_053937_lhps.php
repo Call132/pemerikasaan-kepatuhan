@@ -23,7 +23,6 @@ return new class extends Migration
             $table->string('last_year_nominal');
             $table->string('this_year_bulan');
             $table->string('this_year_nominal');
-            $table->text('image')->nullable();
             $table->foreign('badan_usaha_id')->references('id')->on('badan_usaha')->onDelete('cascade');
             $table->timestamps();
         });

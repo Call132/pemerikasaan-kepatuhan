@@ -45,7 +45,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Kertas Kerja Pemeriksaan</h1>
+                <h1>Pelaksanaan Pemeriksaan</h1>
             </div>
         </section>
         <div class="container">
@@ -119,15 +119,15 @@
                                 <td>
                                     @if ($bu->jenis_pemeriksaan == 'Lapangan')
                                     <a href="{{ route('kertas-kerja.form', ['id' => $bu->id]) }}">
-                                        <i class="fa-solid fa-file-export }}"></i> KKP</a>
+                                        <i class="fa-solid fa-file-export }}"></i> Kertas Kerja</a>
                                     <a href="{{ route('bapket.form', ['id' => $bu->id]) }}"><i
-                                            class="fa-solid fa-file-export"></i>BAPKET</a>
+                                            class="fa-solid fa-file-export"></i>Berita Acara Pemeriksaan</a>
                                     @elseif ($bu->jenis_pemeriksaan == 'Kantor')
                                     <a href="{{ route('kertas-kerja.form', ['id' => $bu->id]) }}">
-                                        <i class="fa-solid fa-file-export"></i>KKP
+                                        <i class="fa-solid fa-file-export"></i>Kertas Kerja
                                     </a>
                                     <a href="{{ route('bapket.form', ['id' => $bu->id]) }}">
-                                        <i class="fa-solid fa-file-export"></i>BAPKET
+                                        <i class="fa-solid fa-file-export"></i>Berita Acara Pemeriksaan
                                     </a>
                                     @endif
                                 </td>

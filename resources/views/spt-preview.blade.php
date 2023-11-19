@@ -152,17 +152,17 @@
             <div class="pendamping">
                 <p>Petugas Pendamping</p>
 
-                
+
                 @foreach ($pendamping as $pendamping)
                 <p><span class="label">Nama</span>: {{ $pendamping->nama }}</p>
                 <p><span class="label">NPP</span>: {{ $pendamping->npp }}</p>
                 @endforeach
 
-                
-                
+
+
                 <p><span class="label">Nama</span>: {{ $spt->extPendamping->nama }}</p>
                 <p><span class="label">Jabatan</span>: {{ $spt->extPendamping->jabatan }}</p>
-                
+
             </div>
 
             <div class="">
@@ -178,12 +178,13 @@
                 <div class="signature">
                     <div style="float: right; text-align: right;">
                         <p style="margin-right: 65px;">Kepala Cabang</p>
-                        <br><br><br>
+                        <br>
+                        <p style="margin-left: 40px;">$$</p>
+                        <br>
                         <p style="margin-right: 46px;">{{ $employee }}</p>
                     </div>
                 </div>
             </div>
-
             <div class="footer" style="clear: both;">
                 <p>RL/ta/PP.01.02</p>
             </div>

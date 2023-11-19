@@ -6,6 +6,7 @@ use App\Models\BadanUsaha;
 use App\Models\employee_roles;
 use App\Models\sppfpk;
 use App\Models\sppk;
+use App\Models\surat;
 use App\Models\SuratPerintahTugas;
 use App\Models\TimPemeriksa;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -61,6 +62,16 @@ class SPPFPKController extends Controller
             $pdfFileName = 'Surat Perintah Pemeriksaan Final Kantor ' . str_replace('/', '_', $sppfpk->nomor_sppfpk) . '.pdf';
             $pdf->save(storage_path('app/public/pdf/' . $pdfFileName));
             $pdfPath = 'storage/pdf/' . $pdfFileName;
+
+            $surat = new surat();
+            $surat->nomor_surat = $sppfpk->nomor_sppfpk;
+            $surat->jenis_surat = 'Surat Perintah Pemeriksaan Final Kantor';
+            $surat->tanggal_surat = $sppfpk->tanggal_surat;
+            $surat->perencanaan_id = $badanUsaha->perencanaan_id;
+            $surat->badan_usaha_id = $sppfpk->badan_usaha_id;
+            $surat->file_path = $pdfPath;
+            $surat->save();
+
             return redirect($pdfPath)->with('success', 'Surat Perintah Pemeriksaan Final Kantor Berhasil Dibuat');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Nomor Surat Perintah Pemeriksaan Final Kantor Sudah Ada');

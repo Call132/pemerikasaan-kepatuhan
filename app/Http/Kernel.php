@@ -24,7 +24,7 @@ class Kernel extends HttpKernel
     ];
     protected $routeMiddleware = [
         // ...
-        'checkStoreSptCall' => \App\Http\Middleware\CheckStoreSptCall::class,
+        
     ];
 
     /**

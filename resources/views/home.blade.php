@@ -180,7 +180,7 @@
                             <div class="table-responsive mx-auto">
                                 <table class="table table-striped">
                                     <tr>
-                                        <td colspan="11">Belum ada data perencanaan pemeriksaan!! <a
+                                        <td colspan="11">Belum ada data perencanaan pemeriksaan! <a
                                                 href="{{ url('perencanaan') }}" class="btn btn-primary">Buat
                                                 Perencanaan</a>
                                         </td>

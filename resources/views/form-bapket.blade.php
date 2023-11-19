@@ -13,7 +13,7 @@
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1> Pelaksanaan Pemeriksaan </h1>
+            <h1> Form Berita Acara Pemeriksaan </h1>
         </div>
     </section>
     <div class="container">

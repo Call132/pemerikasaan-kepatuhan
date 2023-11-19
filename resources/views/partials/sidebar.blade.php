@@ -39,27 +39,27 @@
             @if (Auth::user()->hasRole('admin'))
             <li class="nav-item">
                 <a class="nav-link" style="line-height: 1;" href="{{ route('admin.dashboard') }}"><i
-                        class="fas fa-fire"></i><span>Dashboard</span></a>
+                        class="fa fa-fire"></i><span>Dashboard</span></a>
             </li>
             <li class="nav-item ">
                 <a href="{{ route('manajemen-user') }}" class="nav-link" style="line-height: 1;"><i
-                        class="fas fa-users-gear"></i><span>Manajemen Pengguna</span></a>
+                        class="fa fa-users-gear"></i><span>Manajemen Pengguna</span></a>
             </li>
             <li class="nav-item ">
                 <a href="{{ url('/monitoring') }}" class="nav-link" style="line-height: 1;"><i
-                        class="fas fa-chart-simple"></i><span> Monitoring</span>
+                        class="fa fa-chart-simple"></i><span> Monitoring</span>
                 </a>
             </li>
             <li class="nav-item ">
                 <a href="{{ url('/arsip') }}" class="nav-link" style="line-height: 1;"><i
-                        class="fas fa-box-archive"></i><span>
+                        class="fa fa-box-archive"></i><span>
                         Arsip</span>
                 </a>
             </li>
             @else
             <li class="nav-item dropdown">
                 <a href="{{ url('/') }}" class="nav-link has-dropdown" style="line-height: 1;">
-                    <i class="fas fa-tachometer-alt"></i><span>Perencanaan Pemeriksaan</span>
+                    <i class="fa fa-tachometer-alt"></i><span>Perencanaan Pemeriksaan</span>
                 </a>
                 <ul class="dropdown-menu">
                     <li class='{{ Request::is(' perencanaan') ? 'active' : '' }}'>
@@ -78,11 +78,11 @@
             </li>
             <li class="nav-item ">
                 <a href="{{ url('/kertas-kerja') }}" class="nav-link" style="line-height: 1;">
-                    <i class="fas fa-file-pen"></i><span>Pelaksanaan Pemeriksaan</span>
+                    <i class="fa fa-file-pen"></i><span>Pelaksanaan Pemeriksaan</span>
                 </a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link has-dropdown" style="line-height: 1;"><i class="fas fa-file-lines"></i>
+                <a class="nav-link has-dropdown" style="line-height: 1;"><i class="fa fa-file-lines"></i>
                     <span>Laporan Pemeriksaan</span></a>
                 <ul class="dropdown-menu">
                     <li class='{{ Request::is(' ') ? ' active' : '' }}'>
@@ -98,12 +98,12 @@
             </li>
             <li class="nav-item ">
                 <a href="{{ url('/monitoring') }}" class="nav-link" style="line-height: 1;"><i
-                        class="fas fa-chart-simple"></i><span> Monitoring</span>
+                        class="fa fa-chart-simple"></i><span> Monitoring</span>
                 </a>
             </li>
             <li class="nav-item ">
                 <a href="{{ url('/arsip') }}" class="nav-link" style="line-height: 1;"><i
-                        class="fas fa-box-archive"></i><span>
+                        class="fa fa-box-archive"></i><span>
                         Arsip</span>
                 </a>
             </li>

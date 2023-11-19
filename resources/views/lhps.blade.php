@@ -124,18 +124,18 @@ iv class="row">
                                 <a href="{{ route('lhps.form', ['id' => $bu->id]) }}">
                                     <i class="fa-solid fa-file-export }}"></i> LHPS
                                 </a>
-                                <a href="{{ route('dokumentasi.download', ['id' => $bu->id]) }}">
+                                {{-- <a href="{{ route('dokumentasi.download', ['id' => $bu->id]) }}">
                                     <i class="fa-solid fa-camera"></i>
-                                </a>
+                                </a> --}}
 
 
                                 @elseif ($bu->jenis_pemeriksaan == 'Kantor')
                                 <a href="{{ route('lhps.form', ['id' => $bu->id]) }}">
                                     <i class="fa-solid fa-file-export"></i>LHPS
                                 </a>
-                                <a href="{{ route('dokumentasi.download', ['id' => $bu->id]) }}">
+                                {{-- <a href="{{ route('dokumentasi.download', ['id' => $bu->id]) }}">
                                     <i class="fa-solid fa-camera"></i>
-                                </a>
+                                </a> --}}
                                 @endif
                             </td>
                         </tr>

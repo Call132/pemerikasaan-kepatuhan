@@ -1,6 +1,6 @@
 @extends('layout.main')
 
-@section('title', 'Laporan Hasil Pemeriksaan Sementara')
+@section('title', 'Surat Pemberitahuan Hasil Pemeriksaan')
 
 @push('style')
 <!-- CSS Libraries -->
@@ -13,7 +13,7 @@
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1> Laporan Hasil Pemeriksaan {{ $badanUsaha->nama_badan_usaha }}</h1>
+            <h1> Surat Pemberitahuan Hasil Pemeriksaan {{ $badanUsaha->nama_badan_usaha }}</h1>
         </div>
     </section>
     <div class="container">

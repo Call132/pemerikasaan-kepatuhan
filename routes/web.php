@@ -48,6 +48,8 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::post('/admin/reject/{id}', [AdminController::class, 'reject'])->name('admin.reject');
 
     Route::get('/admin/manajemen-user', [ManajemenUserController::class, 'index'])->name('manajemen-user');
+    Route::get('/user/create', [ManajemenUserController::class, 'create'])->name('user.create');
+    Route::post('/user', [ManajemenUserController::class, 'store'])->name('user.store');
     Route::get('/user/{id}/edit', [ManajemenUserController::class, 'edit'])->name('user.edit');
     Route::put('/user/{id}', [ManajemenUserController::class, 'update'])->name('user.update');
     Route::delete('/user/{id}', [ManajemenUserController::class, 'destroy'])->name('user.destroy');
@@ -67,11 +69,7 @@ Route::get('/register', function () {
 });
 Route::post('/register', [AuthRegisterController::class, 'register'])->name('user.register');
 
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
-Route::get('/profile-admin', [ProfileadminController::class, 'index'])->name('profileadmin');
-Route::post('/profile-admin/update', [ProfileadminController::class, 'update'])->name('profileadmin.update');
 
 
 
@@ -88,6 +86,11 @@ Route::middleware(['auth', 'verified', 'role:user|admin'])->group(function () {
 
     Route::get('/arsip', [monitoringController::class, 'arsip'])->name('monitoring.arsip');
     Route::match(['get', 'post'], '/cari', [monitoringController::class, 'cariArsip'])->name('arsip.cari');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::get('/profile-admin', [ProfileadminController::class, 'index'])->name('profileadmin');
+    Route::post('/profile-admin/update', [ProfileadminController::class, 'update'])->name('profileadmin.update');
 
     //setting
     /*Route::get('setting', function () {
@@ -109,7 +112,7 @@ Route::middleware(['auth', 'verified', 'role:user|admin'])->group(function () {
     Route::post('/pengiriman-surat', [pengirimanController::class, 'cari'])->name('pengiriman-surat.cari');
 
     Route::get('/sppk/{id}', [SPPKController::class, 'create'])->name('sppk');
-    Route::post('/sppk/save', [SPPKController::class, 'store'])->name('sppk.store')->middleware('checkStoreSptCall');
+    Route::post('/sppk/save', [SPPKController::class, 'store'])->name('sppk.store');
 
     Route::get('/sppl/{id}', [SPPLController::class, 'create'])->name('sppl');
     Route::post('/sppl/save', [SPPLController::class, 'store'])->name('sppl.store');

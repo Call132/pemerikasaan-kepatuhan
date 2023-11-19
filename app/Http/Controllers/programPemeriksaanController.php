@@ -7,6 +7,7 @@ use App\Models\BadanUsaha;
 use App\Models\employee_roles;
 use App\Models\perencanaan;
 use App\Models\programPemeriksaan as ModelsProgramPemeriksaan;
+use App\Models\surat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -58,9 +59,19 @@ class programPemeriksaanController extends Controller
 
         $programPemeriksaan->badanUsaha->save();
         $programPemeriksaan->save();
-        $excelFileName = 'Program Realisasi Pemeriksaan ' .  $badanUsaha->npwp . '.xlsx';
+        $excelFileName = 'Program Realisasi Pemeriksaan ' .  $badanUsaha->nama_badan_usaha . ' ' . Carbon::parse($programPemeriksaan->created_at)->isoFormat('MMMM Y') . '.xlsx';
         Excel::store(new ProgramPemeriksaan($badanUsaha, $programPemeriksaan), 'public/excel/'. $excelFileName);
         $path = 'storage/excel/' . $excelFileName;
+
+        $surat = new surat();
+        $surat->perencanaan_id = $badanUsaha->perencanaan_id;
+        $surat->badan_usaha_id = $badanUsaha->id;
+        $surat->nomor_surat = $excelFileName;
+        $surat->jenis_surat = 'Program Realisasi Pemeriksaan';
+        $surat->tanggal_surat= $programPemeriksaan->created_at;
+        $surat->file_path = $path;
+        $surat->save();
+
 
 
 

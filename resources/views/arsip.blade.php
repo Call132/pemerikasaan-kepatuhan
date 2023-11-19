@@ -49,8 +49,7 @@
         @if (session('error'))
         <div class="alert alert-danger alert-dismissible show fade">
             <div class="alert-body">
-                <button class="close"
-                    data-dismiss="alert">
+                <button class="close" data-dismiss="alert">
                     <span>&times;</span>
                 </button>
                 {{ session('error') }}
@@ -63,30 +62,48 @@
                     @csrf
                     <div class="form-group">
                         <label for="extension">Filter berdasarkan nama file:</label>
-                        <input type="text" name="search" id="search" placeholder="Cari">
+                        <select name="search" id="search" placeholder="Cari">
+                            <option value="Perencanaan">Perencanaan</option>
+                            <option value="Surat Perintah Tugas">Surat Perintah Tugas</option>
+                            <option value="Program Realisasi Pemeriksaan">Program Realisasi Pemeriksaan</option>
+                            <option value="Kertas Kerja Pemeriksaan">Kertas Kerja Pemeriksaan</option>
+                            <option value="Berita Acara Pemeriksaan">Berita Acara Pemeriksaan</option>
+                            <option value="Laporan Hasil Pemeriksaan Sementara">Laporan Hasil Pemeriksaan Sementara
+                            </option>
+                            <option value="Laporan Hasil Pemeriksaan Akhir">Laporan Hasil Pemeriksaan Akhir</option>
+                            <option value="Surat Pemberitahuan Hasil Pemeriksaan ">Surat Pemberitahuan Hasil Pemeriksaan
+                            </option>
+                        </select>
                         <button type="submit">Cari <i class="fa-solid fa-magnifying-glass"></i></button>
                         <button type="submit" name="search" value="semua">Tampilkan Semua</button>
                     </div>
                 </form>
 
-                @if (@isset($filteredFiles))
+                @if (@isset($surat))
 
                 <table class="table table-striped-columns mb-0">
                     <thead>
                         <tr>
                             <th>No</th>
                             <th>File</th>
+                            <th>Jenis Surat</th>
+                            <th>Tanggal Surat</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="text-center">
-                        @foreach ($filteredFiles as $directory)
+
+                        @foreach ($surat as $directory)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ basename($directory) }}</td>
+                            <td>{{ $directory->nomor_surat }}</td>
+                            <td>{{ $directory->jenis_surat }}</td>
+                            <td>{{ \Carbon\Carbon::parse($directory->created_at)->isoFormat('D MMMM Y') }}</td>
+
                             <td>
-                                @if (Storage::exists($directory))
-                                <a href="{{ Storage::url($directory) }}" download><i
+
+                                @if (url($directory->file_path))
+                                <a href="{{ url($directory->file_path) }}" download><i
                                         class="fa-solid fa-file-arrow-down"></i><span> Download</span></a>
                                 @else
                                 File not found
@@ -97,7 +114,29 @@
                     </tbody>
                     <tfoot>
                     </tfoot>
+                    
                 </table>
+                <div class="card-body">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            @if ($surat->currentPage() > 1)
+                            <li class="page-item"><a class="page-link"
+                                    href="{{ $surat->previousPageUrl() }}">Previous</a></li>
+                            @endif
+
+                            @for ($i = 1; $i <= $surat->lastPage(); $i++)
+                                <li class="page-item {{ ($i == $surat->currentPage()) ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $surat->url($i) }}">{{ $i }}</a>
+                                </li>
+                                @endfor
+
+                                @if ($surat->currentPage() < $surat->lastPage())
+                                    <li class="page-item"><a class="page-link"
+                                            href="{{ $surat->nextPageUrl() }}">Next</a></li>
+                                    @endif
+                        </ul>
+                    </nav>
+                </div>
                 @endif
 
             </div>

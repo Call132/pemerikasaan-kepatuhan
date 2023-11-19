@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BadanUsaha;
 use App\Models\employee_roles;
 use App\Models\sppl;
+use App\Models\surat;
 use App\Models\SuratPerintahTugas;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -47,6 +48,15 @@ class SPPLController extends Controller
             $pdfFileName = 'Surat Perintah Pemeriksaan Lapangan ' . str_replace('/', '_', $sppl->nomor_sppl) . '.pdf';
             $pdf->save(storage_path('app/public/pdf/' . $pdfFileName));
             $pdfPath = 'storage/pdf/' . $pdfFileName;
+
+            $surat = new surat();
+            $surat->nomor_surat = $sppl->nomor_sppl;
+            $surat->perencanaan_id = $badanUsaha->perencanaan_id;
+            $surat->badan_usaha_id = $sppl->badan_usaha_id;
+            $surat->jenis_surat = 'Surat Perintah Pemeriksaan Lapangan';
+            $surat->tanggal_surat = $tanggal_surat;
+            $surat->file_path = $pdfPath;
+            $surat->save();
             return redirect($pdfPath)->with('success', 'Surat Perintah Pemeriksaan Lapangan Berhasil');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Nomor Surat Perintah Pemeriksaan Lapangan sudah ada');

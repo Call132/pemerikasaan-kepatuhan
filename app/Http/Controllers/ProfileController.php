@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -17,25 +18,31 @@ class ProfileController extends Controller
     public function update(Request $request)
     {
         try {
+            $user = Auth::user();
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255',
                 'phone' => 'nullable|string|max:20',
+                'password_old' => 'nullable|string|min:8',
+                'password' => 'nullable|string|min:8|confirmed',
             ]);
 
-            if ($validator->fails()) {
-                return redirect()->back()->withErrors($validator)->withInput();
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+            ]);
+
+            // Update kata sandi jika ada
+            if ($request->filled('password_old') && Hash::check($request->password_old, $user->password)) {
+                $user->update([
+                    'password' => Hash::make($request->password),
+                ]);
+                return redirect()->route('admin.dashboard')->with('success', 'Profil dan password berhasil diperbarui.');
+            } elseif ($request->filled('password_old')) {
+                return redirect()->back()->with('error', 'Password lama tidak sesuai.');
             }
-
-            $user = auth::User();
-            $user->name = $request->input('name');
-            $user->email = $request->input('email');
-            $user->phone = $request->input('phone');
-
-            $user->save();
-
-
-            return redirect()->back()->with('success', 'Profil berhasil diperbarui.');
+           
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }

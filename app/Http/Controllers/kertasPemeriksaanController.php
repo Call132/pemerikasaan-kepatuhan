@@ -7,6 +7,7 @@ use App\Models\BadanUsaha;
 use App\Models\bapket;
 use App\Models\kertasKerja;
 use App\Models\perencanaan;
+use App\Models\surat;
 use App\Models\SuratPerintahTugas;
 use App\Models\TimPemeriksa;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -85,6 +86,7 @@ class kertasPemeriksaanController extends Controller
             $kertasKerja = new kertasKerja();
             $id = $request->input('bu_id');
             $badanUsaha = BadanUsaha::findOrFail($id);
+            $perencanaanId = $badanUsaha->perencanaan_id;
             $kertasKerja->badan_usaha_id = $request->input('bu_id');
             $kertasKerja->badanUsaha->npwp = $request->input('npwp');
             $kertasKerja->uraian = $request->input('uraian');
@@ -98,14 +100,27 @@ class kertasPemeriksaanController extends Controller
             $kertasKerja->badanUsaha->jumlah_bulan_menunggak = $request->input('jumlah_bulan_menunggak');
             $kertasKerja->badanUsaha->save();
             $kertasKerja->save();
-            $excelFileName = 'Kertas Kerja Pemeriksaan ' . $badanUsaha->nama_badan_usaha . '.xlsx';
+            $excelFileName = 'Kertas Kerja Pemeriksaan ' . ' ' . $badanUsaha->nama_badan_usaha . '' . Carbon::parse($kertasKerja->created_at)->isoFormat('MMMM Y')  .'.xlsx';
            
             Excel::store(new KertasPemeriksaan($badanUsaha, $pemeriksa, $kertasKerja),'public/excel/' . $excelFileName);
             $excelPath = 'storage/excel/' . $excelFileName;
 
+            
+            $surat = new surat();
+            $surat->badan_usaha_id = $badanUsaha->id;
+            $surat->perencanaan_id = $perencanaanId;
+            $surat->tanggal_surat   = Carbon::now();
+            $surat->jenis_surat = 'Kertas Kerja Pemeriksaan';
+            $surat->nomor_surat = $excelFileName;
+            $surat->file_path = $excelPath;
+           
+            $surat->save();
+
+
 
             return redirect($excelPath)->with('success', 'Kertas Kerja Pemeriksaan Berhasil Dibuat');
         } catch (\Exception $e) {
+            return dd($e);
             return redirect()->back()->with('error', 'Data Tidak Valid');
         }
     }

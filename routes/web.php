@@ -63,6 +63,7 @@ Route::get('/login', function () {
 })->name('login');
 Route::post('/login', [AuthLoginController::class, 'login'])->name('user.login');
 Route::post('/logout', [AuthLoginController::class, 'logout'])->middleware('auth')->name('logout');
+Route::get('/logout', [AuthLoginController::class, 'logout'])->middleware('auth');
 
 Route::get('/register', function () {
     return view('register', ['type_menu' => 'auth']);

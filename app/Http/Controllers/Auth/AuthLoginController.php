@@ -21,7 +21,7 @@ class AuthLoginController extends Controller
             $request->session()->regenerate();
 
             Auth::attempt($credentials);
-            // Cek apakah pengguna adalah admin
+           
             if (Auth::user()->hasRole('admin')) {
 
                 return redirect()->route('admin.dashboard');
@@ -31,7 +31,7 @@ class AuthLoginController extends Controller
             }
             return redirect('/login')->with('error', 'Email atau kata sandi salah.');
         } catch (\Exception $e) {
-            return dd($e);
+            return redirect('/login')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 

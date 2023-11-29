@@ -37,16 +37,16 @@
             <form method="POST" action="{{ route('user.login') }}" class="needs-validation" novalidate="">
                 @csrf
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input id="email" type="email"  class="form-control @error('email') is-invalid 
+                    <label for="name">Username</label>
+                    <input id="name" type="text"  class="form-control @error('name') is-invalid 
                         
-                    @enderror" name="email" tabindex="1" required
-                        autofocus value="{{ old('email') }}">
-                    @error('email')
+                    @enderror" name="name" tabindex="1" required
+                        autofocus value="{{ old('name') }}">
+                    @error('name')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                     <div class="invalid-feedback">
-                        Please fill in your email
+                        Please fill in your Username
                     </div>
                 </div>
 
@@ -79,9 +79,6 @@
 
 
         </div>
-    </div>
-    <div class="text-muted mt-5 text-center">
-        Don't have an account? <a href="{{ url('register') }}">Create One</a>
     </div>
 @endsection
 

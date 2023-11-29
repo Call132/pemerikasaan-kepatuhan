@@ -72,8 +72,9 @@
                     <label for="role" class="col-sm-3 col-form-label">Role</label>
                     <div class="col-sm-9">
                         <select class="form-control" id="role" name="role" required>
-                            <option value="admin" @if ($user->role_name == 'admin') selected @endif>Admin</option>
-                            <option value="user" @if ($user->role_name == 'user') selected @endif>User</option>
+                            <option value="admin" @if ($user->role_name == 'user entry') selected @endif>User Entry</option>
+                            <option value="user" @if ($user->role_name == 'user approval') selected @endif>User Approval</option>
+                            
                         </select>
                     </div>
                 </div>

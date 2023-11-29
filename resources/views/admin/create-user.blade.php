@@ -78,8 +78,8 @@
                     <label for="role" class="col-sm-3 col-form-label">Role</label>
                     <div class="col-sm-9">
                         <select class="form-control" id="role" name="role" required>
-                           <option value="admin">admin</option>
-                           <option value="user">user</option>
+                           <option value="user entry">user entry</option>
+                           <option value="user approval">user approval</option>
                         </select>
                     </div>
                 </div>

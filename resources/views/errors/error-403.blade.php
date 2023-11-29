@@ -14,7 +14,8 @@
             You do not have access to this page.
         </div>
         <div class="mt-3">
-            <a href="{{ route('home') }}">Back to Home</a>
+            <a href="{{ route('logout') }}">Back to Login</a> ||
+            <a href="{{ route('home') }}"> Back to Home</a>
         </div>
     </div>
 </div>

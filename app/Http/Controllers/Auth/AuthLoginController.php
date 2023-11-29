@@ -15,19 +15,19 @@ class AuthLoginController extends Controller
     {
         try {
             $credentials = $request->validate([
-                'email' => ['required', 'email'],
+                'name' => ['required'],
                 'password' => ['required'],
             ]);
             $request->session()->regenerate();
 
             Auth::attempt($credentials);
-           
-            if (Auth::user()->hasRole('admin')) {
 
-                return redirect()->route('admin.dashboard');
+            if (Auth::user()->hasAnyRole('admin', 'user approval')) {
+
+                return redirect()->route('admin.dashboard')->with('success', 'Selamat datang ' . Auth::user()->name);
             }
-            if (Auth::user()->hasRole('user')) {
-                return redirect()->route('home');
+            if (Auth::user()->hasAnyRole('user entry', 'Kepala Cabang')) {
+                return redirect()->route('home')->with('success', 'Selamat datang ' . Auth::user()->name);
             }
             return redirect('/login')->with('error', 'Email atau kata sandi salah.');
         } catch (\Exception $e) {

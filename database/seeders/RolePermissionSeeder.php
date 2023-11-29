@@ -21,16 +21,28 @@ class RolePermissionSeeder extends Seeder
         Permission::create(['name' => 'add-user']);
         Permission::create(['name' => 'create-perencanaan']);
         Permission::create(['name' => 'edit-perencanaan']);
+        Permission::create(['name' => 'lihat-laporan']);
 
         Role::create(['name' => 'admin']);
-        Role::create(['name' => 'user']);
+        Role::create(['name' => 'user entry']);
+        Role::create(['name' => 'user approval']);
+        Role::create(['name' => 'Kepala Cabang']);
+
 
         $admin = Role::findByName('admin');
         $admin->givePermissionTo('approve-perencanaan');
         $admin->givePermissionTo('add-user');
 
-        $user = Role::findByName('user');
-        $user->givePermissionTo('create-perencanaan');
-        $user->givePermissionTo('edit-perencanaan');
+        $kabag = Role::findByName('user approval');
+        $kabag->givePermissionTo('lihat-laporan');
+        $kabag->givePermissionTo('approve-perencanaan');
+
+
+        $entry = Role::findByName('user entry');
+        $entry->givePermissionTo('create-perencanaan');
+        $entry->givePermissionTo('edit-perencanaan');
+
+        $kacab = Role::findByName('Kepala Cabang');
+        $kacab->givePermissionTo('lihat-laporan');
     }
 }

@@ -16,23 +16,23 @@
         <div class="sidebar-brand">
             @if(Auth::check())
             @if(Auth::user()->hasRole('admin|user approval'))
-            <a href="{{ url('/dashboard-admin') }}">SISTERS</a>
+            <a href="{{ url('/dashboard-admin') }}">SIS-RISKA</a>
             @else
-            <a href="{{ url('/') }}">SISTERS</a>
+            <a href="{{ url('/') }}">SIS-RISKA</a>
             @endif
             @else
-            <a href="/">SISTERS</a>
+            <a href="/">SIS-RISKA</a>
             @endif
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
             @if(Auth::check())
             @if(Auth::user()->hasRole('admin|user approval'))
-            <a href="{{ url('/dashboard-admin') }}"><img src="{{ asset('img/logo.png') }}" alt="Logo"></a>
+            <a href="{{ url('/dashboard-admin') }}"><img src="{{ asset('img/SIS-RISKA-fix.png') }}" alt="Logo"></a>
             @else
-            <a href="{{ url('/') }}"><img src="{{ asset('img/logo.png') }}" alt="Logo"></a>
+            <a href="{{ url('/') }}"><img src="{{ asset('img/SIS-RISKA-fix.png') }}" alt="Logo"></a>
             @endif
             @else
-            <a href="/"><img src="{{ asset('img/logo.png') }}" alt="Logo"></a>
+            <a href="/"><img src="{{ asset('img/SIS-RISKA-fix.png') }}" alt="Logo"></a>
             @endif
         </div>
         <ul class="sidebar-menu">

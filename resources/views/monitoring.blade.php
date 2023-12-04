@@ -11,7 +11,7 @@
         margin: 10px;
     }
 
-    
+
 
     select,
     input[type="text"] {
@@ -45,12 +45,30 @@
             <div class="section-header">
                 <h1>Monitoring</h1>
             </div>
+            @if (session('success'))
+            <div class="alert alert-success alert-dismissible show fade">
+                <div class="alert-body">
+                    <button class="close" data-dismiss="alert">
+                        <span>&times;</span>
+                    </button>
+                    {{ session('success') }}
+                </div>
+            </div>
+            @elseif (session('error'))
+            <div class="alert alert-danger alert-dismissible show fade">
+                <div class="alert-body">
+                    <button class="close" data-dismiss="alert">
+                        <span>&times;</span>
+                    </button>
+                    {{ session('error') }}
+                </div>
+            </div>
+            @endif
         </section>
         <div class="card">
             <div class="card-body">
                 <form method="POST" action="{{ route('monitoring.cari') }}">
                     @csrf
-                    
                     <div class="form-group">
                         <select name="periode_pemeriksaan" id="periode_pemeriksaan">
                             <option value="">Periode Pemeriksaan</option>
@@ -65,7 +83,7 @@
                     </div>
                 </form>
                 @if (request()->has('periode_pemeriksaan'))
-                    @include('monitoring-data')
+                @include('monitoring-data')
                 @endif
             </div>
         </div>

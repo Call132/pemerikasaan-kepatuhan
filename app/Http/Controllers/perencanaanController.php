@@ -46,13 +46,13 @@ class perencanaanController extends Controller
             // Simpan data perencanaan ke dalam tabel 'perencanaan'
             $perencanaan->save();
 
-            $adminRole = Role::where('name', 'admin')->first();
+            $admin = User::whereHas('roles', function ($query) {
+                $query->where('name', 'user approval');
+            })->get();
 
-            // Cari pengguna dengan peran "admin"
-            $admins = $adminRole->users;
 
             // Mengirim notifikasi kepada admin
-            dispatch(new SendNotificationJob($admins, new perencanaanNotify()))->onConnection('sync');
+            dispatch(new SendNotificationJob($admin, new perencanaanNotify()))->onConnection('sync');
 
 
 
@@ -66,9 +66,9 @@ class perencanaanController extends Controller
             // Update atau buat data 'Kepala Cabang' jika belum ada
             employee_roles::updateOrCreate(['posisi' => 'Kepala Cabang'], ['nama' => $request->input('nama_kepala_cabang', 'Default Kepala Cabang')]);
 
-            return redirect()->route('data-pemeriksaan.create', ['perencanaan_id' => $perencanaan->id])->with('succes', 'Perencanaan berhasil dibuat');
+            return redirect()->route('data-pemeriksaan.create', ['perencanaan_id' => $perencanaan->id])->with('succes', 'Perencanaan berhasil dibuat! Silahkan menambahkan data badan usaha.');
         } catch (\Exception $e) {
-            return redirect()->back()->with(['error' =>  'perencanaan gagal dibuat : ' . $e->getMessage()]);
+            return redirect()->back()->with(['error' =>  'perencanaan gagal dibuat']);
         }
     }
 

@@ -63,6 +63,10 @@
                                         name="hari_tanggal_pelaksanaan" disabled required
                                         value="{{ $badanUsaha->jadwal_pemeriksaan }}">
                                 </div>
+                                <div class="form-group">
+                                    <label for="tanggal_surat">Tanggal Surat:</label>
+                                    <input type="date" class="form-control" id="tanggal_surat" name="tanggal_surat" required>
+                                </div>
 
 
 

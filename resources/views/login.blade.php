@@ -27,10 +27,9 @@
     <div class="card card-primary">
 
         <div class="card-header">
-           
-
-            <h4>SISTERS</h4>
-            <h4>Login</h4>
+            <h4>LOGIN</h4>
+            <h4>SIS-RISKA</h4>
+            <p>Sistem Informasi Pemeriksaan Kepatuhan</p>
         </div>
 
         <div class="card-body">
@@ -53,11 +52,6 @@
                 <div class="form-group">
                     <div class="d-block">
                         <label for="password" class="control-label">Password</label>
-                        <div class="float-right">
-                            <a href="auth-forgot-password.html" class="text-small">
-                                Forgot Password?
-                            </a>
-                        </div>
                     </div>
                     <input id="password" type="password" class="form-control" name="password" tabindex="2" required>
                     @error('password')

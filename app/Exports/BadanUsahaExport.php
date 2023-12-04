@@ -82,6 +82,7 @@ class BadanUsahaExport implements FromCollection, WithHeadings, ShouldAutoSize, 
     }
     public function registerEvents(): array
     {
+        $perencanaan = perencanaan::latest()->first();
         $startDate = $this->startDate;
         $endDate = $this->endDate;
         if (empty($startDate)) {

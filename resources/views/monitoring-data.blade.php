@@ -36,8 +36,11 @@
                     <td>{{ $data->tanggal_bayar }}</td>
                     <td>Rp.{{ number_format($data->jumlah_bayar), 2, ',', '.' }}</td>
                     <td>{{ $data->hasil_pemeriksaan }}</td>
-                    <td>{{ $data->jumlah_tunggakan != 0 ? ($data->jumlah_bayar / $data->jumlah_tunggakan) * 100 . '%' :
-                        'N/A' }}</td>
+                    <td>
+                        {{ number_format($data->jumlah_tunggakan != 0 ? ($data->jumlah_bayar / $data->jumlah_tunggakan)
+                        * 100 : 'N/A', 0) }}%
+                    </td>
+
                 </tr>
                 @php
                 // Menambahkan jumlah tunggakan ke total
@@ -56,9 +59,9 @@
                         Rp. {{ number_format($totalBayar, 2, ',', '.') }}
                     </td>
                     <td colspan="1">
-                        {{ $totalTunggakan != 0 ? ($totalBayar / $totalTunggakan) * 100 .
-                        '%' : 'N/A' }}
+                        {{ number_format($totalTunggakan != 0 ? ($totalBayar / $totalTunggakan) * 100 : 'N/A', 0) }}%
                     </td>
+
 
                 </tr>
                 <button type="submit" class="btn btn-primary" style="margin-bottom: 10px">Cetak <i

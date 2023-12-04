@@ -39,6 +39,7 @@ class SPPFPKController extends Controller
         try {
             $validate = $request->validate([
                 'nomor_sppfpk' => 'required|unique:sppfpk',
+                'tanggal_surat' => 'required',
                 'waktu' => 'required',
                 'sppk_id' => 'required',
                 'badan_usaha_id' => 'required',
@@ -54,27 +55,27 @@ class SPPFPKController extends Controller
             $sppfpk->sppk_id = $request->input('sppk_id');
             $sppfpk->badan_usaha_id = $request->input('badan_usaha_id');
             $sppfpk->waktu = $request->input('waktu');
-            $sppfpk->tanggal_surat = Carbon::now();
+            $sppfpk->tanggal_surat = $request->input('tanggal_surat');
 
             $sppfpk->save();
 
             $pdf = Pdf::loadView('sppfpk-preview', compact('sppfpk', 'sppk', 'badanUsaha', 'employee', 'namaTimPemeriksa', 'nppTimPemeriksa'));
-            $pdfFileName = 'Surat Perintah Pemeriksaan Final Kantor ' . str_replace('/', '_', $sppfpk->nomor_sppfpk) . '.pdf';
+            $pdfFileName = 'Surat Panggilan Pemeriksaan Final  ' . str_replace('/', '_', $sppfpk->nomor_sppfpk) . '.pdf';
             $pdf->save(storage_path('app/public/pdf/' . $pdfFileName));
             $pdfPath = 'storage/pdf/' . $pdfFileName;
 
             $surat = new surat();
             $surat->nomor_surat = $sppfpk->nomor_sppfpk;
-            $surat->jenis_surat = 'Surat Perintah Pemeriksaan Final Kantor';
+            $surat->jenis_surat = 'Surat Perintah Pemeriksaan Final';
             $surat->tanggal_surat = $sppfpk->tanggal_surat;
             $surat->perencanaan_id = $badanUsaha->perencanaan_id;
-            $surat->badan_usaha_id = $sppfpk->badan_usaha_id;
+            $surat->badan_usaha_id = $badanUsaha->id;
             $surat->file_path = $pdfPath;
             $surat->save();
 
-            return redirect($pdfPath)->with('success', 'Surat Perintah Pemeriksaan Final Kantor Berhasil Dibuat');
+            return redirect($pdfPath)->with('success', 'Surat Panggilan Pemeriksaan Final  Berhasil Dibuat');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Nomor Surat Perintah Pemeriksaan Final Kantor Sudah Ada');
+            return redirect()->back()->with('error', 'Nomor Surat Panggilan Pemeriksaan Final  Sudah Ada');
         }
     }
 }

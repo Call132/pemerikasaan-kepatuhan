@@ -37,9 +37,10 @@ class perencanaanApproved extends Notification
     {
         return (new MailMessage)
             ->subject('Perencanaan Anda Telah Disetujui') // Subjek email
-            ->greeting('Selamat! Perencanaan Anda telah disetujui.')
+            ->greeting('Selamat! Perencanaan Anda telah Disetujui.')
             ->line('Anda dapat melanjutkan dengan perencanaan Anda yang telah disetujui.')
-            ->line($this->note);
+            ->line('Catatan : ' . $this->note)
+            ->action('Lihat Perencanaan', url('/login'));
     }
 
     /**

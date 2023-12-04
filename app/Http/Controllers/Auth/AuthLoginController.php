@@ -18,22 +18,30 @@ class AuthLoginController extends Controller
                 'name' => ['required'],
                 'password' => ['required'],
             ]);
+
+            // Check if the username and password are valid without attempting login
+            $isValidCredentials = Auth::validate($credentials);
+
+            if (!$isValidCredentials) {
+                return redirect('/login')->with('error', 'Nama atau kata sandi salah.');
+            }
+
             $request->session()->regenerate();
 
             Auth::attempt($credentials);
 
             if (Auth::user()->hasAnyRole('admin', 'user approval')) {
-
                 return redirect()->route('admin.dashboard')->with('success', 'Selamat datang ' . Auth::user()->name);
-            }
-            if (Auth::user()->hasAnyRole('user entry', 'Kepala Cabang')) {
+            } elseif (Auth::user()->hasAnyRole('user entry', 'Kepala Cabang')) {
                 return redirect()->route('home')->with('success', 'Selamat datang ' . Auth::user()->name);
             }
-            return redirect('/login')->with('error', 'Email atau kata sandi salah.');
+
+            return redirect('/login')->with('error', 'Akun tidak memiliki peran yang valid.');
         } catch (\Exception $e) {
             return redirect('/login')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
+
 
     public function logout(Request $request)
     {

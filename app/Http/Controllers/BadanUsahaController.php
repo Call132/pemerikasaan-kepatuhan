@@ -32,21 +32,27 @@ class BadanUsahaController extends Controller
             }
 
             $excelFileName = 'Perencanaan Pemeriksaan ' . Carbon::parse($latestPerencanaan->start_date)->isoFormat('MMMM YYYY') . ' - ' . Carbon::parse($latestPerencanaan->end_date)->isoFormat('MMMM YYYY') . '.xlsx';
+            $existingSurat = Surat::where('nomor_surat', $excelFileName)->first();
+            if ($existingSurat) {
+                // Directly download the file
+                return redirect($existingSurat->file_path)->with('success', 'Perencanaan Pemeriksaan sudah ada, langsung didownload');
+            }
             Excel::store(new BadanUsahaExport($tanggalPerencanaan, $endDate), 'public/excel/' . $excelFileName);
             $pdfPath = 'storage/excel/' . $excelFileName;
+
 
             $surat = new surat();
             $surat->nomor_surat = $excelFileName;
             $surat->perencanaan_id = $latestPerencanaan->id;
             $surat->badan_usaha_id = $latestPerencanaan->id;
             $surat->jenis_surat = 'Perencanaan';
-            $surat->tanggal_surat = \carbon\Carbon::now();
+            $surat->tanggal_surat = $tanggalPerencanaan;
             $surat->file_path = $pdfPath;
             $surat->save();
 
             return redirect($pdfPath)->with('success', 'Perencanaan exported successfully.');
         } catch (\Exception $e) {
-            return redirect()->back()->with(['error' =>  'perencanaan gagal dibuat : ' . $e->getMessage()]);
+            return redirect()->back()->with(['error' =>  'Perencanaan gagal di export !! ']);
         }
     }
 

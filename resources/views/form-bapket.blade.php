@@ -42,11 +42,12 @@
                                 <div class="card-header text-center">
                                     <h5>Formulir Catatan Hasil Pemeriksaan</h5>
                                 </div>
-                                
-                           
+
+
                                 <input type="hidden" value="{{ $spt->id }}" name="spt_id">
-                               
+
                                 <input type="hidden" value="{{ $badanUsaha->id }}" name="bu_id">
+                                
                                 <div class="form-group">
                                     <label for="TimPemeriksa">Tim Pemeriksa</label>
                                     <input value="{{ $timPemeriksa->nama }}" class="form-control" type="text"
@@ -62,7 +63,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="Nama">Nama</label>
-                                    <input class="form-control" type="text" name="nama_pemberi_kerja" id="nama" required>
+                                    <input class="form-control" type="text" name="nama_pemberi_kerja" id="nama"
+                                        required>
                                 </div>
                                 <div class="form-group">
                                     <label for="Jabatan">Jabatan</label>
@@ -85,16 +87,20 @@
                                     <label for="nomor">Nomor Bapket</label>
                                     <input type="text" class="form-control" name="no_bapket" id="no_bapket">
                                 </div>
+                                <div class="form-group">
+                                    <label for="tgl_bapket"></label>
+                                    <input class="form-control" type="date" name="tgl_bapket" id="tgl_bapket" required>
+                                </div>
 
                                 <div class="form-group">
                                     <label for="tunggakanIuran">Tunggakan Iuran</label>
                                     <input value="{{ $badanUsaha->jumlah_tunggakan }}" class="form-control" type="text"
-                                        name="tunggakanIuran" required id="tunggakanIuran" >
+                                        name="tunggakanIuran" required id="tunggakanIuran">
                                 </div>
                                 <div class="form-group">
                                     <label for="bulanMenunggak">Bulan Menunggak</label>
-                                    <input value="{{ $badanUsaha->jumlah_bulan_menunggak }}" class="form-control" type="number" name="bulanMenunggak" required
-                                        id="bulanMenunggak">
+                                    <input value="{{ $badanUsaha->jumlah_bulan_menunggak }}" class="form-control"
+                                        type="number" name="bulanMenunggak" required id="bulanMenunggak">
                                 </div>
                                 <div class="form-group">
                                     <label for="sebabMenunggak">Sebab Menunggak</label>

@@ -52,11 +52,16 @@
 
                                 <input type="hidden" name="badan_usaha_id" value="{{ $badanUsaha->id }}">
                                 <input type="hidden" name="spt_id" value="{{ $timPemeriksa->surat_perintah_tugas_id }}">
-                                
+
 
                                 <div class="form-group">
                                     <label for="nomor_sppk">Nomor:</label>
                                     <input type="text" class="form-control" id="nomor_sppk" name="nomor_sppk" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tanggal_surat">Tanggal Surat:</label>
+                                    <input type="date" class="form-control" id="tanggal_surat" name="tanggal_surat"
+                                        required>
                                 </div>
 
                                 <div class="form-group">
@@ -68,8 +73,7 @@
 
                                 <div class="form-group">
                                     <label for="waktu">Waktu:</label>
-                                    <input value="{{ now()->format('H:i') }}" type="time" class="form-control"
-                                        id="waktu" name="waktu" required>
+                                    <input type="text" class="form-control" id="waktu" name="waktu" required>
 
                                 </div>
 

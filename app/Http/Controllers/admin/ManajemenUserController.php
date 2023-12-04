@@ -22,9 +22,9 @@ class ManajemenUserController extends Controller
                 'email' => 'required|email',
                 'phone' => 'nullable',
                 'password' => 'required|min:8',
-                'role' => 'required|in:admin,user',
+                'role' => 'required|in:admin,user entry, user approval',
             ]);
-            if(User::where('email', $request->email)->exists()){
+            if (User::where('email', $request->email)->exists()) {
                 return redirect()->back()->with('error', 'Email sudah terdaftar!');
             }
             $user = User::create([
@@ -41,7 +41,9 @@ class ManajemenUserController extends Controller
     }
     public function index()
     {
-        $users = User::with('role')->get();
+        $users = User::whereDoesntHave('roles', function ($query) {
+            $query->where('name', 'admin');
+        })->get();
         return view('/admin/manajemen-user', compact('users'));
     }
 
@@ -53,33 +55,38 @@ class ManajemenUserController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validasi input jika diperlukan
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'phone' => 'nullable',
-            'role' => 'required|in:admin,user',
-        ]);
+        try {
+            // Validasi input jika diperlukan
+            $request->validate([
+                'name' => 'required',
+                'email' => 'required|email',
+                'phone' => 'nullable',
+                'role' => 'required',
+            ]);
 
-        // Update data pengguna
-        $user = User::findOrFail($id);
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-        ]);
+            // Update data pengguna
+            $user = User::findOrFail($id);
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'role' => $request->role,
+            ]);
 
-        // Update role pengguna menggunakan spatie/permission
-        $user->syncRoles([$request->role]);
+            // Update role pengguna menggunakan spatie/permission
+            $user->syncRoles([$request->role]);
 
-        // Redirect atau response sesuai kebutuhan
-        return redirect()->route('manajemen-user')->with('success', 'Data pengguna berhasil diperbarui.');
+            // Redirect atau response sesuai kebutuhan
+            return redirect()->route('manajemen-user')->with('success', 'Data pengguna berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return dd($e);
+        }
     }
     public function destroy($id)
     {
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('manajemen-user')->with('success', 'Pengguna berhasil dihapus.');
+        return redirect()->back()->with('success', 'Pengguna berhasil dihapus.');
     }
 }

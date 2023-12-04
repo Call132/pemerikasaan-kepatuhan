@@ -18,18 +18,17 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
 
 {
     protected $badanUsaha, $pemeriksa, $kertasKerja;
-    
+
     /**
      * @return \Illuminate\Support\Collection
      */
 
-    public function __construct($badanUsaha,$pemeriksa,$kertasKerja)
+    public function __construct($badanUsaha, $pemeriksa, $kertasKerja)
     {
-    
+
         $this->badanUsaha = $badanUsaha;
         $this->pemeriksa = $pemeriksa;
         $this->kertasKerja = $kertasKerja;
-
     }
 
 
@@ -78,8 +77,8 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                 ],
 
             ],
-            
-            
+
+
             'A11' => [
                 'font' => [
                     'bold' => true, // Tebal (bold)
@@ -181,7 +180,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                         'color' => ['argb' => '000000'],
                     ], // Warna hitam
                 ],
-                
+
             ],
             'A14:A15' => [
                 'font' => [
@@ -517,7 +516,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
 
                 $data = $this->badanUsaha;
 
-                
+
 
 
                 unset($data['created_at']);
@@ -555,7 +554,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->mergeCells('G4:I4');
                 $sheet->setCellValue('G5', $data->kode_badan_usaha);
                 $sheet->mergeCells('G5:I5');
-                
+
                 $sheet->setCellValue('G6', $data->npwp); // Gantilah dengan data yang sesuai
                 $sheet->mergeCells('G6:I6');
                 $sheet->setCellValue('G7', $jadwal_pemeriksaan);

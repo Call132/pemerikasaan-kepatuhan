@@ -81,8 +81,6 @@
                 di <br>
                 Tempat</p> <br>
         </div>
-
-
         <div class="div">
             <p style="text-indent: 35px;">Sehubungan dengan telah dilaksanakan pemeriksaan {{
                 $badanUsaha->jenis_pemeriksaan }} terhadap Badan Usaha

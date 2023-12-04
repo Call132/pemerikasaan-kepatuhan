@@ -101,6 +101,7 @@ class laporanPemeriksaanController extends Controller
 
             return redirect($pdfPath)->with('success', 'Surat Pemberitahuan Hasil Pemeriksaan Berhasil Dibuat');
         } catch (\Throwable $e) {
+            return dd($e);
             return redirect()->back()->with('error', 'Nomor Surat Pemberitahuan Hasil Pemeriksaan sudah ada');
         }
     }

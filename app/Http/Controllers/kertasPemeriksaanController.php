@@ -87,6 +87,7 @@ class kertasPemeriksaanController extends Controller
             $id = $request->input('bu_id');
             $badanUsaha = BadanUsaha::findOrFail($id);
             $perencanaanId = $badanUsaha->perencanaan_id;
+
             $kertasKerja->badan_usaha_id = $request->input('bu_id');
             $kertasKerja->badanUsaha->npwp = $request->input('npwp');
             $kertasKerja->uraian = $request->input('uraian');
@@ -100,12 +101,12 @@ class kertasPemeriksaanController extends Controller
             $kertasKerja->badanUsaha->jumlah_bulan_menunggak = $request->input('jumlah_bulan_menunggak');
             $kertasKerja->badanUsaha->save();
             $kertasKerja->save();
-            $excelFileName = 'Kertas Kerja Pemeriksaan ' . ' ' . $badanUsaha->nama_badan_usaha . '' . Carbon::parse($kertasKerja->created_at)->isoFormat('MMMM Y')  .'.xlsx';
-           
-            Excel::store(new KertasPemeriksaan($badanUsaha, $pemeriksa, $kertasKerja),'public/excel/' . $excelFileName);
+            $excelFileName = 'Kertas Kerja Pemeriksaan ' . ' ' . $badanUsaha->nama_badan_usaha . ' ' . Carbon::parse($kertasKerja->created_at)->isoFormat('MMMM Y')  . '.xlsx';
+
+            Excel::store(new KertasPemeriksaan($badanUsaha, $pemeriksa, $kertasKerja), 'public/excel/' . $excelFileName);
             $excelPath = 'storage/excel/' . $excelFileName;
 
-            
+
             $surat = new surat();
             $surat->badan_usaha_id = $badanUsaha->id;
             $surat->perencanaan_id = $perencanaanId;
@@ -113,7 +114,7 @@ class kertasPemeriksaanController extends Controller
             $surat->jenis_surat = 'Kertas Kerja Pemeriksaan';
             $surat->nomor_surat = $excelFileName;
             $surat->file_path = $excelPath;
-           
+
             $surat->save();
 
 
@@ -141,6 +142,7 @@ class kertasPemeriksaanController extends Controller
             $validator = $request->validate([
                 'bu_id' => 'required',
                 'no_bapket' => 'required|unique:bapket',
+                'tgl_bapket' => 'required',
                 'nama_pemberi_kerja' => 'required',
                 'jabatan' => 'required',
                 'tunggakanIuran' => 'nullable',
@@ -162,7 +164,7 @@ class kertasPemeriksaanController extends Controller
             $badanUsaha->jumlah_tunggakan = ($request->input('tunggakanIuran'));
             $badanUsaha->jumlah_bulan_menunggak = $request->input('bulanMenunggak');
             $bapket->sebab_menunggak = $request->input('sebabMenunggak');
-            $bapket->tgl_bapket = Carbon::now()->format('Y-m-d');
+            $bapket->tgl_bapket = $request->input('tgl_bapket');
 
 
             $badanUsaha->save();

@@ -98,22 +98,22 @@ class monitoring implements FromCollection, WithStyles, WithEvents
                     $sheet->setCellValue('I' . $row, $data->tanggal_bayar);
                     $sheet->setCellValue('J' . $row, 'Rp. ' . number_format($data->jumlah_bayar, 2, ',', '.'));
                     $sheet->setCellValue('K' . $row, $data->hasil_pemeriksaan);
-                    $sheet->setCellValue('L' . $row, $data->jumlah_tunggakan != 0 ? ($data->jumlah_bayar / $data->jumlah_tunggakan) * 100 . '%' : 'N/A');
+                    $sheet->setCellValue('L' . $row, number_format($data->jumlah_tunggakan != 0 ? ($data->jumlah_bayar / $data->jumlah_tunggakan) * 100 : 'N/A', 0) . '%');
                     $sheet->getStyle('A' . $row . ':L' . $row)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-                    
+
                     $lastRow = $row;
                     $row++;
                     $no++;
+                    $totalTunggakan += $data->jumlah_tunggakan;
+                    $totalBayar += $data->jumlah_bayar;
                 }
-                $totalTunggakan += $data->jumlah_tunggakan;
-                $totalBayar += $data->jumlah_bayar;
 
                 $sheet->setCellValue('B' . ($lastRow + 1), 'Total');
                 $sheet->setCellValue('H' . ($lastRow + 1), 'Rp ' . number_format($totalTunggakan, 2, ',', '.'));
                 $sheet->getStyle('H' . $lastRow + 1)->getAlignment()->setVertical('left');
                 $sheet->setCellValue('J' . ($lastRow + 1), 'Rp ' . number_format($totalBayar, 2, ',', '.'));
                 $sheet->getStyle('J' . $lastRow + 1)->getAlignment()->setVertical('left');
-                $sheet->setCellValue('L' . ($lastRow + 1), $totalTunggakan != 0 ? ($totalBayar / $totalTunggakan) * 100 . '%' : 'N/A');
+                $sheet->setCellValue('L' . ($lastRow + 1), number_format($totalTunggakan != 0 ? ($totalBayar / $totalTunggakan) * 100 : 'N/A', 0) . '%');
                 $sheet->getStyle('A' . $lastRow + 1 . ':L' . $lastRow + 1)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
                 $sheet->mergeCells('B' . $lastRow + 1 . ':G' . $lastRow + 1);
                 $sheet->mergeCells('H' . $lastRow + 1 . ':I' . $lastRow + 1);

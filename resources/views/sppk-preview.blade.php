@@ -124,7 +124,7 @@
 
     <div class="content page1" style="font-size: 16px;">
         <p>
-        <div class="right-aligned-text">Gorontalo, {{ \Carbon\Carbon::parse($sppk->tanggal_pemeriksaan)->locale('id')->isoFormat('D MMMM Y') }}</div>
+        <div class="right-aligned-text">Gorontalo, {{ \Carbon\Carbon::parse($sppk->tanggal_surat)->locale('id')->isoFormat('D MMMM Y') }}</div>
         <span class="label1">Nomor</span> : {{ $sppk->nomor_sppk }} <br>
         <span class="label1">Lampiran</span> : Satu Berkas <br>
         <span class="label1">Hal</span> : Panggilan Pemeriksaan

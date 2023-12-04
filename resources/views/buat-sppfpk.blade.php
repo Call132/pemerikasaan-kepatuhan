@@ -51,6 +51,11 @@
                                     <input type="text" class="form-control" id="nomor_sppfpk" name="nomor_sppfpk"
                                         required>
                                 </div>
+                                <div class="form-group">
+                                    <label for="tanggal_surat">Tanggal Surat:</label>
+                                    <input type="date" class="form-control" id="tanggal_surat" name="tanggal_surat"
+                                        required>
+                                </div>
                                 {{-- update tanggal pemeriksaan --}}
                                 <div class="form-group">
                                     <label for="hari_tanggal_pelaksanaan">Hari/Tanggal Pelaksanaan:</label>
@@ -60,7 +65,7 @@
 
                                 <div class="form-group">
                                     <label for="waktu">Waktu:</label>
-                                    <input type="time" class="form-control" id="waktu" name="waktu" required>
+                                    <input type="text" class="form-control" id="waktu" name="waktu" required>
                                 </div>
                                 <!-- Informasi Petugas Pemeriksa -->
                                 <h3 class="text-center text-black">Informasi Petugas Pemeriksa</h3>

@@ -52,7 +52,14 @@ class monitoringController extends Controller
 
             $excelFileName = 'Laporan Monitoring ' . Carbon::parse($perencanaan->start_date)->isoFormat('MMMM Y') . '.xlsx';
             Excel::store(new monitoring($badanUsaha, $perencanaan), 'public/excel/' . $excelFileName);
+            $existingSurat = Surat::where('nomor_surat', $excelFileName)->first();
+            if ($existingSurat) {
+                // Directly download the file
+                return redirect($existingSurat->file_path)->with('success', 'Laporan Monitoring sudah ada, langsung didownload');
+            }
             $path = 'storage/excel/' . $excelFileName;
+
+
 
 
             $surat = new surat();

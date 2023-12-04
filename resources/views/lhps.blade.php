@@ -120,7 +120,8 @@ iv class="row">
 
                             <td>
 
-                                @if ($bu->jenis_pemeriksaan == 'lapangan')
+
+                                @if ($bu->jenis_pemeriksaan == 'Lapangan')
                                 <a href="{{ route('lhps.form', ['id' => $bu->id]) }}">
                                     <i class="fa-solid fa-file-export }}"></i> LHPS
                                 </a>

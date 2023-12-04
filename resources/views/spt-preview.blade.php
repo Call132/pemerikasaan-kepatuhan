@@ -173,7 +173,7 @@
             <p class="header" style="text-align: justify;">Demikian untuk diketahui dan dilaksanakan sebagaimana
                 mestinya.</p>
 
-            <p style="text-align: right; margin-bottom:-8px; margin-right: 5px">Gorontalo, {{ $dateNow }}</p>
+            <p style="text-align: right; margin-bottom:-8px; margin-right: 5px">Gorontalo, {{ $spt->tanggal_spt }}</p>
             <div class="signature-container" style="text-align: right;">
                 <div class="signature">
                     <div style="float: right; text-align: right;">

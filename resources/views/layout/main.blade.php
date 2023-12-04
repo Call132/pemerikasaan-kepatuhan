@@ -6,20 +6,31 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>@yield('title')</title>
 
+
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('library/bootstrap/dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
         integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <link rel="icon" href="{{ asset('img/SIS-RISKA-fix.ico') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('img/SIS-RISKA-fix.ico') }}" type="image/x-icon">
+
     @stack('style')
+    <style>
+        /* Tambahkan CSS ini untuk membuat ikon menjadi bentuk bulat */
+        link[rel="icon"],
+        link[rel="shortcut icon"] {
+            border-radius: 50%;
+        }
+    </style>
 
     <!-- Template CSS -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/components.css') }}">
 
-</head>
+
 </head>
 
 <body>

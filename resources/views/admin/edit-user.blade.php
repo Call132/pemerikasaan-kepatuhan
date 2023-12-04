@@ -72,9 +72,11 @@
                     <label for="role" class="col-sm-3 col-form-label">Role</label>
                     <div class="col-sm-9">
                         <select class="form-control" id="role" name="role" required>
-                            <option value="admin" @if ($user->role_name == 'user entry') selected @endif>User Entry</option>
-                            <option value="user" @if ($user->role_name == 'user approval') selected @endif>User Approval</option>
-                            
+                            <option value="user entry" @if ($user->role_name == 'user entry') selected @endif>User Entry
+                            </option>
+                            <option value="user approval" @if ($user->role_name == 'user approval') selected @endif>User
+                                Approval</option>
+
                         </select>
                     </div>
                 </div>
@@ -88,13 +90,14 @@
     </div>
 </div>
 </div>
+
 <!-- Update Confirmation Modal -->
-<div class="modal" tabindex="-1" role="dialog" id="updateConfirmationModal">
+<div class="modal" tabindex="0" role="dialog" id="updateConfirmationModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Confirmation</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -103,7 +106,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="confirmUpdate">Save changes</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" id='close' data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -120,7 +123,11 @@
         });
 
         document.getElementById('confirmUpdate').addEventListener('click', function () {
+            updateConfirmationModal.hide();
             updateForm.submit();
+        });
+        document.getElementById('close').addEventListener('click', function () {
+            updateConfirmationModal.hide();
         });
     });
 </script>

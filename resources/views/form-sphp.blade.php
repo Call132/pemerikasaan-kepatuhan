@@ -45,6 +45,10 @@
                                     <input type="text" class="form-control" id="no_sphp" name="no_sphp">
                                 </div>
                                 <div class="form-group">
+                                    <label for="tgl_sphp">Tanggal Surat Pemberitahuan Hasil Pemeriksaan</label>
+                                    <input type="date" class="form-control" id="tgl_sphp" name="tgl_sphp">
+                                </div>
+                                <div class="form-group">
                                     <h5>Uraian Hasil</h5>
                                 </div>
                                 <div class="form-group">

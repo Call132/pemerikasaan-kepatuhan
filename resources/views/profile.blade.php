@@ -13,13 +13,13 @@
             <div class="section-header">
                 <h1>Profil Pengguna</h1>
             </div>
-            @if (session('status'))
+            @if (session('success'))
             <div class="alert alert-success alert-dismissible show fade">
                 <div class="alert-body">
                     <button class="close" data-dismiss="alert">
                         <span>&times;</span>
                     </button>
-                    {{ session('status') }}
+                    {{ session('success') }}
                 </div>
             </div>
 

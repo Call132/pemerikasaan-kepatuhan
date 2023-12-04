@@ -37,10 +37,11 @@
                     <thead style="background-color: #00B0F0;">
                         <tr>
                             <th>No</th>
-                            <th>Tanggal Perencanaan</th>
+                            <th>Periode Perencanaan</th>
                             <th>Daftar Badan Usaha</th>
-                            <th>Aksi</th>
-                            <th>Catatan</th>
+                            <th colspan="2">Aksi</th>
+
+
                         </tr>
                     </thead>
                     <tbody class="table-light">
@@ -56,21 +57,25 @@
                                 </a>
 
                             </td>
-                            <td class="button-cell">
+                            <td>
                                 <form method="POST" action="{{ route('admin.approve', $latestPerencanaan->id) }}">
                                     @csrf
-                                    <button type="submit" class="btn btn-primary">Setujui</button>
+                                    <div class="d-flex">
+                                        <button type="submit" class="btn btn-success">Setujui</button>
+                                        <input type="text" class="form-control ml-2" id="catatan" name="catatan"
+                                            placeholder="Catatan">
+                                    </div>
                                 </form>
 
+                            </td>
+                            <td>
                                 <form method="POST" action="{{ route('admin.reject', $latestPerencanaan->id) }}">
                                     @csrf
-                                    <button type="submit" class="btn btn-danger">Tolak</button>
+                                    <button type="submit" class="btn btn-danger ml-2">Tolak</button>
                                 </form>
                             </td>
 
-                            <td>
-                                <textarea name="note" class="form-control" id="note" rows="3"></textarea>
-                            </td>
+
                         </tr>
 
                         @else

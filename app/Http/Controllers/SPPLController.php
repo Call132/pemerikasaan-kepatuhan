@@ -34,32 +34,34 @@ class SPPLController extends Controller
             $validate = $request->validate([
                 'nomor_sppl' => 'required|unique:sppl,nomor_sppl',
                 'nama' => 'required',
-                'noHp' => 'nullable'
+                'noHp' => 'nullable',
+                'tanggal_surat' => 'required',
             ]);
-            $tanggal_surat = Carbon::now();
+            
 
             $sppl = new sppl($validate);
-            $sppl->tanggal_surat = $tanggal_surat;
+            
             $sppl->surat_perintah_tugas_id = $spt->id;
             $sppl->save();
 
 
             $pdf = Pdf::loadView('sppl-preview', compact('sppl', 'badanUsaha', 'employee'));
-            $pdfFileName = 'Surat Perintah Pemeriksaan Lapangan ' . str_replace('/', '_', $sppl->nomor_sppl) . '.pdf';
+            $pdfFileName = 'Surat Panggilan Pemeriksaan Lapangan ' . str_replace('/', '_', $sppl->nomor_sppl) . '.pdf';
             $pdf->save(storage_path('app/public/pdf/' . $pdfFileName));
             $pdfPath = 'storage/pdf/' . $pdfFileName;
 
             $surat = new surat();
             $surat->nomor_surat = $sppl->nomor_sppl;
             $surat->perencanaan_id = $badanUsaha->perencanaan_id;
-            $surat->badan_usaha_id = $sppl->badan_usaha_id;
-            $surat->jenis_surat = 'Surat Perintah Pemeriksaan Lapangan';
-            $surat->tanggal_surat = $tanggal_surat;
+            $surat->badan_usaha_id = $badanUsaha->id;
+            $surat->jenis_surat = 'Surat Panggilan Pemeriksaan Lapangan';
+            $surat->tanggal_surat = $sppl->tanggal_surat;
             $surat->file_path = $pdfPath;
             $surat->save();
-            return redirect($pdfPath)->with('success', 'Surat Perintah Pemeriksaan Lapangan Berhasil');
+            return redirect($pdfPath)->with('success', 'Surat Panggilan Pemeriksaan Lapangan Berhasil');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Nomor Surat Perintah Pemeriksaan Lapangan sudah ada');
+            
+            return redirect()->back()->with('error', 'Nomor Surat Panggilan Pemeriksaan Lapangan sudah ada');
         }
     }
 }

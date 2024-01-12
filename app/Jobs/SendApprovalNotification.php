@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Models\User;
+use App\Notifications\perencanaanApproved;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -10,20 +12,18 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Notification;
 
-class SendNotificationJob implements ShouldQueue
+class SendApprovalNotification implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $admin, $notification;
-
+    protected $users, $notification;
     /**
      * Create a new job instance.
      */
-    public function __construct($admin, $notification)
+    public function __construct($users, $notification)
     {
-        $this->admin = $admin;
+        $this->users = $users;
         $this->notification = $notification;
-
     }
 
     /**
@@ -31,6 +31,8 @@ class SendNotificationJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Notification::send($this->admin, $this->notification);
+        foreach ($this->users as $user) {
+            $user->notify(new PerencanaanApproved($this->notification));
+        }
     }
 }

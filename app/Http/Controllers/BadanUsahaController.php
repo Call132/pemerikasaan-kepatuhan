@@ -26,18 +26,18 @@ class BadanUsahaController extends Controller
 
             // Check if perencanaan is approved
             $latestPerencanaan = Perencanaan::where('status', 'approved')->latest()->first();
-
+            $badanUsaha = BadanUsaha::where('perencanaan_id', $latestPerencanaan->id)->first();
             if (!$latestPerencanaan) {
                 return redirect()->intended('/')->with('error', 'Perencanaan belum diapprove.');
             }
 
-            $excelFileName = 'Perencanaan Pemeriksaan ' . Carbon::parse($latestPerencanaan->start_date)->isoFormat('MMMM YYYY') . ' - ' . Carbon::parse($latestPerencanaan->end_date)->isoFormat('MMMM YYYY') . '.xlsx';
+            $excelFileName = 'Perencanaan Pemeriksaan ' . Carbon::parse($latestPerencanaan->start_date)->isoFormat('D MMMM YYYY') . ' - ' . Carbon::parse($latestPerencanaan->end_date)->isoFormat('D MMMM YYYY') . '.xlsx';
             $existingSurat = Surat::where('nomor_surat', $excelFileName)->first();
             if ($existingSurat) {
                 // Directly download the file
                 return redirect($existingSurat->file_path)->with('success', 'Perencanaan Pemeriksaan sudah ada, langsung didownload');
             }
-            Excel::store(new BadanUsahaExport($tanggalPerencanaan, $endDate), 'public/excel/' . $excelFileName);
+            Excel::store(new BadanUsahaExport($tanggalPerencanaan, $endDate, $latestPerencanaan, $badanUsaha), 'public/excel/' . $excelFileName);
             $pdfPath = 'storage/excel/' . $excelFileName;
 
 

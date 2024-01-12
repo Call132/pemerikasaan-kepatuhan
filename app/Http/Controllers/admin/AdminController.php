@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendApprovalNotification;
 use App\Models\BadanUsaha;
 use App\Models\perencanaan;
 use App\Models\User;
@@ -48,7 +49,7 @@ class AdminController extends Controller
             $data->save();
 
             // Mengecek apakah ada catatan
-            $notification = new perencanaanApproved($note); // Notifikasi dengan atau tanpa catatan
+            // $notification = new perencanaanApproved($note); // Notifikasi dengan atau tanpa catatan
 
             // Mendapatkan semua pengguna
             $users = User::whereHas('roles', function ($query) {
@@ -56,12 +57,12 @@ class AdminController extends Controller
             })->get();
 
             // Mengirim notifikasi persetujuan kepada semua pengguna
-            Notification::send($users, $notification);
+            dispatch(new SendApprovalNotification($users, $note))->onConnection('database');;
 
             // Redirect ke halaman admin.dashboard dengan pesan sukses
             return redirect()->route('admin.dashboard')->with('success', 'Perencanaan berhasil disetujui.');
         } catch (\Exception $e) {
-            return dd($e);
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 

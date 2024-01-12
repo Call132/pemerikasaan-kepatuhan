@@ -13,7 +13,7 @@
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1>Dashboard Admin</h1>
+            <h1>Dashboard</h1>
         </div>
         @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">

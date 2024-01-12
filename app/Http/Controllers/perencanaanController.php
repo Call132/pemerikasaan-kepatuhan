@@ -52,7 +52,7 @@ class perencanaanController extends Controller
 
 
             // Mengirim notifikasi kepada admin
-            dispatch(new SendNotificationJob($admin, new perencanaanNotify()))->onConnection('sync');
+            dispatch(new SendNotificationJob($admin, new perencanaanNotify()))->onConnection('database');
 
 
 

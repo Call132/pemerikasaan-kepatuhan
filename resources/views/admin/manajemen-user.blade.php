@@ -37,7 +37,6 @@
                             <th>No</th>
                             <th>Nama Pengguna</th>
                             <th>Email</th>
-
                             <th>Role</th>
                             <th>Aksi</th>
                         </tr>

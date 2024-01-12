@@ -19,6 +19,8 @@ class perencanaanApproved extends Notification
     {
         $this->note = $note;
     }
+   
+
 
     /**
      * Get the notification's delivery channels.
@@ -51,7 +53,7 @@ class perencanaanApproved extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            //
+            'note' => $this->note
         ];
     }
 }

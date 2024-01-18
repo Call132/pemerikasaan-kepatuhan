@@ -55,8 +55,6 @@ class perencanaanController extends Controller
             dispatch(new SendNotificationJob($admin, new perencanaanNotify()))->onConnection('database');
 
 
-
-
             // Update atau buat data 'Tim Pemeriksa' jika belum ada
             employee_roles::updateOrCreate(['posisi' => 'Tim Pemeriksa'], ['nama' => $request->input('nama_tim_pemeriksa', 'Default Tim Pemeriksa')]);
 

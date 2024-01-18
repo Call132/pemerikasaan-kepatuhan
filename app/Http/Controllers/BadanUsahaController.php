@@ -44,7 +44,7 @@ class BadanUsahaController extends Controller
             $surat = new surat();
             $surat->nomor_surat = $excelFileName;
             $surat->perencanaan_id = $latestPerencanaan->id;
-            $surat->badan_usaha_id = $latestPerencanaan->id;
+            $surat->badan_usaha_id = 1 ;
             $surat->jenis_surat = 'Perencanaan';
             $surat->tanggal_surat = $tanggalPerencanaan;
             $surat->file_path = $pdfPath;

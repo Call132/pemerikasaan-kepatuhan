@@ -2,9 +2,6 @@
 
 @section('main')
 <div class="row">
-
-
-
     <div class="main-content">
         <section class="section">
             <div class="section-header">

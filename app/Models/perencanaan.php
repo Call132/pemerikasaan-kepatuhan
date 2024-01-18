@@ -9,16 +9,17 @@ class perencanaan extends Model
 {
     protected $table = 'perencanaan';
     protected $fillable = [
-        'start_date',
-        'end_date',
-        'status', // Tambahkan kolom status
+        'tanggal_awal',
+        'tanggal_akhir',
+        'status',
     ];
 
     protected $attributes = [
-        'status' => 'diajukan', // Nilai default untuk kolom status
+        'status' => 'diajukan',
     ];
 
-    public function spt(){
+    public function spt()
+    {
         return $this->hasMany(SuratPerintahTugas::class);
     }
     public function badanUsaha()

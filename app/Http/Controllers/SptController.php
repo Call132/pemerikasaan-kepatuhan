@@ -26,24 +26,10 @@ class SptController extends Controller
 
     public function create()
     {
-        $badanUsahaDiajukan = DB::table('perencanaan')
-            ->join('badan_usaha', 'perencanaan.id', '=', 'badan_usaha.perencanaan_id')
-            ->where('perencanaan.status', 'approved')
-            ->select('badan_usaha.*')
-            ->get();
-
-        $badanUsahaDiajukan->transform(function ($item) {
-            $item->jumlah_tunggakan = 'Rp ' . number_format(floatval($item->jumlah_tunggakan), 2, ',', '.');
-            return $item;
-        });
-
-        return view('spt-preview', compact('badanUsahaDiajukan'));
+        return view('pages.suratPerintahTugas.create');
     }
 
-
-
-
-    public function storeSpt(Request $request)
+    public function store(Request $request)
     {
         try {
             $validatedData = $request->validate([
@@ -69,7 +55,6 @@ class SptController extends Controller
 
             $badanUsahaDiajukan = BadanUsaha::where('perencanaan_id', $perencanaan->id)->get();
 
-            // Ambil tanggal pemeriksaan badan usaha pertama dan terakhir
             $tanggalPemeriksaanPertama = $badanUsahaDiajukan->min('jadwal_pemeriksaan');
             $tanggalPemeriksaanTerakhir = $badanUsahaDiajukan->max('jadwal_pemeriksaan');
 
@@ -86,7 +71,6 @@ class SptController extends Controller
                 return $item;
             });
 
-            // Cari SPT dengan nomor yang sama
             $spt = SuratPerintahTugas::where('nomor_spt', $request->input('nomor_spt'))->first();
 
             if (!$spt) {
@@ -127,7 +111,6 @@ class SptController extends Controller
 
             $pdfFileName = 'Surat Perintah Tugas ' . str_replace('/', ' ', $spt->nomor_spt) . '  ' . Carbon::parse($spt->tanggal_spt)->isoFormat('MMMM Y') . '.pdf';
 
-            // Simpan file PDF ke direktori storage/app/public/spt
             $pdf->save(storage_path('app/public/pdf/' . $pdfFileName));
 
 
@@ -138,38 +121,12 @@ class SptController extends Controller
             $surat->nomor_surat = $request->input('nomor_spt');
             $surat->badan_usaha_id = $badanUsahaDiajukan->first()->id;
             $surat->tanggal_surat = $request->input('tanggal_spt');
-            $surat->file_path = $pdfPath; 
-        
+            $surat->file_path = $pdfPath;
+
             $surat->save();
             return redirect($pdfPath)->with('success', 'Surat Perintah Tugas Berhasil Dibuat');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat membuat surat perintah tugas: ' . $e->getMessage());
         }
-    }
-
-
-    // Menampilkan daftar BU
-    public function index()
-    {
-        $badanUsahaDiajukan = DB::table('perencanaan')
-            ->join('badan_usaha', 'perencanaan.id', '=', 'badan_usaha.perencanaan_id')
-            ->where('perencanaan.status', 'approved')
-            ->select('badan_usaha.*')
-            ->get();
-
-
-
-        $badanUsahaDiajukan->transform(function ($item) {
-            $item->jumlah_tunggakan = 'Rp ' . number_format(floatval($item->jumlah_tunggakan), 2, ',', '.');
-            return $item;
-        });
-
-
-        $sptList = SuratPerintahTugas::all();
-        return view('spt-preview', compact('badanUsahaDiajukan'));
-    }
-    public function preview()
-    {
-        return view('spt-preview');
     }
 }

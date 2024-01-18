@@ -291,6 +291,7 @@ class BadanUsahaExport implements FromCollection, ShouldAutoSize, WithStyles, Wi
                     ],
                 ]);
                 $employeeRoles = employee_roles::whereIn('posisi', ['Tim Pemeriksa', 'Kepala Bagian', 'Kepala Cabang'])->get();
+                
 
                 $sheet->setCellValue('G' . ($lastRow + 10), 'Nama'); // Isi dengan teks catatan pemeriksa
                 $sheet->setCellValue('I' . ($lastRow + 10), 'Tanda Tangan'); // Isi dengan teks catatan pemeriksa

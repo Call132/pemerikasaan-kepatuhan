@@ -7,140 +7,123 @@ use App\Models\BadanUsaha;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
-use App\Http\Controllers\HomeController;
 use App\Models\perencanaan;
 use App\Models\surat;
 use Carbon\Carbon;
 
 class BadanUsahaController extends Controller
 {
-    public function __construct()
+
+    public function create($id)
     {
-        $this->middleware('auth'); // Middleware otentikasi
+        $perencanaan = perencanaan::findOrFail($id);
+        return view('pages.badanUsaha.create', compact('perencanaan'));
     }
-    public function exportToExcel(Request $request)
+
+    public function export()
     {
         try {
-            $tanggalPerencanaan = $request->input('start_date'); // Mengambil Tanggal Awal dari permintaan
-            $endDate = $request->input('end_date'); // Mengambil Tanggal Akhir dari permintaan
 
-            // Check if perencanaan is approved
-            $latestPerencanaan = Perencanaan::where('status', 'approved')->latest()->first();
-            $badanUsaha = BadanUsaha::where('perencanaan_id', $latestPerencanaan->id)->first();
-            if (!$latestPerencanaan) {
+            $perencanaan = Perencanaan::where('status', 'approved')->latest()->first();
+            $badanUsaha = BadanUsaha::where('perencanaan_id', $perencanaan->id)->first();
+            if (!$perencanaan) {
                 return redirect()->intended('/')->with('error', 'Perencanaan belum diapprove.');
             }
 
-            $excelFileName = 'Perencanaan Pemeriksaan ' . Carbon::parse($latestPerencanaan->start_date)->isoFormat('D MMMM YYYY') . ' - ' . Carbon::parse($latestPerencanaan->end_date)->isoFormat('D MMMM YYYY') . '.xlsx';
+            $startDate = $perencanaan->tanggal_awal;
+            $endDate = $perencanaan->tanggal_akhir;
+
+            $excelFileName = 'Perencanaan Pemeriksaan ' . Carbon::parse($perencanaan->start_date)->isoFormat('D MMMM YYYY') . ' - ' . Carbon::parse($perencanaan->end_date)->isoFormat('D MMMM YYYY') . '.xlsx';
             $existingSurat = Surat::where('nomor_surat', $excelFileName)->first();
             if ($existingSurat) {
-                // Directly download the file
+
                 return redirect($existingSurat->file_path)->with('success', 'Perencanaan Pemeriksaan sudah ada, langsung didownload');
             }
-            Excel::store(new BadanUsahaExport($tanggalPerencanaan, $endDate, $latestPerencanaan, $badanUsaha), 'public/excel/' . $excelFileName);
+            Excel::store(new BadanUsahaExport($startDate, $endDate, $perencanaan, $badanUsaha), 'public/excel/' . $excelFileName);
             $pdfPath = 'storage/excel/' . $excelFileName;
 
 
             $surat = new surat();
             $surat->nomor_surat = $excelFileName;
-            $surat->perencanaan_id = $latestPerencanaan->id;
-            $surat->badan_usaha_id = 1 ;
+            $surat->perencanaan_id = $perencanaan->id;
+            $surat->badan_usaha_id = 1;
             $surat->jenis_surat = 'Perencanaan';
-            $surat->tanggal_surat = $tanggalPerencanaan;
+            $surat->tanggal_surat = $perencanaan->created_at->toDateString();
             $surat->file_path = $pdfPath;
             $surat->save();
 
-            return redirect($pdfPath)->with('success', 'Perencanaan exported successfully.');
+            return redirect($pdfPath)->with('success', 'Perencanaan Pemeriksaan Berhasilal di export !!');
         } catch (\Exception $e) {
             return redirect()->back()->with(['error' =>  'Perencanaan gagal di export !! ']);
         }
     }
 
-    public function create($perencanaan_id)
+
+
+
+    public function store(Request $request, perencanaan $perencanaanId)
     {
-        $type_menu = 'data-pemeriksaan'; // Atur nilai variabel $type_menu
-        $perencanaan = perencanaan::findOrFail($perencanaan_id);
+        try {
+            $request->validate([
+                'nama_badan_usaha' => 'required|string|max:255',
+                'kode_badan_usaha' => 'required|string|max:255',
+                'alamat' => 'required|string',
+                'kota_kab' => 'required|string|max:255',
+                'jenis_ketidakpatuhan' => 'required|string|max:255',
+                'tanggal_terakhir_bayar' => 'required|date',
+                'jumlah_tunggakan' => 'required|numeric',
+                'jenis_pemeriksaan' => 'required|string|max:255',
+                'jadwal_pemeriksaan' => 'required|date',
+                'penerbitan_lhpa' => 'required|date',
+                $perencanaanId = $request->input('perencanaan_id'),
 
-        return view('data-pemeriksaan', compact('perencanaan_id', 'type_menu'));
-    }
+            ]);
+
+            $inputValue = $request->input('jumlah_tunggakan');
+            $cleanValue = str_replace(['Rp ', '.'], '', $inputValue);
+            $jumlahTunggakan = floatval($cleanValue);
+
+            $bu = new BadanUsaha();
+            $bu->perencanaan_id = $perencanaanId;
+            $bu->nama_badan_usaha = $request->input('nama_badan_usaha');
+            $bu->kode_badan_usaha = $request->input('kode_badan_usaha');
+            $bu->alamat = $request->input('alamat');
+            $bu->kota_kab = $request->input('kota_kab');
+            $bu->jenis_ketidakpatuhan = $request->input('jenis_ketidakpatuhan');
+            $bu->tanggal_terakhir_bayar = $request->input('tanggal_terakhir_bayar');
+            $bu->jumlah_tunggakan = $request->input('jumlah_tunggakan');
+            $bu->jenis_pemeriksaan = $request->input('jenis_pemeriksaan');
+            $bu->jadwal_pemeriksaan = $request->input('jadwal_pemeriksaan');
+            $bu->penerbitan_lhpa = $request->input('penerbitan_lhpa');
 
 
-    public function saveData(Request $request, perencanaan $perencanaanId)
-    {
-        // Validate the form data
-        $request->validate([
-            'nama_badan_usaha' => 'required|string|max:255',
-            'kode_badan_usaha' => 'required|string|max:255',
-            'alamat' => 'required|string',
-            'kota_kab' => 'required|string|max:255',
-            'jenis_ketidakpatuhan' => 'required|string|max:255',
-            'tanggal_terakhir_bayar' => 'required|date',
-            'jumlah_tunggakan' => 'required|numeric',
-            'jenis_pemeriksaan' => 'required|string|max:255',
-            'jadwal_pemeriksaan' => 'required|date',
-            $perencanaanId = $request->input('perencanaan_id'),
-
-        ]);
-
-
-        // Create a new instance of your model and fill it with form data
-        //dd($perencanaanId); // Debugging line
-        $bu = new BadanUsaha();
-        $bu->perencanaan_id = $perencanaanId;
-        $bu->nama_badan_usaha = $request->input('nama_badan_usaha');
-        $bu->kode_badan_usaha = $request->input('kode_badan_usaha');
-        $bu->alamat = $request->input('alamat');
-        $bu->kota_kab = $request->input('kota_kab');
-        $bu->jenis_ketidakpatuhan = $request->input('jenis_ketidakpatuhan');
-        $bu->tanggal_terakhir_bayar = $request->input('tanggal_terakhir_bayar');
-        $bu->jumlah_tunggakan = $request->input('jumlah_tunggakan');
-        $bu->jenis_pemeriksaan = $request->input('jenis_pemeriksaan');
-        $bu->jadwal_pemeriksaan = $request->input('jadwal_pemeriksaan');
-
-        $inputValue = $request->input('jumlah_tunggakan');
-        $cleanValue = str_replace(['Rp ', '.'], '', $inputValue);
-        $jumlahTunggakan = floatval($cleanValue);
-        $bu->jumlah_tunggakan = $jumlahTunggakan;
-        // Save the data to the database
-        //dd($bu);
-        if ($bu->save()) {
-            // Data successfully saved
-            session()->flash('success', 'Data berhasil ditambahkan.');
-            return redirect()->route('data-pemeriksaan.create', ['perencanaan_id' => $perencanaanId])->with('success', 'Data berhasil ditambahkan.');
-        } else {
-            // Data failed to save
-            session()->flash('error', 'Data gagal ditambahkan. Silakan coba lagi.');
-            return redirect()->route('data-pemeriksaan.create', ['perencanaan_id' => $perencanaanId])->with('error', 'Data gagal ditambahkan.');
+            $bu->jumlah_tunggakan = $jumlahTunggakan;
+            if ($bu->save()) {
+                session()->flash('success', 'Data berhasil ditambahkan.');
+                return redirect()->route('badanusaha.create', $perencanaanId)->with('success', 'Data berhasil ditambahkan.');
+            } else {
+                session()->flash('error', 'Data gagal ditambahkan. Silakan coba lagi.');
+                return redirect()->route('badanusaha.create', $perencanaanId)->with('error', 'Data gagal ditambahkan.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['error' => $e->getMessage()]);
         }
     }
     public function delete($id)
     {
-        // Temukan data badan usaha berdasarkan ID
         $badanUsaha = BadanUsaha::find($id);
 
-        // Jika data tidak ditemukan, kembalikan respons atau tindakan yang sesuai, misalnya 404 Not Found.
         if (!$badanUsaha) {
             return abort(404);
         }
 
-        // Hapus data badan usaha
         $badanUsaha->delete();
-
-        // Redirect ke halaman yang sesuai, misalnya halaman data-pemeriksaan
         return redirect('/')->with('success', 'Data berhasil dihapus.');
     }
     public function edit($id)
     {
-        // Lakukan query untuk mendapatkan data badan usaha berdasarkan $id
-        $data = BadanUsaha::find($id);
-
-        // Jika data tidak ditemukan, tampilkan pesan error atau redirect ke halaman lain
-        if (!$data) {
-            // Misalnya, redirect ke halaman lain dengan pesan error
-            return redirect()->route('data-pemeriksaan')->with('error', 'Data tidak ditemukan.');
-        }
-
-        return view('edit-data-pemeriksaan', ['type_menu' => 'dashboard', 'data' => $data]);
+        $badanUsaha = BadanUsaha::find($id);
+        return view('pages.badanusaha.edit', compact('badanUsaha'));
     }
 
     public function update(Request $request, $id)
@@ -156,23 +139,25 @@ class BadanUsahaController extends Controller
             'jumlah_tunggakan' => 'required',
             'jenis_pemeriksaan' => 'required',
             'jadwal_pemeriksaan' => 'required',
+            'penerbitan_lhpa' => 'required',
         ]);
 
         // Proses pembaruan data
-        $data = BadanUsaha::find($id);
-        $data->nama_badan_usaha = $request->input('nama_badan_usaha');
-        $data->kode_badan_usaha = $request->input('kode_badan_usaha');
-        $data->alamat = $request->input('alamat');
-        $data->kota_kab = $request->input('kota_kab');
-        $data->jenis_ketidakpatuhan = $request->input('jenis_ketidakpatuhan');
-        $data->tanggal_terakhir_bayar = $request->input('tanggal_terakhir_bayar');
-        $data->jumlah_tunggakan = $request->input('jumlah_tunggakan');
-        $data->jenis_pemeriksaan = $request->input('jenis_pemeriksaan');
-        $data->jadwal_pemeriksaan = $request->input('jadwal_pemeriksaan');
+        $bu = BadanUsaha::find($id);
+        $bu->nama_badan_usaha = $request->input('nama_badan_usaha');
+        $bu->kode_badan_usaha = $request->input('kode_badan_usaha');
+        $bu->alamat = $request->input('alamat');
+        $bu->kota_kab = $request->input('kota_kab');
+        $bu->jenis_ketidakpatuhan = $request->input('jenis_ketidakpatuhan');
+        $bu->tanggal_terakhir_bayar = $request->input('tanggal_terakhir_bayar');
+        $bu->jumlah_tunggakan = $request->input('jumlah_tunggakan');
+        $bu->jenis_pemeriksaan = $request->input('jenis_pemeriksaan');
+        $bu->jadwal_pemeriksaan = $request->input('jadwal_pemeriksaan');
+        $bu->penerbitan_lhpa = $request->input('penerbitan_lhpa');
 
 
         if ($validate) {
-            $data->save();
+            $bu->save();
             return redirect('/')->with('success', 'Data berhasil diperbarui.');
         }
         return redirect()->intended('/edit-data-pemeriksaan')->with('error', 'Data gagal diperbarui.');

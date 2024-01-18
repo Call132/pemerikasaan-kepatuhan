@@ -25,6 +25,7 @@ class BadanUsaha extends Model
         'jumlah_bulan_menunggak',
         'tanggal_bayar',
         'jumlah_bayar',
+        'penerbitan_lhpa',
         'hasil_pemeriksaan',
         
     ];

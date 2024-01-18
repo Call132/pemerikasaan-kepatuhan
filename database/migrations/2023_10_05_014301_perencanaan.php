@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('perencanaan', function (Blueprint $table) {
             $table->id();
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->date('tanggal_awal');
+            $table->date('tanggal_akhir');
             $table->string('status')->default('Diajukan'); // Tambahkan kolom status
             $table->timestamps();
         });

@@ -27,6 +27,7 @@ return new class extends Migration
             $table->decimal('jumlah_bayar', 14, 2)->nullable();
             $table->string('hasil_pemeriksaan')->default('Belum Diperiksa');
             $table->string('npwp')->nullable();
+            $table->date('penerbitan_lhpa');
             $table->unsignedBigInteger('perencanaan_id');
             $table->foreign('perencanaan_id')
                 ->references('id')

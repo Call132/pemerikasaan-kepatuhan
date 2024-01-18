@@ -2,12 +2,6 @@
 
 @section('title', 'Dashboard')
 
-@push('style')
-<!-- CSS Libraries -->
-<link rel="stylesheet" href="{{ asset('library/jqvmap/dist/jqvmap.min.css') }}">
-<link rel="stylesheet" href="{{ asset('library/summernote/dist/summernote-bs4.min.css') }}">
-@endpush
-
 @section('main')
 <div class="main-content">
     <section class="section">
@@ -36,10 +30,10 @@
                     <div class="card-header">
                         <h4>PERENCANAAN PEMERIKSAAN</h4>
 
-                        @if (optional($latestPerencanaan)->count() > 0)
-                        @if ($latestPerencanaan->status === 'diajukan')
+                        @if (optional($perencanaan)->count() > 0)
+                        @if ($perencanaan->status === 'Diajukan')
                         <span class="badge badge-danger">Belum Diapprove</span>
-                        @elseif ($latestPerencanaan->status === 'approved')
+                        @elseif ($perencanaan->status === 'approved')
                         <span class="badge badge-success">Approved</span>
                         @endif
                         @endif
@@ -47,33 +41,11 @@
                     @php
                     $totalTunggakan = 0;
                     @endphp
-
-                    @if (optional($latestPerencanaan)->count() > 0)
-
-                    <div class="card-header">
-                        <form method="POST" action="{{ url('/export-perencanaan-pemeriksaan') }}">
-                            @csrf
-                            <div class="form-group row">
-                                <label for="start_date" class="col-sm-3 col-form-label">Tanggal Awal :</label>
-                                <div class="col-sm-3">
-                                    <input type="date" class="form-control" id="tanggal_perencanaan" name="start_date"
-                                        required>
-                                </div>
-                                <label for="end_date" class="col-sm-3 col-form-label">Tanggal Akhir :</label>
-                                <div class="col-sm-3">
-                                    <input type="date" class="form-control mb-2" id="end_date" name="end_date" required>
-                                </div>
-                                <!-- Menggunakan ml-auto untuk meletakkan tombol di ujung kanan -->
-                                <button type="submit" class="btn btn-primary m-auto mt-6 mr-2">Export to
-                                    Excel <i class="fa-solid fa-file-export"></i></button>
-                            </div>
-                        </form>
-                    </div>
+                    @if (optional($perencanaan)->count() > 0)
                     @if ($badanUsaha->count() > 0)
-
-                    <div class="card-body p-0">
+                    <div class="card-body p-2">
                         <div class="table-responsive">
-                            <table class="table table-striped-columns mb-0 ">
+                            <table class="table table-striped-columns px-2 ">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -86,14 +58,11 @@
                                         <th>Jumlah Tunggakan</th>
                                         <th>Jenis Pemeriksaan</th>
                                         <th>Jadwal Pemeriksaan</th>
-                                        <th><a href="{{ route('data-pemeriksaan.create', ['perencanaan_id' => $latestPerencanaanId]) }}"
-                                                class="btn btn-primary m-auto"><i class="fa-solid fa-plus"></i></a>
+                                        <th>Aksi
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
-
                                     @foreach ($badanUsaha as $data)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
@@ -111,10 +80,10 @@
                                         <td>{{ $data->jadwal_pemeriksaan }}</td>
                                         <td>
                                             <div class="btn-group " role="group">
-                                                <a href="{{ route('edit-data-pemeriksaan', ['id' => $data->id]) }}"
+                                                <a href="{{ route('badanusaha.edit', $data->id) }}"
                                                     class="btn btn-warning"><i
                                                         class="fa-solid fa-pen-to-square"></i></a>
-                                                <form action="{{ route('delete.badanusaha', ['id' => $data->id]) }}"
+                                                <form action="{{ route('delete.badanusaha', $data->id) }}"
                                                     method="post">
                                                     @csrf
                                                     @method('DELETE')
@@ -123,15 +92,17 @@
                                                 </form>
                                             </div>
                                         </td>
-
                                     </tr>
                                     @php
-                                    // Menambahkan jumlah tunggakan ke total
                                     $totalTunggakan += floatval(str_replace(['Rp ', '.'], '', $data->jumlah_tunggakan));
                                     @endphp
                                     @endforeach
                                 </tbody>
                                 <tfoot>
+                                    <a href="{{ route('badanusaha.create', $perencanaan->id) }}"
+                                        class="btn btn-primary mx-2 mb-2">Tambah <i class="fa-solid fa-plus"></i></a>
+                                    <a href="{{ route('badanusaha.export') }}" class="btn btn-success mx-2 mb-2">xlsx <i
+                                            class="fa-solid fa-file-excel"></i></a>
                                     <tr class="totall">
                                         <td colspan="7" class="totall text-center">Total</td>
                                         <td colspan="4" class="">Rp
@@ -158,7 +129,7 @@
                                         <th>Jumlah Tunggakan</th>
                                         <th>Jenis Pemeriksaan</th>
                                         <th>Jadwal Pemeriksaan</th>
-                                        <th><a href="{{ route('data-pemeriksaan.create', ['perencanaan_id' => $latestPerencanaanId]) }}"
+                                        <th><a href="{{ route('badanusaha.create', $perencanaan->id) }}"
                                                 class="btn btn-primary m-auto">Tambah</a>
                                         </th>
                                     </tr>
@@ -169,6 +140,10 @@
                                             Ditambahkan</td>
                                     </tr>
                                 </tbody>
+                                <tfoot>
+                                    <a href="{{ route('badanusaha.create', $perencanaan->id) }}"
+                                        class="btn btn-primary m-auto"><i class="fa-solid fa-plus"></i></a>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -184,7 +159,6 @@
                             </tr>
                         </table>
                     </div>
-
                     @endif
 
                 </div>
@@ -195,13 +169,7 @@
 @endsection
 
 @push('scripts')
-<!-- JS Libraies -->
-<script src="{{ asset('library/simpleweather/jquery.simpleWeather.min.js') }}"></script>
-<script src="{{ asset('library/chart.js/dist/Chart.min.js') }}"></script>
-<script src="{{ asset('library/jqvmap/dist/jquery.vmap.min.js') }}"></script>
-<script src="{{ asset('library/jqvmap/dist/maps/jquery.vmap.world.js') }}"></script>
-<script src="{{ asset('library/summernote/dist/summernote-bs4.min.js') }}"></script>
-<script src="{{ asset('library/chocolat/dist/js/jquery.chocolat.min.js') }}"></script>
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
             var startDateInput = document.getElementById("start_date");
@@ -226,8 +194,4 @@
         });
 </script>
 
-
-
-<!-- Page Specific JS File -->
-<script src="{{ asset('js/page/index-0.js') }}"></script>
 @endpush

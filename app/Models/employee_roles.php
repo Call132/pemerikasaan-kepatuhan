@@ -12,7 +12,7 @@ class employee_roles extends Model
     protected $fillable = [
         'nama',
         'posisi',
-        // Atribut l
+        
     ];
 
     use HasFactory;

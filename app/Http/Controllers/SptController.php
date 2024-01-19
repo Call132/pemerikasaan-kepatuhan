@@ -18,6 +18,7 @@ use Carbon\Carbon as carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use PhpOffice\PhpWord\TemplateProcessor;
 use PhpParser\Node\Stmt\TryCatch;
 use Throwable;
 
@@ -28,6 +29,7 @@ class SptController extends Controller
     {
         return view('pages.suratPerintahTugas.create');
     }
+
 
     public function store(Request $request)
     {
@@ -53,10 +55,10 @@ class SptController extends Controller
                 return redirect()->back()->with('error', 'Perencanaan Belum Di Approve');
             }
 
-            $badanUsahaDiajukan = BadanUsaha::where('perencanaan_id', $perencanaan->id)->get();
+            $badanUsaha = BadanUsaha::where('perencanaan_id', $perencanaan->id)->get();
 
-            $tanggalPemeriksaanPertama = $badanUsahaDiajukan->min('jadwal_pemeriksaan');
-            $tanggalPemeriksaanTerakhir = $badanUsahaDiajukan->max('jadwal_pemeriksaan');
+            $tanggalPemeriksaanPertama = $badanUsaha->min('jadwal_pemeriksaan');
+            $tanggalPemeriksaanTerakhir = $badanUsaha->max('jadwal_pemeriksaan');
 
             // Gunakan tanggal pemeriksaan badan usaha pertama dan terakhir untuk menentukan rentang
             $tanggalMulai = Carbon::parse($tanggalPemeriksaanPertama)->translatedFormat('d F Y');
@@ -66,7 +68,7 @@ class SptController extends Controller
             $dateNow = Carbon::now()->translatedFormat('d F Y', 'id');
 
 
-            $badanUsahaDiajukan->transform(function ($item) {
+            $badanUsaha->transform(function ($item) {
                 $item->jumlah_tunggakan = 'Rp ' . number_format(floatval($item->jumlah_tunggakan), 2, ',', '.');
                 return $item;
             });
@@ -105,9 +107,10 @@ class SptController extends Controller
                 'nama' => $request->input('ext_pendamping_nama'),
                 'jabatan' => $request->input('jabatan'),
             ]);
+
             $employee = employee_roles::where('posisi', 'Kepala Cabang')->pluck('nama')->first();
 
-            $pdf = Pdf::loadView('spt-preview', compact('spt', 'badanUsahaDiajukan', 'pendamping', 'employee', 'tanggalPemeriksaan', 'dateNow'));
+            $pdf = Pdf::loadView('pages.suratPerintahTugas.show', compact('spt', 'badanUsaha', 'pendamping', 'employee', 'tanggalPemeriksaan', 'dateNow'));
 
             $pdfFileName = 'Surat Perintah Tugas ' . str_replace('/', ' ', $spt->nomor_spt) . '  ' . Carbon::parse($spt->tanggal_spt)->isoFormat('MMMM Y') . '.pdf';
 
@@ -119,7 +122,7 @@ class SptController extends Controller
             $surat->perencanaan_id = $perencanaan->id;
             $surat->jenis_surat = 'Surat Perintah Tugas';
             $surat->nomor_surat = $request->input('nomor_spt');
-            $surat->badan_usaha_id = $badanUsahaDiajukan->first()->id;
+            $surat->badan_usaha_id = $badanUsaha->first()->id;
             $surat->tanggal_surat = $request->input('tanggal_spt');
             $surat->file_path = $pdfPath;
 

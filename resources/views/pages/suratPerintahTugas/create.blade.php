@@ -29,7 +29,7 @@
         </div>
         @endif
     </section>
-    <form action="" method="POST">
+    <form action="{{ route('spt.store') }}" method="POST">
         @csrf
         <div class="card col-12 mt-1">
             <div class="card-header">
@@ -138,7 +138,7 @@
             </div>
         </div>
         <div class="d-flex ">
-            <button type="submit"  class="btn btn-primary w-100">Submit</button>
+            <button type="submit" class="btn btn-primary w-100">Submit</button>
         </div>
     </form>
 </div>

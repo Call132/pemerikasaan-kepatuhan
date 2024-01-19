@@ -25,7 +25,7 @@ class SPPKController extends Controller
             $badanUsaha = BadanUsaha::find($id);
 
 
-            return view('buat-sppk', compact('badanUsaha', 'timPemeriksa'));
+            return view('pages.pengirimanSurat.kantor.create', compact('badanUsaha', 'timPemeriksa'));
         } catch (Exception $e) {
             return redirect('/')->with('error', 'Surat Perintah Tugas Belum Dibuat');
         }
@@ -35,8 +35,6 @@ class SPPKController extends Controller
     {
         $badanUsahaId = $request->input('badan_usaha_id');
         $badanUsaha = BadanUsaha::find($badanUsahaId);
-
-
 
         $employee = employee_roles::where('posisi', 'Kepala Cabang')->pluck('nama')->first();
 
@@ -53,9 +51,6 @@ class SPPKController extends Controller
                 'badan_usaha_id' => 'required',
             ]);
 
-
-
-
             $sppk = new sppk($validate);
             $sppk->surat_perintah_tugas_id = $request->input('spt_id');
             $sppk->tanggal_surat = $request->input('tanggal_surat');
@@ -63,11 +58,7 @@ class SPPKController extends Controller
             $sppk->perencanaan_id = $badanUsaha->perencanaan_id;
 
 
-
-
-
-
-            $pdf = Pdf::loadView('sppk-preview', compact('sppk', 'badanUsaha', 'namaTimPemeriksa', 'nppTimPemeriksa', 'employee'));
+            $pdf = Pdf::loadView('pages.pengirimanSurat.kantor.export', compact('sppk', 'badanUsaha', 'namaTimPemeriksa', 'nppTimPemeriksa', 'employee'));
             $pdfFileName = 'Surat Panggilan Pemeriksaan Kantor ' . str_replace('/', '_', $sppk->nomor_sppk) . '.pdf';
             $pdf->save(storage_path('app/public/pdf/' . $pdfFileName));
             $pdfPath = 'storage/pdf/' . $pdfFileName;
@@ -84,6 +75,7 @@ class SPPKController extends Controller
 
             return redirect($pdfPath)->with('success', 'Surat Panggilan Pemeriksaan Kantor Berhasil');
         } catch (\Exception $e) {
+            return dd($e);
             return redirect()->back()->with('error', 'Nomor Surat Panggilan Pemeriksaan Kantor sudah ada');
         }
     }

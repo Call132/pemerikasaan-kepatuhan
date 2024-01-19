@@ -21,53 +21,32 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class kertasPemeriksaanController extends Controller
 {
-
-    public function create()
+    public function index(Request $request)
     {
-        // Ambil data perencanaan dan relasikan dengan BadanUsaha
-        $badanUsaha = BadanUsaha::all();
-        $perencanaan = perencanaan::all();
-        // Then, return a view
-        return view('kertas-kerja', compact('badanUsaha', 'perencanaan'));
+        $perencanaan = Perencanaan::all();
+
+        $periodePemeriksaan = $request->input('periode_pemeriksaan');
+
+        if ($periodePemeriksaan) {
+
+            $perencanaanId = Perencanaan::where('tanggal_awal', $periodePemeriksaan)->value('id');
+
+            $badanUsaha = BadanUsaha::where('perencanaan_id', $perencanaanId)->get();
+        } else {
+            $badanUsaha = BadanUsaha::all();
+        }
+        return view('pages.pelaksanaanPemeriksaan.index', compact('badanUsaha', 'perencanaan'));
     }
 
-    public function form($id)
+    public function createKertasKerja($id)
     {
         $badanUsaha = BadanUsaha::findOrFail($id);
         $jadwal_pemeriksaan = Carbon::parse($badanUsaha->jadwal_pemeriksaan)->isoFormat('MMMM', 'ID');
 
-
-        return view('form-kertas-kerja', compact('badanUsaha', 'jadwal_pemeriksaan',));
-    }
-    public function cari(Request $request)
-    {
-        $request->validate([
-            'periode_pemeriksaan' => 'required',
-            'kategori' => 'required',
-        ]);
-
-        $start_date = $request->input('periode_pemeriksaan');
-        $kategori = $request->input('kategori');
-
-        // Ambil data Badan Usaha berdasarkan kedua kriteria pencarian
-        $perencanaan = perencanaan::where('start_date', 'like', "%" . $start_date . "%")->get();
-
-
-        foreach ($perencanaan as $p) {
-            $p->id;
-        }
-
-        $badanUsaha = DB::table('badan_usaha')
-            ->where('jenis_pemeriksaan', 'like', "%" . $kategori . "%")->where('perencanaan_id', $p->id)->get();
-
-        if ($kategori == 'final') {
-            $badanUsaha = BadanUsaha::where('jenis_pemeriksaan', 'kantor')->where('perencanaan_id', $p->id)->get();
-        }
-
-        return view('kertas-kerja', compact('badanUsaha', 'perencanaan'));
+        return view('pages.pelaksanaanPemeriksaan.kertasKerja.create', compact('badanUsaha', 'jadwal_pemeriksaan',));
     }
 
-    public function store(Request $request)
+    public function storeKertasKerja(Request $request)
     {
         try {
             $request->validate([
@@ -102,7 +81,11 @@ class kertasPemeriksaanController extends Controller
             $kertasKerja->badanUsaha->save();
             $kertasKerja->save();
             $excelFileName = 'Kertas Kerja Pemeriksaan ' . ' ' . $badanUsaha->nama_badan_usaha . ' ' . Carbon::parse($kertasKerja->created_at)->isoFormat('MMMM Y')  . '.xlsx';
+            $existingSurat = Surat::where('nomor_surat', $excelFileName)->first();
+            if ($existingSurat) {
 
+                return redirect($existingSurat->file_path)->with('success', 'Perencanaan Pemeriksaan sudah ada, langsung didownload');
+            }
             Excel::store(new KertasPemeriksaan($badanUsaha, $pemeriksa, $kertasKerja), 'public/excel/' . $excelFileName);
             $excelPath = 'storage/excel/' . $excelFileName;
 
@@ -126,13 +109,13 @@ class kertasPemeriksaanController extends Controller
         }
     }
 
-    public function formBapket($id)
+    public function createBapket($id)
     {
         $badanUsaha = BadanUsaha::findOrFail($id);
         $timPemeriksa = TimPemeriksa::latest()->first();
         $spt = SuratPerintahTugas::latest()->first();
 
-        return view('form-bapket', compact('badanUsaha', 'timPemeriksa', 'spt',));
+        return view('pages.pelaksanaanPemeriksaan.beritaAcara.create', compact('badanUsaha', 'timPemeriksa', 'spt',));
     }
 
 
@@ -170,16 +153,16 @@ class kertasPemeriksaanController extends Controller
             $badanUsaha->save();
             $bapket->save();
 
-            $pdf = Pdf::loadView('bapket-preview', compact('badanUsaha', 'timPemeriksa', 'bapket', 'spt'));
+            $pdf = Pdf::loadView('pages.pelaksanaanPemeriksaan.beritaAcara.export', compact('badanUsaha', 'timPemeriksa', 'bapket', 'spt'));
 
-            $pdfFileName = 'Berita Acara Pemeriksaan ' . $badanUsaha->nama_badan_usaha . '.pdf';
+            $pdfFileName = 'Berita Acara Pemeriksaan ' . str_replace('/', ' ', $bapket->no_bapket) . '.pdf';
             $pdf->save(storage_path('app/public/pdf/' . $pdfFileName));
             $pdfPath = 'storage/pdf/' . $pdfFileName;
 
 
             return redirect($pdfPath)->with('success', 'Berita Acara Pemeriksaan Berhasil Dibuat');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Data Tidak Valid');
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 }

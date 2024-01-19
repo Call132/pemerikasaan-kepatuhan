@@ -63,9 +63,6 @@
                     <form method="POST" action="{{ route('pengiriman-surat.cari') }}">
                         @csrf
                         <div class="form-group">
-
-
-                            {{-- @dd($perencanaan) --}}
                             <select name="periode_pemeriksaan" id="periode_pemeriksaan">
                                 <option value="">Pilih Periode Pemeriksaan</option>
                                 @foreach ($perencanaan as $data)

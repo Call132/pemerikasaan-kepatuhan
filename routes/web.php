@@ -83,7 +83,38 @@ Route::middleware(['auth', 'web'])->group(function () {
 
     Route::get('/spt', [SptController::class, 'create'])->name('spt.create');
     Route::post('/spt', [SptController::class, 'store'])->name('spt.store');
-    
+
+    Route::get('/pengiriman-surat', [pengirimanController::class, 'index'])->name('pengiriman-surat.index');
+    Route::post('/pengiriman-surat', [pengirimanController::class, 'filter'])->name('pengiriman-surat.filter');
+
+    Route::get('/sppk/{id}', [SppkController::class, 'create'])->name('sppk.create');
+    Route::post('/sppk', [SppkController::class, 'store'])->name('sppk.store');
+
+    Route::get('/sppl/{id}', [SPPLController::class, 'create'])->name('sppl.create');
+    Route::post('/sppl/save', [SPPLController::class, 'store'])->name('sppl.store');
+
+    Route::get('/sppfpk/{id}', [SPPFPKController::class, 'create'])->name('sppfpk.create');
+    Route::post('/sppfpk/save', [SPPFPKController::class, 'store'])->name('sppfpk.store');
+
+    Route::get('/program-pemeriksaan', [programPemeriksaanController::class, 'index'])->name('program-pemeriksaan.index');
+    Route::get('/program-pemeriksaan/{id}', [programPemeriksaanController::class, 'create'])->name('program-pemeriksaan.create');
+    Route::post('/program-pemeriksaan', [programPemeriksaanController::class, 'store'])->name('program-pemeriksaan.store');
+
+    Route::get('/pelaksanaan-pemeriksaan', [kertasPemeriksaanController::class, 'index'])->name('pelaksanaan-pemeriksaan.index');
+    Route::get('/kertas-kerja/{id}', [kertasPemeriksaanController::class, 'createKertasKerja'])->name('kertas-kerja.create');
+    Route::post('/kertas-kerja', [kertasPemeriksaanController::class, 'storeKertasKerja'])->name('kertas-kerja.store');
+
+    Route::get('/berita-acara/{id}', [kertasPemeriksaanController::class, 'createBapket'])->name('berita-acara.create');
+    Route::post('/berita-acara', [kertasPemeriksaanController::class, 'storeBapket'])->name('berita-acara.store');
+    //Route::get('/kertas-kerja', [kertasPemeriksaanController::class, 'create'])->name('kertas-kerja');
+    //Route::post('/kertas-kerja', [kertasPemeriksaanController::class, 'cari'])->name('kertas-kerja.cari');
+    //Route::get('/kertas-kerja/form/{id}', [kertasPemeriksaanController::class, 'form'])->name('kertas-kerja.form');
+    //Route::post('/kertas-kerja/download', [kertasPemeriksaanController::class, 'store'])->name('kertas-kerja.store')->middleware(['permission:create-perencanaan']);
+    //
+    //Route::get('/bapket/form/{id}', [kertasPemeriksaanController::class, 'formBapket'])->name('bapket.form');
+    //Route::post('/bapket/download', [kertasPemeriksaanController::class, 'storeBapket'])->name('bapket.store')->middleware(['permission:create-perencanaan']);
+
+
 
     // Tampilan halaman edit-data-pemeriksaan
 
@@ -112,31 +143,12 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::post('/profile-admin/update', [ProfileadminController::class, 'update'])->name('profileadmin.update');
 
 
-    
-    Route::get('/pengiriman-surat', [pengirimanController::class, 'dashboard'])->name('pengiriman-surat');
-    Route::post('/pengiriman-surat', [pengirimanController::class, 'cari'])->name('pengiriman-surat.cari');
-
-    Route::get('/sppk/{id}', [SPPKController::class, 'create'])->name('sppk');
-    Route::post('/sppk/save', [SPPKController::class, 'store'])->name('sppk.store')->middleware(['permission:create-perencanaan']);
-
-    Route::get('/sppl/{id}', [SPPLController::class, 'create'])->name('sppl');
-    Route::post('/sppl/save', [SPPLController::class, 'store'])->name('sppl.store')->middleware(['permission:create-perencanaan']);
-
-    Route::get('/sppfpk/{id}', [SPPFPKController::class, 'create'])->name('sppfpk');
-    Route::post('/sppfpk/save', [SPPFPKController::class, 'store'])->name('sppfpk.store')->middleware(['permission:create-perencanaan']);
 
 
-    Route::get('/program-pemeriksaan', [programPemeriksaanController::class, 'create'])->name('program-pemeriksaan');
-    Route::get('/program-pemeriksaan/form/{id}', [programPemeriksaanController::class, 'form'])->name('program-pemeriksaan.form');
-    Route::post('/program-pemeriksaan/download', [ProgramPemeriksaanController::class, 'store'])->name('program-pemeriksaan.store')->middleware(['permission:create-perencanaan']);
 
-    Route::get('/kertas-kerja', [kertasPemeriksaanController::class, 'create'])->name('kertas-kerja');
-    Route::post('/kertas-kerja', [kertasPemeriksaanController::class, 'cari'])->name('kertas-kerja.cari');
-    Route::get('/kertas-kerja/form/{id}', [kertasPemeriksaanController::class, 'form'])->name('kertas-kerja.form');
-    Route::post('/kertas-kerja/download', [kertasPemeriksaanController::class, 'store'])->name('kertas-kerja.store')->middleware(['permission:create-perencanaan']);
 
-    Route::get('/bapket/form/{id}', [kertasPemeriksaanController::class, 'formBapket'])->name('bapket.form');
-    Route::post('/bapket/download', [kertasPemeriksaanController::class, 'storeBapket'])->name('bapket.store')->middleware(['permission:create-perencanaan']);
+
+
 
     //Route::get('/bapket-preview', [BAPKetController::class, 'preview'])->name('bapket-preview');
 

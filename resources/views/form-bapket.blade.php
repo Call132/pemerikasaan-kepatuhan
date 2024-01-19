@@ -47,7 +47,7 @@
                                 <input type="hidden" value="{{ $spt->id }}" name="spt_id">
 
                                 <input type="hidden" value="{{ $badanUsaha->id }}" name="bu_id">
-                                
+
                                 <div class="form-group">
                                     <label for="TimPemeriksa">Tim Pemeriksa</label>
                                     <input value="{{ $timPemeriksa->nama }}" class="form-control" type="text"
@@ -88,14 +88,14 @@
                                     <input type="text" class="form-control" name="no_bapket" id="no_bapket">
                                 </div>
                                 <div class="form-group">
-                                    <label for="tgl_bapket"></label>
+                                    <label for="tgl_bapket"> Tgl Bapket</label>
                                     <input class="form-control" type="date" name="tgl_bapket" id="tgl_bapket" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="tunggakanIuran">Tunggakan Iuran</label>
-                                    <input value="{{ $badanUsaha->jumlah_tunggakan }}" class="form-control" type="text"
-                                        name="tunggakanIuran" required id="tunggakanIuran">
+                                    <input value="{{ $badanUsaha->jumlah_tunggakan }}" class="form-control"
+                                        type="number" name="tunggakanIuran" required id="tunggakanIuran">
                                 </div>
                                 <div class="form-group">
                                     <label for="bulanMenunggak">Bulan Menunggak</label>

@@ -57,7 +57,7 @@
                 </ul>
             </li>
             <li class="nav-item ">
-                <a href="{{ url('/kertas-kerja') }}" class="nav-link" style="line-height: 1;">
+                <a href="{{ url('/pelaksanaan-pemeriksaan') }}" class="nav-link" style="line-height: 1;">
                     <i class="fas fa-file-pen"></i><span>Pelaksanaan Pemeriksaan</span>
                 </a>
             </li>

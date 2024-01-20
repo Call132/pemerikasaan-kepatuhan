@@ -1,12 +1,12 @@
 @extends('layout.main')
 
-@section('title', 'Pengiriman Surat')
+@section('title', 'Laporan Hasil Pemeriksaan Akhir')
 
 @section('main')
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1>Pengiriman Surat</h1>
+            <h1>Laporan Hasil Pemeriksaan Akhir</h1>
         </div>
         @if (session()->has('success'))
         <div class="alert alert-success alert-dismissible show fade">
@@ -35,14 +35,15 @@
                     <div class="input-group align-items-center">
                         <select name="periode_pemeriksaan" id="periode_pemeriksaan" class="form-control rounded-right">
                             @foreach ($perencanaan as $data)
-                            <option value="{{ $data->tanggal_awal }}" {{ Request::get('periode_pemeriksaan')==$data->tanggal_awal ? 'selected' : '' }}>
+                            <option value="{{ $data->tanggal_awal }}" {{ Request::get('periode_pemeriksaan')==$data->
+                                tanggal_awal ? 'selected' : '' }}>
                                 {{ \Carbon\Carbon::parse($data->tanggal_awal)->isoFormat('D MMMM Y') }}
                             </option>
                             @endforeach
                         </select>
                         <div class="input-group-btn">
-                            <button type="submit" class="btn btn-primary rounded-left"><i
-                                    class="fas fa-search"></i></button>
+                            <button type="submit" class="btn btn-primary rounded-left"><i class="fas fa-search"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -67,15 +68,8 @@
                                 <td>{{ $data->nama_badan_usaha }}</td>
                                 <td>{{ $data->jenis_pemeriksaan }}</td>
                                 <td>
-                                    @if ($data->jenis_pemeriksaan == 'Kantor')
-                                    <a href="{{ route('sppk.create', $data->id) }}" class="btn btn-primary">Buat
-                                        SPPK</a>
-                                    <a href="{{ route('sppfpk.create', $data->id) }}" class="btn btn-primary">Buat
-                                        SPPFPK</a>
-                                    @elseif ($data->jenis_pemeriksaan == 'Lapangan')
-                                    <a href="{{ route('sppl.create', $data->id) }}" class="btn btn-primary">Buat
-                                        SPPL</a>
-                                    @endif
+                                    <a href="{{ route('lhpa.create', $data->id) }}" class="btn btn-success">Buat <i
+                                            class="fas fa-file-excel"></i></a>
                                 </td>
                             </tr>
                             @endforeach
@@ -89,7 +83,8 @@
                     </div>
                     <h2>Tidak ada data ditemukan untuk periode pemeriksaan yang dipilih</h2>
                     <p class="lead">
-                        Maaf, kami tidak menemukan data untuk periode pemeriksaan yang Anda pilih. Silakan coba periode pemeriksaan lain atau buat setidaknya 1 entri.
+                        Maaf, kami tidak menemukan data untuk periode pemeriksaan yang Anda pilih. Silakan coba periode
+                        pemeriksaan lain atau buat setidaknya 1 entri.
                     </p>
                 </div>
                 @endif

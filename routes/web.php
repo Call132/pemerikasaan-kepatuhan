@@ -18,9 +18,11 @@ use App\Http\Controllers\SPPFPKController;
 use App\Http\Controllers\SPPLController;
 use App\Http\Controllers\BAPKetController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\laporanPemeriksaanController;
 use App\Http\Controllers\lhpsController;
 use App\Http\Controllers\monitoringController;
+use App\Http\Controllers\userController;
 use App\Models\BadanUsaha;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
@@ -40,36 +42,24 @@ use Maatwebsite\Excel\Facades\Excel;
     return view('home' , ['type_menu' => 'dashboard', 'HomeController@index' ]);
 });*/
 
-//admin
-Route::middleware(['auth', 'role:user approval|admin',])->group(function () {
-    Route::get('/dashboard-admin', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('/get-detil-badan-usaha/{perencanaanId}', [AdminController::class, 'getDetilBadanUsaha']);
-    Route::post('/admin/approve/{id}', [AdminController::class, 'approve'])->name('admin.approve')->middleware(['permission:approve-perencanaan']);
-    Route::post('/admin/reject/{id}', [AdminController::class, 'reject'])->name('admin.reject');
-});
-Route::middleware(['auth', 'role:admin|add-user',])->group(function () {
-    Route::get('/admin/manajemen-user', [ManajemenUserController::class, 'index'])->name('manajemen-user');
-    Route::get('/user/create', [ManajemenUserController::class, 'create'])->name('user.create');
-    Route::post('/user', [ManajemenUserController::class, 'store'])->name('user.store');
-    Route::get('/user/{id}/edit', [ManajemenUserController::class, 'edit'])->name('user.edit');
-    Route::put('/user/{id}', [ManajemenUserController::class, 'update'])->name('user.update');
-    Route::delete('/user/{id}', [ManajemenUserController::class, 'destroy'])->name('user.destroy');
-});
 
-
+Route::middleware(['auth', 'role:Admin,User Approval',])->group(function () {
+    Route::resource('/user', userController::class)->names('user');
+    Route::post('/approve/{id}', [dashboardController::class, 'approve'])->name('approve');
+    Route::post('/reject/{id}', [dashboardController::class, 'reject'])->name('reject');
+});
 
 //login and register
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'auth_login'])->name('auth.login');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/register', function () {
-    return view('register', ['type_menu' => 'auth']);
-});
-
 
 
 Route::middleware(['auth', 'web'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
+
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::get('/BadanUsaha/{id}', [BadanUsahaController::class, 'create'])->name('badanusaha.create');
     Route::post('/BadanUsaha/{id}', [BadanUsahaController::class, 'store'])->name('badanusaha.store');
@@ -77,6 +67,7 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::put('/badanusaha/{id}', [BadanUsahaController::class, 'update'])->name('badanusaha.update');
     Route::delete('/badanusaha/{id}', [BadanUsahaController::class, 'delete'])->name('delete.badanusaha');
     Route::get('/export', [BadanUsahaController::class, 'export'])->name('badanusaha.export');
+
     //perencanaan pemeriksaan
     Route::get('/perencanaan', [perencanaanController::class, 'create'])->name('perencanaan.create');
     Route::post('/perencanaan', [perencanaanController::class, 'store'])->name('perencanaan.store');
@@ -106,67 +97,25 @@ Route::middleware(['auth', 'web'])->group(function () {
 
     Route::get('/berita-acara/{id}', [kertasPemeriksaanController::class, 'createBapket'])->name('berita-acara.create');
     Route::post('/berita-acara', [kertasPemeriksaanController::class, 'storeBapket'])->name('berita-acara.store');
-    //Route::get('/kertas-kerja', [kertasPemeriksaanController::class, 'create'])->name('kertas-kerja');
-    //Route::post('/kertas-kerja', [kertasPemeriksaanController::class, 'cari'])->name('kertas-kerja.cari');
-    //Route::get('/kertas-kerja/form/{id}', [kertasPemeriksaanController::class, 'form'])->name('kertas-kerja.form');
-    //Route::post('/kertas-kerja/download', [kertasPemeriksaanController::class, 'store'])->name('kertas-kerja.store')->middleware(['permission:create-perencanaan']);
-    //
-    //Route::get('/bapket/form/{id}', [kertasPemeriksaanController::class, 'formBapket'])->name('bapket.form');
-    //Route::post('/bapket/download', [kertasPemeriksaanController::class, 'storeBapket'])->name('bapket.store')->middleware(['permission:create-perencanaan']);
 
+    Route::get('/lhps', [LaporanController::class, 'indexLHPS'])->name('lhps.index');
+    Route::get('/lhps/{id}', [LaporanController::class, 'createLHPS'])->name('lhps.create');
+    Route::post('/lhps', [LaporanController::class, 'storeLHPS'])->name('lhps.store');
 
+    Route::get('/lhpa', [LaporanController::class, 'indexLHPA'])->name('lhpa.index');
+    Route::get('/lhpa/{id}', [LaporanController::class, 'createLHPA'])->name('lhpa.create');
+    Route::post('/lhpa', [LaporanController::class, 'storeLHPA'])->name('lhpa.store');
 
-    // Tampilan halaman edit-data-pemeriksaan
+    Route::get('/sphp', [LaporanController::class, 'indexSphp'])->name('sphp.index');
+    Route::get('/sphp/{id}', [LaporanController::class, 'createSphp'])->name('sphp.create');
+    Route::post('/sphp', [LaporanController::class, 'storeSphp'])->name('sphp.store');
 
-    Route::get('/data-pemeriksaan/{perencanaan_id}', [BadanUsahaController::class, 'create'])->name('data-pemeriksaan.create');
-    Route::post('/data-pemeriksaan/{perencanaan_id}', [BadanUsahaController::class, 'saveData'])->name('data-pemeriksaan.store')->middleware(['permission:create-perencanaan']);
+    Route::get('/monitoring', [monitoringController::class, 'index'])->name('monitoring.index');
+    Route::post('/monitoring/{id}', [monitoringController::class, 'export'])->name('monitoring.export');
 
-    Route::get('edit-pemeriksaan', function () {
-        return view('edit-data-pemeriksaan', ['type_menu' => 'edit-data-pemeriksaan']);
-    });
-    Route::get('/edit-data-pemeriksaan/{id}', [BadanUsahaController::class, 'edit'])->name('edit-data-pemeriksaan');
-    Route::put('/update-data-pemeriksaan/{id}', [BadanUsahaController::class, 'update'])->name('update-data-pemeriksaan');
-
-
-    Route::post('/tambah-data-bu', [BadanUsahaController::class, 'saveData'])->middleware(['permission:create-perencanaan']);
-
-    Route::get('/monitoring', [monitoringController::class, 'index'])->name('monitoring');
-    Route::post('/monitoring', [monitoringController::class, 'cari'])->name('monitoring.cari');
-    Route::post('/monitoring/download/{id}', [monitoringController::class, 'export'])->name('monitoring.export');
-
-    Route::get('/arsip', [monitoringController::class, 'arsip'])->name('monitoring.arsip');
-    Route::match(['get', 'post'], '/cari', [monitoringController::class, 'cariArsip'])->name('arsip.cari');
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-
-    Route::get('/profile-admin', [ProfileadminController::class, 'index'])->name('profileadmin');
-    Route::post('/profile-admin/update', [ProfileadminController::class, 'update'])->name('profileadmin.update');
+    Route::get('/arsip', [monitoringController::class, 'arsip'])->name('arsip.index');
 
 
 
 
-
-
-
-
-
-    //Route::get('/bapket-preview', [BAPKetController::class, 'preview'])->name('bapket-preview');
-
-    Route::get('/lhps', [lhpsController::class, 'index'])->name('lhps');
-    Route::post('/lhps', [lhpsController::class, 'cari'])->name('lhps.cari');
-    Route::get('/lhps/form/{id}', [lhpsController::class, 'form'])->name('lhps.form');
-    Route::get('/lhps/dokumentasi/{id}', [lhpsController::class, 'dokumentasi'])->name('dokumentasi.download');
-    Route::post('/lhps/dokumentasi', [lhpsController::class, 'storeDokumentasi'])->name('dokumentasi.store');
-    Route::post('/lhps/download', [lhpsController::class, 'store'])->name('lhps.store')->middleware(['permission:create-perencanaan']);
-
-    Route::get('/sphp', [laporanPemeriksaanController::class, 'sphp']);
-    Route::post('/sphp', [laporanPemeriksaanController::class, 'cariSphp'])->name('sphp.cari');
-    Route::get('/sphp/form/{id}', [laporanPemeriksaanController::class, 'formSphp'])->name('sphp.form');
-    Route::post('/sphp/download', [laporanPemeriksaanController::class, 'storeSphp'])->name('sphp.store')->middleware(['permission:create-perencanaan']);
-
-
-    Route::get('/lhpa', [laporanPemeriksaanController::class, 'lhpa']);
-    Route::post('/lhpa', [laporanPemeriksaanController::class, 'cariLhpa'])->name('lhpa.cari');
-    Route::get('/lhpa/form/{id}', [laporanPemeriksaanController::class, 'formLhpa'])->name('lhpa.form');
-    Route::post('/lhpa/download', [laporanPemeriksaanController::class, 'storeLhpa'])->name('lhpa.store')->middleware(['permission:create-perencanaan']);
 });

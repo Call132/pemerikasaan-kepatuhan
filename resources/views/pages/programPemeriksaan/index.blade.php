@@ -33,15 +33,17 @@
             <div class="card-header">
                 <div class="card-header-form">
                     <div class="input-group align-items-center">
-                        <select name="periode_pemeriksaan" id="" class="form-control">
+                        <select name="periode_pemeriksaan" id="periode_pemeriksaan" class="form-control rounded-right">
                             @foreach ($perencanaan as $data)
-                            <option value="{{ $data->tanggal_awal }}" {{ Request::get('periode_pemeriksaan')==$data->
-                                tanggal_awal ? 'selected' : ('') }}>
+                            <option value="{{ $data->tanggal_awal }}" {{ Request::get('periode_pemeriksaan')==$data->tanggal_awal ? 'selected' : '' }}>
                                 {{ \Carbon\Carbon::parse($data->tanggal_awal)->isoFormat('D MMMM Y') }}
                             </option>
                             @endforeach
                         </select>
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-primary rounded-left"><i
+                                    class="fas fa-search"></i></button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -71,6 +73,16 @@
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+                @else
+                <div class="empty-state" data-height="400">
+                    <div class="empty-state-icon">
+                        <i class="fas fa-question"></i>
+                    </div>
+                    <h2>Tidak ada data ditemukan untuk periode pemeriksaan yang dipilih</h2>
+                    <p class="lead">
+                        Maaf, kami tidak menemukan data untuk periode pemeriksaan yang Anda pilih. Silakan coba periode pemeriksaan lain atau buat setidaknya 1 entri.
+                    </p>
                 </div>
                 @endif
             </div>

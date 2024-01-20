@@ -114,8 +114,4 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::post('/monitoring/{id}', [monitoringController::class, 'export'])->name('monitoring.export');
 
     Route::get('/arsip', [monitoringController::class, 'arsip'])->name('arsip.index');
-
-
-
-
 });

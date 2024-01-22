@@ -25,10 +25,10 @@ class BadanUsahaController extends Controller
         try {
 
             $perencanaan = Perencanaan::where('status', 'approved')->latest()->first();
-            $badanUsaha = BadanUsaha::where('perencanaan_id', $perencanaan->id)->first();
             if (!$perencanaan) {
                 return redirect()->intended('/')->with('error', 'Perencanaan belum diapprove.');
             }
+            $badanUsaha = BadanUsaha::where('perencanaan_id', $perencanaan->id)->first();
 
             $startDate = $perencanaan->tanggal_awal;
             $endDate = $perencanaan->tanggal_akhir;
@@ -54,7 +54,7 @@ class BadanUsahaController extends Controller
 
             return redirect($pdfPath)->with('success', 'Perencanaan Pemeriksaan Berhasilal di export !!');
         } catch (\Exception $e) {
-            return redirect()->back()->with(['error' =>  'Perencanaan gagal di export !! ']);
+            return redirect()->back()->with(['error' =>  'Perencanaan gagal di export !! : ' . $e->getMessage()]);
         }
     }
 

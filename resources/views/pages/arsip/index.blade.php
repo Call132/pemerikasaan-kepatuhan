@@ -37,6 +37,7 @@
                             <th>#</th>
                             <th>Nomor Surat / File</th>
                             <th>Jenis Surat</th>
+                            <th>Tanggal Surat</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -46,6 +47,7 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $data->nomor_surat }}</td>
                             <td>{{ $data->jenis_surat }}</td>
+                            <td>{{ \Carbon\Carbon::parse($data->tanggal_surat)->translatedFormat('d F Y') }}</td>
                             <td> @if (url($data->file_path))
                                 <a href="{{ url($data->file_path) }}" download><i
                                         class="fa-solid fa-file-arrow-down"></i><span> Download</span></a>

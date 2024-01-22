@@ -7,7 +7,7 @@
 <div class="main-content">
     <section class="section">
         <div class="section-header">
-            <h1>Form Laporan Hasil Pemeriksaan Sementara {{ $badanUsaha->nama_badan_usaha }}</h1>
+            <h1>Form Laporan Hasil Pemeriksaan Akhir {{ $badanUsaha->nama_badan_usaha }}</h1>
         </div>
         @if (session()->has('success'))
         <div class="alert alert-success alert-dismissible show fade">

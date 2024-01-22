@@ -44,12 +44,18 @@ class SPPKController extends Controller
         $nppTimPemeriksa = $timPemeriksa->npp;
         try {
             $validate = $request->validate([
-                'nomor_sppk' => 'required|unique:sppk',
+                'nomor_sppk' => 'required',
                 'tanggal_surat' => 'required',
                 'waktu' => 'required',
                 'spt_id' => 'required',
                 'badan_usaha_id' => 'required',
             ]);
+
+            $existingSurat = surat::where('nomor_surat', $request->nomor_sppk)->first();
+
+            if ($existingSurat) {
+                return redirect($existingSurat->file_path)->with('success', 'Surat Pemberitahuan Hasil Pemeriksaan sudah ada!!');
+            }
 
             $sppk = new sppk($validate);
             $sppk->surat_perintah_tugas_id = $request->input('spt_id');
@@ -58,7 +64,7 @@ class SPPKController extends Controller
             $sppk->perencanaan_id = $badanUsaha->perencanaan_id;
 
 
-            $pdf = Pdf::loadView('pages.pengirimanSurat.kantor.export', compact('sppk', 'badanUsaha', 'namaTimPemeriksa', 'nppTimPemeriksa', 'employee'));
+            $pdf = Pdf::loadView('pages.pengirimanSurat.final.export', compact('sppk', 'badanUsaha', 'namaTimPemeriksa', 'nppTimPemeriksa', 'employee'));
             $pdfFileName = 'Surat Panggilan Pemeriksaan Kantor ' . str_replace('/', '_', $sppk->nomor_sppk) . '.pdf';
             $pdf->save(storage_path('app/public/pdf/' . $pdfFileName));
             $pdfPath = 'storage/pdf/' . $pdfFileName;

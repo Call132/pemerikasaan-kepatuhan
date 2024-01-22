@@ -35,7 +35,7 @@ class SptController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'nomor_spt' => 'required|unique:surat_perintah_tugas',
+                'nomor_spt' => 'required',
                 'tanggal_spt' => 'required|date',
                 'petugas_pemeriksa_nama' => 'nullable',
                 'petugas_pemeriksa_npp' => 'nullable',
@@ -107,6 +107,12 @@ class SptController extends Controller
                 'nama' => $request->input('ext_pendamping_nama'),
                 'jabatan' => $request->input('jabatan'),
             ]);
+
+            $existingSurat = surat::where('nomor_surat', $request->nomor_spt)->first();
+
+            if ($existingSurat) {
+                return redirect($existingSurat->file_path)->with('success', 'Surat Pemberitahuan Hasil Pemeriksaan sudah ada!!');
+            }
 
             $employee = employee_roles::where('posisi', 'Kepala Cabang')->pluck('nama')->first();
 

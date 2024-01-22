@@ -32,12 +32,16 @@ class SPPLController extends Controller
 
         try {
             $validate = $request->validate([
-                'nomor_sppl' => 'required|unique:sppl,nomor_sppl',
+                'nomor_sppl' => 'required',
                 'nama' => 'required',
                 'noHp' => 'nullable',
                 'tanggal_surat' => 'required',
             ]);
+            $existingSurat = surat::where('nomor_surat', $request->nomor_sppl)->first();
 
+            if ($existingSurat) {
+                return redirect($existingSurat->file_path)->with('success', 'Surat Pemberitahuan Hasil Pemeriksaan sudah ada!!');
+            }
 
             $sppl = new sppl($validate);
 

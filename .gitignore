@@ -17,3 +17,10 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# Ignore Excel files in storage
+/storage/*.xlsx
+/storage/*.xls
+
+# Ignore PDF files in storage
+/storage/*.pdf

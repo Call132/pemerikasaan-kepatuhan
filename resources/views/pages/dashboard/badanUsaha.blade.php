@@ -55,10 +55,8 @@
                                     <td>
                                         <div class="btn-group " role="group">
                                             <a href="{{ route('badanusaha.edit', $data->id) }}"
-                                                class="btn btn-warning"><i
-                                                    class="fa-solid fa-pen-to-square"></i></a>
-                                            <form action="{{ route('delete.badanusaha', $data->id) }}"
-                                                method="post">
+                                                class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+                                            <form action="{{ route('delete.badanusaha', $data->id) }}" method="post">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger ml-2"><i
@@ -75,10 +73,8 @@
                             </tbody>
                             <tfoot>
                                 <a href="{{ route('badanusaha.create', $perencanaan->id) }}"
-                                    class="btn btn-primary mx-2 mb-2">Tambah <i
-                                        class="fa-solid fa-plus"></i></a>
-                                <a href="{{ route('badanusaha.export') }}"
-                                    class="btn btn-success mx-2 mb-2">xlsx <i
+                                    class="btn btn-primary mx-2 mb-2">Tambah <i class="fa-solid fa-plus"></i></a>
+                                <a href="{{ route('badanusaha.export') }}" class="btn btn-success mx-2 mb-2">xlsx <i
                                         class="fa-solid fa-file-excel"></i></a>
                                 <tr class="totall">
                                     <td colspan="7" class="totall text-center">Total</td>
@@ -90,9 +86,9 @@
                     </div>
                 </div>
                 @else
-                <div class="card-body p-0">
+                <div class="card-body p-2">
                     <div class="table-responsive">
-                        <table class="table table-striped-columns mb-0 ">
+                        <table class="table table-striped-columns px-2">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -105,8 +101,7 @@
                                     <th>Jumlah Tunggakan</th>
                                     <th>Jenis Pemeriksaan</th>
                                     <th>Jadwal Pemeriksaan</th>
-                                    <th><a href="{{ route('badanusaha.create', $perencanaan->id) }}"
-                                            class="btn btn-primary m-auto">Tambah</a>
+                                    <th>Aksi
                                     </th>
                                 </tr>
                             </thead>
@@ -118,7 +113,7 @@
                             </tbody>
                             <tfoot>
                                 <a href="{{ route('badanusaha.create', $perencanaan->id) }}"
-                                    class="btn btn-primary m-auto"><i class="fa-solid fa-plus"></i></a>
+                                    class="btn btn-primary mx-2 mb-2">Tambah <i class="fa-solid fa-plus"></i></a>
                             </tfoot>
                         </table>
                     </div>
@@ -128,8 +123,8 @@
                 <div class="table-responsive mx-auto">
                     <table class="table table-striped">
                         <tr>
-                            <td colspan="11">Belum ada data perencanaan pemeriksaan! <a
-                                    href="{{ url('/perencanaan') }}" class="btn btn-primary">Buat
+                            <td colspan="11">Belum ada data perencanaan pemeriksaan! <a href="{{ url('/perencanaan') }}"
+                                    class="btn btn-primary">Buat
                                     Perencanaan</a>
                             </td>
                         </tr>

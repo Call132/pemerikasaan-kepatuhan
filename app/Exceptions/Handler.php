@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\UnauthorizedException as ValidationUnauthorizedException;
 use Spatie\Permission\Exceptions\UnauthorizedException;
 use Throwable;
 
@@ -29,7 +30,7 @@ class Handler extends ExceptionHandler
         });
     }
     public function render($request, Throwable $e){
-        if($e instanceof UnauthorizedException){
+        if($e instanceof ValidationUnauthorizedException){
             return response()->view('errors.error-403', ['exeption' => $e->getMessage()], 403);
         }
         return parent::render($request, $e);

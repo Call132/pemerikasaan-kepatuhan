@@ -516,6 +516,8 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
 
                 $data = $this->badanUsaha;
 
+                $bulanmenunggak = $data->jumlah_bulan_menunggak;
+
 
 
 
@@ -612,7 +614,7 @@ class KertasPemeriksaan implements FromCollection, WithStyles, WithEvents
                 $sheet->setCellValue('D20', $this->kertasKerja->total_pekerja . ' (orang)');
                 $sheet->mergeCells('D18:D19');
                 $sheet->setCellValue('E18', 'Jumlah Bulan Menunggak');
-                $sheet->setCellValue('E20', $data->jumlah_bulan_menunggak . ' (bulan)');
+                $sheet->setCellValue('E20', $bulanmenunggak . ' (bulan)');
                 $sheet->mergeCells('E18:E19');
                 $sheet->getStyle('E18')->getAlignment()->setWrapText(true); // Aktifkan wrap text
                 $sheet->setCellValue('F18', 'Total Tunggakan');

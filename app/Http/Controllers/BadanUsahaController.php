@@ -128,7 +128,6 @@ class BadanUsahaController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validasi data yang dikirim melalui form
         $validate = $request->validate([
             'nama_badan_usaha' => 'required',
             'kode_badan_usaha' => 'required',
@@ -142,7 +141,6 @@ class BadanUsahaController extends Controller
             'penerbitan_lhpa' => 'required',
         ]);
 
-        // Proses pembaruan data
         $bu = BadanUsaha::find($id);
         $bu->nama_badan_usaha = $request->input('nama_badan_usaha');
         $bu->kode_badan_usaha = $request->input('kode_badan_usaha');

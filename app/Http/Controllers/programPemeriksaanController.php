@@ -15,16 +15,28 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class programPemeriksaanController extends Controller
 {
-    public function create()
+    public function index(Request $request)
     {
-        $perencanaan = perencanaan::all();
-        foreach ($perencanaan as $p) {
-            $p->id;
+        $perencanaan = Perencanaan::all();
+
+        $periodePemeriksaan = $request->input('periode_pemeriksaan');
+
+        if ($periodePemeriksaan) {
+
+            $perencanaanId = Perencanaan::where('tanggal_awal', $periodePemeriksaan)->value('id');
+
+            $badanUsaha = BadanUsaha::where('perencanaan_id', $perencanaanId)->get();
+        } else {
+            $badanUsaha = BadanUsaha::all();
         }
+        return view('pages.programPemeriksaan.index', compact('badanUsaha', 'perencanaan'));
+    }
+    public function create($id)
+    {
+        $badanUsaha = BadanUsaha::findOrFail($id);
+        $jadwal_pemeriksaan = Carbon::parse($badanUsaha->jadwal_pemeriksaan)->isoFormat('MMMM', 'ID');
 
-        $badanUsaha = BadanUsaha::where('perencanaan_id', $p->id)->get();
-
-        return view('program-pemeriksaan', compact('badanUsaha'));
+        return view('pages.programPemeriksaan.create', compact('badanUsaha', 'jadwal_pemeriksaan'));
     }
 
     public function store(Request $request)
@@ -62,6 +74,11 @@ class programPemeriksaanController extends Controller
             $programPemeriksaan->badanUsaha->save();
             $programPemeriksaan->save();
             $excelFileName = 'Program Realisasi Pemeriksaan ' .  $badanUsaha->nama_badan_usaha . ' ' . Carbon::parse($programPemeriksaan->created_at)->isoFormat('MMMM Y') . '.xlsx';
+            $existingSurat = Surat::where('nomor_surat', $excelFileName)->first();
+            if ($existingSurat) {
+
+                return redirect($existingSurat->file_path)->with('success', 'Perencanaan Pemeriksaan sudah ada, langsung didownload');
+            }
             Excel::store(new ProgramPemeriksaan($badanUsaha, $programPemeriksaan), 'public/excel/' . $excelFileName);
             $path = 'storage/excel/' . $excelFileName;
 
@@ -82,14 +99,5 @@ class programPemeriksaanController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Data Tidak Valid');
         }
-    }
-
-
-    public function form($id)
-    {
-        $badanUsaha = BadanUsaha::findOrFail($id);
-        $jadwal_pemeriksaan = Carbon::parse($badanUsaha->jadwal_pemeriksaan)->isoFormat('MMMM', 'ID');
-
-        return view('form-program-pemeriksaan', compact('badanUsaha', 'jadwal_pemeriksaan'));
     }
 }

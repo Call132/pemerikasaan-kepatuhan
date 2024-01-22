@@ -22,9 +22,10 @@ class SPPFPKController extends Controller
         $sppk = sppk::where('badan_usaha_id', $id)->first();
         $spt = SuratPerintahTugas::latest('id')->first();
         $timPemeriksa = TimPemeriksa::where('surat_perintah_tugas_id', $spt->id)->first();
-
-
-        return view('buat-sppfpk', compact('badanUsaha', 'timPemeriksa', 'sppk'));
+        if (!$sppk) {
+            return redirect()->route('pengiriman-surat.index')->with('error', 'Surat Panggilan Pemeriksaan Kantor Belum Dibuat');
+        }
+        return view('pages.pengirimanSurat.final.create', compact('badanUsaha', 'timPemeriksa', 'sppk'));
     }
     public function store(Request $request)
     {
@@ -75,6 +76,7 @@ class SPPFPKController extends Controller
 
             return redirect($pdfPath)->with('success', 'Surat Panggilan Pemeriksaan Final  Berhasil Dibuat');
         } catch (\Exception $e) {
+            return dd($e);
             return redirect()->back()->with('error', 'Nomor Surat Panggilan Pemeriksaan Final  Sudah Ada');
         }
     }

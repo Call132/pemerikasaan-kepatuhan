@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nomor_sppk')->unique();
             $table->date('tanggal_surat');
-            $table->time('waktu');
+            $table->string('waktu');
             $table->unsignedBigInteger('badan_usaha_id');
             $table->unsignedBigInteger('surat_perintah_tugas_id');
             $table->unsignedBigInteger('perencanaan_id');

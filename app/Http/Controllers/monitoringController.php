@@ -11,39 +11,42 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use datatables;
 
 class monitoringController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $perencanaan = perencanaan::all();
+        $perencanaan = Perencanaan::all();
 
-        return view('monitoring', compact('perencanaan'));
-    }
-    public function cari(Request $request)
-    {
-        $request->validate([
-            'periode_pemeriksaan' => 'required',
-        ]);
+        $periodePemeriksaan = $request->input('periode_pemeriksaan');
+        $selectedPerencanaan = null;
 
-        $start_date = $request->input('periode_pemeriksaan');
+        if ($periodePemeriksaan) {
 
-        // Ambil data Badan Usaha berdasarkan kedua kriteria pencarian
-        $perencanaan = perencanaan::where('start_date', 'like', "%" . $start_date . "%")->get();
+            $selectedPerencanaan = Perencanaan::where('tanggal_awal', $periodePemeriksaan)->first();
 
+            if ($selectedPerencanaan) {
+                $perencanaanId = $selectedPerencanaan->id;
+                $badanUsaha = BadanUsaha::where('perencanaan_id', $perencanaanId)->get();
+            } else {
 
-        foreach ($perencanaan as $p) {
-            $p->id;
+                $badanUsaha = collect();
+            }
+        } else {
+            $badanUsaha = BadanUsaha::all();
         }
-        $badanUsaha = badanUsaha::where('perencanaan_id', $p->id)->get();
-        return view('monitoring', compact('badanUsaha', 'perencanaan', 'p'));
+
+        return view('pages.monitoring.index', compact('perencanaan', 'badanUsaha', 'selectedPerencanaan'));
     }
 
-    public function export($id)
+    public function export(Request $request)
     {
-
+        $id = $request->route('id');
+        Log::info('Export function called with ID: ' . $id);
         try {
 
             $perencanaan = perencanaan::findOrFail($id);
@@ -54,13 +57,10 @@ class monitoringController extends Controller
             Excel::store(new monitoring($badanUsaha, $perencanaan), 'public/excel/' . $excelFileName);
             $existingSurat = Surat::where('nomor_surat', $excelFileName)->first();
             if ($existingSurat) {
-                // Directly download the file
+
                 return redirect($existingSurat->file_path)->with('success', 'Laporan Monitoring sudah ada, langsung didownload');
             }
             $path = 'storage/excel/' . $excelFileName;
-
-
-
 
             $surat = new surat();
             $surat->badan_usaha_id = $badanUsaha->id;
@@ -73,36 +73,16 @@ class monitoringController extends Controller
 
             return redirect($path)->with('success', 'Laporan Monitoring Berhasil dibuat');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Laporan Monitoring Gagal dibuat');
+            return redirect()->back()->with('error', 'Laporan Monitoring Gagal dibuat' . $e->getMessage());
         }
     }
 
     public function arsip()
     {
 
-        $surat = Surat::paginate(10);
+        $surat = Surat::all();
 
 
-        return view('arsip', compact('surat'));
-    }
-    public function cariArsip(Request $request)
-    {
-        try {
-
-
-            $searchTerm = $request->input('search');
-            $surat = surat::where('file_path', 'like', "%$searchTerm%")->orderBy('created_at', 'desc')->paginate(10);
-
-            if ($searchTerm == 'semua') {
-                $surat = surat::orderBy('created_at', 'desc')->paginate(10);
-            }
-            if ($surat->isEmpty()) {
-                return redirect()->back()->with('error', 'Tidak ada file yang sesuai dengan pencarian.');
-            }
-
-            return view('arsip', compact('surat', 'searchTerm'));
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat mencari file.');
-        }
+        return view('pages.arsip.index', compact('surat'));
     }
 }

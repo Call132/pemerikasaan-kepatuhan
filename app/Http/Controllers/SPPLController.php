@@ -18,7 +18,7 @@ class SPPLController extends Controller
 
     {
         $badanUsaha = BadanUsaha::find($id);
-        return view('buat-sppl', compact('badanUsaha'));
+        return view('pages.pengirimanSurat.lapangan.create', compact('badanUsaha'));
     }
 
 
@@ -37,15 +37,15 @@ class SPPLController extends Controller
                 'noHp' => 'nullable',
                 'tanggal_surat' => 'required',
             ]);
-            
+
 
             $sppl = new sppl($validate);
-            
+
             $sppl->surat_perintah_tugas_id = $spt->id;
             $sppl->save();
 
 
-            $pdf = Pdf::loadView('sppl-preview', compact('sppl', 'badanUsaha', 'employee'));
+            $pdf = Pdf::loadView('pages.pengirimanSurat.lapangan.export', compact('sppl', 'badanUsaha', 'employee'));
             $pdfFileName = 'Surat Panggilan Pemeriksaan Lapangan ' . str_replace('/', '_', $sppl->nomor_sppl) . '.pdf';
             $pdf->save(storage_path('app/public/pdf/' . $pdfFileName));
             $pdfPath = 'storage/pdf/' . $pdfFileName;
@@ -60,7 +60,7 @@ class SPPLController extends Controller
             $surat->save();
             return redirect($pdfPath)->with('success', 'Surat Panggilan Pemeriksaan Lapangan Berhasil');
         } catch (\Exception $e) {
-            
+
             return redirect()->back()->with('error', 'Nomor Surat Panggilan Pemeriksaan Lapangan sudah ada');
         }
     }

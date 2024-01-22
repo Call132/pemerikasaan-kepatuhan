@@ -7,38 +7,32 @@
     .sidebar-brand-sm img {
         max-width: 100%;
         max-height: 30px;
-        /* Sesuaikan dengan tinggi yang diinginkan */
         height: auto;
     }
 </style>
+
 <div class="main-sidebar sidebar-style-2">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            @if(Auth::user()->role == 'Admin')
             <a href="{{ url('/') }}">SIS-RISKA</a>
-            @else
-            <a href="{{ url('/') }}">SIS-RISKA</a>
-            @endif
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
-            @if(Auth::user()->role == 'Admin')
-            <a href="{{ url('/') }}"><img src="{{ asset('img/SIS-RISKA-fix.png') }}" alt="Logo"></a>
-            @else
-            <a href="{{ url('/') }}"><img src="{{ asset('img/SIS-RISKA-fix.png') }}" alt="Logo"></a>
-            @endif
+            <a href="{{ url('/') }}">
+                <img src="{{ asset('img/SIS-RISKA-fix.png') }}" alt="Logo">
+            </a>
         </div>
-        @if (Auth::user()->role == 'Admin')
         <ul class="sidebar-menu">
-            <li class="menu-header ">Dashboard</li>
+            <li class="menu-header">Dashboard</li>
             <li class="nav">
-                <a href="{{ url('/') }}" class="nav-link" style="line-height: 1;">
+                <a href="{{ url('/') }}" class="nav-link">
                     <i class="fas fa-tachometer-alt"></i><span>Dashboard</span>
                 </a>
             </li>
-            @endif
+            @if (Auth::user()->role == 'Admin' || Auth::user()->role == 'User Entry')
+            <li class="menu-header">Pemeriksaan</li>
             <li class="nav-item dropdown">
-                <a href="#" class="nav-link has-dropdown" style="line-height: 1;">
-                    <i class="fas fa-tachometer-alt"></i><span>Perencanaan Pemeriksaan</span>
+                <a href="#" class="nav-link has-dropdown">
+                    <i class="fas fa-search"></i><span>Perencanaan Pemeriksaan</span>
                 </a>
                 <ul class="dropdown-menu">
                     <li>
@@ -47,7 +41,6 @@
                     <li>
                         <a class="nav-link" href="{{ url('/spt') }}">Surat Perintah Tugas</a>
                     </li>
-
                     <li>
                         <a class="nav-link" href="{{ url('/pengiriman-surat') }}">Pengiriman Surat</a>
                     </li>
@@ -56,14 +49,15 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item ">
-                <a href="{{ url('/kertas-kerja') }}" class="nav-link" style="line-height: 1;">
-                    <i class="fas fa-file-pen"></i><span>Pelaksanaan Pemeriksaan</span>
+            <li class="nav-item">
+                <a href="{{ url('/pelaksanaan-pemeriksaan') }}" class="nav-link">
+                    <i class="fas fa-file-alt"></i><span>Pelaksanaan Pemeriksaan</span>
                 </a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link has-dropdown" style="line-height: 1;"><i class="fas fa-file-lines"></i>
-                    <span>Laporan Pemeriksaan</span></a>
+                <a class="nav-link has-dropdown">
+                    <i class="fas fa-clipboard-check"></i><span>Laporan Pemeriksaan</span>
+                </a>
                 <ul class="dropdown-menu">
                     <li>
                         <a class="nav-link" href="{{ url('/lhps') }}">Laporan Hasil Pemeriksaan Sementara</a>
@@ -76,25 +70,25 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item ">
-                <a href="{{ url('/monitoring') }}" class="nav-link" style="line-height: 1;"><i
-                        class="fas fa-chart-simple"></i><span> Monitoring</span>
+            @endif
+            <li class="menu-header">Monitoring</li>
+            <li class="nav-item">
+                <a href="{{ url('/monitoring') }}" class="nav-link">
+                    <i class="fas fa-chart-line"></i><span> Monitoring</span>
                 </a>
             </li>
-            <li class="nav-item ">
-                <a href="{{ url('/arsip') }}" class="nav-link" style="line-height: 1;"><i
-                        class="fas fa-box-archive"></i><span>
-                        Arsip</span>
+            <li class="nav-item">
+                <a href="{{ url('/arsip') }}" class="nav-link">
+                    <i class="fas fa-archive"></i><span> Arsip</span>
                 </a>
             </li>
             @if (Auth::user()->role == 'Admin')
-            <li class="nav-item ">
-                <a href="{{ route('manajemen-user') }}" class="nav-link" style="line-height: 1;"><i
-                        class="fas fa-users-gear"></i><span>Manajemen Pengguna</span></a>
+            <li class="menu-header">Setting</li>
+            <li class="nav-item">
+                <a href="{{ url('/user') }}" class="nav-link">
+                    <i class="fas fa-cogs"></i><span>Manajemen Pengguna</span>
+                </a>
             </li>
-
-
-
             @endif
         </ul>
     </aside>

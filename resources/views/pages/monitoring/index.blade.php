@@ -79,12 +79,12 @@
                             @foreach ($badanUsaha as $data)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $data->jadwal_pemeriksaan }}</td>
+                                <td>{{ \Carbon\Carbon::parse($data->jadwal_pemeriksaan)->isoFormat('D MMMM Y') }}</td>
                                 <td>{{ $data->nama_badan_usaha }}</td>
                                 <td>{{ $data->kode_badan_usaha }}</td>
                                 <td>{{ $data->alamat }}</td>
-                                <td>{{ $data->tanggal_terakhir_bayar }}</td>
-                                <td>{{ $data->jumlah_bulan_menunggak }} (Bulan)</td>
+                                <td>{{ \Carbon\Carbon::parse($data->tanggal_terakhir_bayar)->isoFormat('D MMMM Y') }}</td>
+                                <td>{{ $data->jumlah_bulan_menunggak ?? 'N/A' }} (Bulan)</td>
                                 <td>Rp.{{ number_format($data->jumlah_tunggakan, 2, ',', '.') }}</td>
                                 <td>{{ $data->tanggal_bayar }}</td>
                                 <td>Rp.{{ number_format($data->jumlah_bayar), 2, ',', '.' }}</td>

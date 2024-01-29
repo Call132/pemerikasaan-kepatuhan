@@ -19,7 +19,7 @@
                 @if ($badanUsaha->count() > 0)
                 <div class="card-body p-2">
                     <div class="table-responsive">
-                        <table class="table table-striped-columns px-2 ">
+                        <table class="table table-striped-columns px-2 " id="badanUsahaTable">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -45,13 +45,13 @@
                                     <td>{{ $data->alamat }}</td>
                                     <td>{{ $data->kota_kab }}</td>
                                     <td>{{ $data->jenis_ketidakpatuhan }}</td>
-                                    <td>{{ $data->tanggal_terakhir_bayar }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($data->tanggal_terakhir_bayar)->isoFormat('D MMMM Y') }}</td>
                                     <td>Rp{{ number_format(floatval(str_replace(['Rp ', '.'], '',
                                         $data->jumlah_tunggakan)), 2, ',', '.') }}
                                     </td>
 
                                     <td>{{ $data->jenis_pemeriksaan }}</td>
-                                    <td>{{ $data->jadwal_pemeriksaan }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($data->jadwal_pemeriksaan)->isoFormat('D MMMM Y') }}</td>
                                     <td>
                                         <div class="btn-group " role="group">
                                             <a href="{{ route('badanusaha.edit', $data->id) }}"
